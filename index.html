@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zo Veilig · Project Tracker</title>
 <style>
-:root{--ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;--lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;--green:#dff7e7;--amber:#fff1c9;--red:#ffe0e0;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.45}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900}.subtitle{font-size:12px;color:#cab9d8}.nav{display:grid;gap:8px;margin-top:24px}.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px;cursor:pointer;font-weight:750}.nav button.active{background:var(--lilac)}.main{padding:28px;max-width:1250px}.section{display:none}.section.active{display:block}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 22px rgba(20,10,40,.035)}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}h1{font-family:Georgia,serif;font-size:40px;line-height:1.05;margin:6px 0 10px}h2{font-family:Georgia,serif;font-size:28px;margin:4px 0 10px}h3{margin:6px 0 8px}.small{font-size:13px;color:var(--muted)}.grid{display:grid;gap:16px}.cols2{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)}.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px}.phase.active{background:var(--soft);border-color:#d7baff}.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}.pill{display:inline-flex;border-radius:999px;background:var(--soft);color:#5b21b6;padding:6px 10px;font-size:12px;font-weight:800;margin:4px 4px 0 0}.table{width:100%;border-collapse:collapse}.table-scroll{width:100%;overflow-x:auto}.table-scroll .table{min-width:1120px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}textarea{min-height:72px}.status{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;background:#f4f4f4}.green{background:var(--green)}.amber{background:var(--amber)}.red{background:var(--red)}.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px}.score{font-size:34px;font-weight:950}.check{display:flex;gap:8px;margin:8px 0}.check input{width:auto;margin-top:3px}.progress-hero{position:relative;padding:24px 12px 8px}.climb-track{position:relative;height:190px;margin:10px 0 20px}.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .7s ease, transform .7s ease}.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900}.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d}.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a}.checkpoint small{display:block;color:var(--muted);font-size:11px}.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}.cat-fill{height:100%;width:0%;background:var(--lilac);border-radius:999px;transition:width .5s ease}.decision-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.decision-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.decision-card strong{display:block;font-size:20px}.status-chip{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}.chip-good{background:var(--green)}.chip-warn{background:var(--amber)}.chip-risk{background:var(--red)}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.btn.secondary{background:var(--lilac)}.report-only{display:none}.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}.password-card h1{font-size:30px}.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}.growth-chart{min-width:900px;height:320px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .3s ease}.bar-spend{background:#8b3ff2}.bar-leads{background:#30b66a}.bar-offers{background:#f2b84b}.bar-sales{background:#181018}.bar-upsell{background:#5b21b6}.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.mini-metric{background:var(--soft);border-radius:14px;padding:12px}.mini-metric strong{display:block;font-size:20px}.hidden{display:none!important}@media print{body{background:#fff}.password-screen{display:none!important}.side,.nav,.no-print{display:none!important}.app{display:block}.main{max-width:none;padding:0}.section{display:block!important;page-break-after:always}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}.report-only{display:block}.btn,input,select,textarea{display:none!important}}@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.cols2,.cols3,.cols4,.timeline,.month-row{grid-template-columns:1fr}.main{padding:18px}}
+:root{--ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;--lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;--green:#dff7e7;--amber:#fff1c9;--red:#ffe0e0;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.45}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900}.subtitle{font-size:12px;color:#cab9d8}.nav{display:grid;gap:8px;margin-top:24px}.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px;cursor:pointer;font-weight:750}.nav button.active{background:var(--lilac)}.main{padding:28px;max-width:1250px}.section{display:none}.section.active{display:block}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 22px rgba(20,10,40,.035)}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}h1{font-family:Georgia,serif;font-size:40px;line-height:1.05;margin:6px 0 10px}h2{font-family:Georgia,serif;font-size:28px;margin:4px 0 10px}h3{margin:6px 0 8px}.small{font-size:13px;color:var(--muted)}.grid{display:grid;gap:16px}.cols2{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)}.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px}.phase.active{background:var(--soft);border-color:#d7baff}.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}.pill{display:inline-flex;border-radius:999px;background:var(--soft);color:#5b21b6;padding:6px 10px;font-size:12px;font-weight:800;margin:4px 4px 0 0}.table{width:100%;border-collapse:collapse}.table-scroll{width:100%;overflow-x:auto}.table-scroll .table{min-width:1120px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}textarea{min-height:72px}.status{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;background:#f4f4f4}.green{background:var(--green)}.amber{background:var(--amber)}.red{background:var(--red)}.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px}.score{font-size:34px;font-weight:950}.check{display:flex;gap:8px;margin:8px 0}.check input{width:auto;margin-top:3px}.progress-hero{position:relative;padding:24px 12px 8px}.climb-track{position:relative;height:190px;margin:10px 0 20px}.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .7s ease, transform .7s ease}.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900}.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d}.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a}.checkpoint small{display:block;color:var(--muted);font-size:11px}.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}.cat-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin:2px 0 5px}.readiness-card{background:linear-gradient(135deg,#fff,var(--soft));border:1px solid var(--line);border-radius:16px;padding:14px}.readiness-label{display:inline-flex;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.readiness-risk{background:var(--red)}.readiness-forming{background:var(--amber)}.readiness-ready{background:var(--green)}.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}.cat-fill{height:100%;width:0%;background:var(--lilac);border-radius:999px;transition:width .5s ease}.decision-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.decision-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.decision-card strong{display:block;font-size:20px}.status-chip{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}.chip-good{background:var(--green)}.chip-warn{background:var(--amber)}.chip-risk{background:var(--red)}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.btn.secondary{background:var(--lilac)}.report-only{display:none}.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}.password-card h1{font-size:30px}.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}.growth-chart{min-width:900px;height:320px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .3s ease}.bar-spend{background:#8b3ff2}.bar-leads{background:#30b66a}.bar-offers{background:#f2b84b}.bar-sales{background:#181018}.bar-upsell{background:#5b21b6}.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.mini-metric{background:var(--soft);border-radius:14px;padding:12px}.mini-metric strong{display:block;font-size:20px}.hidden{display:none!important}@media print{body{background:#fff}.password-screen{display:none!important}.side,.nav,.no-print{display:none!important}.app{display:block}.main{max-width:none;padding:0}.section{display:block!important;page-break-after:always}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}.report-only{display:block}.btn,input,select,textarea{display:none!important}}@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.cols2,.cols3,.cols4,.timeline,.month-row{grid-template-columns:1fr}.main{padding:18px}}
 </style>
 <script>
 const roadmapPhases = [
@@ -17,56 +17,125 @@ const roadmapPhases = [
   { id:'m6', label:'M6', title:'Summit / handover', left:95 }
 ];
 
+const categoryWeights = {
+  'Tracking & Data': 25,
+  'Lifecycle & Retention': 20,
+  'Commercial & Conversion': 20,
+  'Customer & Signal': 15,
+  'Media & Measurement': 10,
+  'Google Ads & Meta Audit': 10,
+  'Content & Brand': 10,
+  'Research & Foundation': 10,
+  'Systems & Governance': 10,
+  'Website & Trust': 10,
+  'Strategy & Budget': 10,
+  'Commercial Inputs': 8,
+  'Experimentation': 12,
+  'Measurement': 12,
+  'Optimization': 15,
+  'Automation': 15,
+  'Growth Operations': 15,
+  'Creative & Media': 12,
+  'Measurement & Intelligence': 15,
+  'Documentation': 8,
+  'Other': 5
+};
+
 function statusWeight(value){
   if(!value) return 0;
   const v = value.toLowerCase();
   if(v.includes('done') || v.includes('goed') || v.includes('klaar')) return 1;
-  if(v.includes('waiting') || v.includes('feedback') || v.includes('wacht') || v.includes('bezig') || v.includes('progress')) return 0.55;
+  if(v.includes('waiting') || v.includes('feedback') || v.includes('wacht')) return 0.4;
+  if(v.includes('bezig') || v.includes('progress')) return 0.6;
   if(v.includes('risico') || v.includes('risk')) return 0.25;
   return 0;
 }
 
+function inferPhase(row){
+  if(row.dataset.phase) return row.dataset.phase;
+  if(row.closest('#gantt_m3m4')) return row.children[2]?.textContent.trim() ? 'm3' : 'm4';
+  if(row.closest('#gantt_m5m6')) return row.children[2]?.textContent.trim() ? 'm5' : 'm6';
+  if(row.closest('#gantt')) return row.children[2]?.textContent.trim() ? 'm1' : 'm2';
+  return 'm1';
+}
+
+function inferCategory(row){
+  if(row.dataset.category) return row.dataset.category;
+  const firstCell = row.querySelector('td');
+  if(firstCell && firstCell.rowSpan > 1) return firstCell.textContent.trim();
+  let previous = row.previousElementSibling;
+  while(previous){
+    const cell = previous.querySelector('td');
+    if(cell && cell.rowSpan > 1) return cell.textContent.trim();
+    previous = previous.previousElementSibling;
+  }
+  return 'Other';
+}
+
 function getTrackedRows(){
-  return Array.from(document.querySelectorAll('[data-track-row]'));
+  // Include BOTH weekly tracker rows AND Gantt rows
+  const weeklyRows = Array.from(document.querySelectorAll('[data-track-row]'));
+  const ganttRows = Array.from(document.querySelectorAll('#gantt tr, #gantt_m3m4 tr, #gantt_m5m6 tr'))
+    .filter(row => row.querySelector('select')); // only rows with status
+  
+  return [...weeklyRows, ...ganttRows];
 }
 
 function calculateProgress(){
   const rows = getTrackedRows();
-  const total = rows.length || 1;
-  let score = 0;
+  let weightedScore = 0;
+  let weightedTotal = 0;
   const phaseTotals = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
   const phaseScores = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
   const catTotals = {};
   const catScores = {};
+  const catWeightMap = {};
 
   rows.forEach(row=>{
     const status = row.querySelector('select')?.value || '';
-    const weight = statusWeight(status);
-    score += weight;
-    const phase = row.dataset.phase || 'm1';
-    const cat = row.dataset.category || 'Other';
-    phaseTotals[phase] = (phaseTotals[phase] || 0) + 1;
-    phaseScores[phase] = (phaseScores[phase] || 0) + weight;
-    catTotals[cat] = (catTotals[cat] || 0) + 1;
-    catScores[cat] = (catScores[cat] || 0) + weight;
+    const statusScore = statusWeight(status);
+    const phase = inferPhase(row);
+    const cat = inferCategory(row);
+    const importance = categoryWeights[cat] || categoryWeights.Other;
+
+    weightedScore += statusScore * importance;
+    weightedTotal += importance;
+
+    phaseTotals[phase] = (phaseTotals[phase] || 0) + importance;
+    phaseScores[phase] = (phaseScores[phase] || 0) + (statusScore * importance);
+
+    catTotals[cat] = (catTotals[cat] || 0) + importance;
+    catScores[cat] = (catScores[cat] || 0) + (statusScore * importance);
+    catWeightMap[cat] = importance;
   });
 
-  const overall = Math.round((score / total) * 100);
+  const overall = weightedTotal ? Math.round((weightedScore / weightedTotal) * 100) : 0;
   const phasePct = {};
   Object.keys(phaseTotals).forEach(k=>{ phasePct[k] = phaseTotals[k] ? Math.round((phaseScores[k]/phaseTotals[k])*100) : 0; });
   const catPct = {};
   Object.keys(catTotals).forEach(k=>{ catPct[k] = Math.round((catScores[k]/catTotals[k])*100); });
-  return {overall, phasePct, catPct, total};
+  return {overall, phasePct, catPct, catWeightMap, total:rows.length, weightedTotal};
+}
+
+function readinessState(score){
+  if(score < 35) return {label:'Foundation risk', cls:'readiness-risk', decision:'Foundation risk: unblock tracking, access, lifecycle states, and commercial clarity first.'};
+  if(score < 70) return {label:'System forming', cls:'readiness-forming', decision:'System forming: resolve feedback blockers and prepare M3 experiments.'};
+  return {label:'Ready to scale', cls:'readiness-ready', decision:'Ready to scale: define budget gates, experiment IDs, and controlled tests.'};
 }
 
 function renderJourneyProgress(){
   const data = calculateProgress();
+  const state = readinessState(data.overall);
   document.querySelectorAll('[data-progress-overall]').forEach(el=>el.textContent = data.overall + '%');
   document.querySelectorAll('[data-progress-fill]').forEach(el=>el.style.width = data.overall + '%');
+  document.querySelectorAll('[data-readiness-label]').forEach(el=>{
+    el.textContent = state.label;
+    el.className = 'readiness-label ' + state.cls;
+  });
   const climber = document.querySelector('[data-climber]');
   if(climber){ climber.style.left = `calc(${data.overall}% - 23px)`; climber.style.transform = `translateY(${Math.sin(data.overall/100*Math.PI*2)*-12}px)`; }
 
-  roadmapPhases.forEach((phase,index)=>{
+  roadmapPhases.forEach((phase)=>{
     const pct = data.phasePct[phase.id] || 0;
     document.querySelectorAll(`[data-phase-pct="${phase.id}"]`).forEach(el=>el.textContent = pct + '%');
     const cp = document.querySelector(`[data-checkpoint="${phase.id}"]`);
@@ -75,13 +144,17 @@ function renderJourneyProgress(){
 
   const catWrap = document.querySelector('[data-category-progress]');
   if(catWrap){
-    catWrap.innerHTML = Object.entries(data.catPct).map(([cat,pct])=>`<div class="cat-progress"><div><b>${cat}</b><div class="cat-bar"><div class="cat-fill" style="width:${pct}%"></div></div></div><strong>${pct}%</strong></div>`).join('');
+    catWrap.innerHTML = Object.entries(data.catPct)
+      .sort(([a],[b]) => (categoryWeights[b] || 0) - (categoryWeights[a] || 0))
+      .map(([cat,pct])=>{
+        const weight = categoryWeights[cat] || categoryWeights.Other;
+        return `<div class="cat-progress"><div><b>${cat}</b><div class="cat-meta"><span>Weight ${weight}</span><span>${pct}% complete</span></div><div class="cat-bar"><div class="cat-fill" style="width:${pct}%"></div></div></div><strong>${pct}%</strong></div>`;
+      }).join('');
   }
 
   const decision = document.querySelector('[data-next-decision]');
-  if(decision){
-    decision.textContent = data.overall < 35 ? 'Keep building foundation: focus on access, tracking, and lifecycle states.' : data.overall < 70 ? 'Start tightening tests: resolve feedback blockers and prepare M3 experiments.' : 'Ready for controlled testing: define budget gates and experiment IDs.';
-  }
+  if(decision){ decision.textContent = state.decision; }
+  applyLang();
 }
 
 function initNav(){
@@ -821,10 +894,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     <h2>Van basecamp naar schaalbaar groeisysteem</h2>
     <p class="small">Deze tracker leest de status van de weekly tracking taken en vertaalt die naar voortgang.</p>
     <div class="grid cols4">
-      <div><div class="small">Overall progress</div><div class="score" data-progress-overall>0%</div></div>
+      <div><div class="small">Weighted progress</div><div class="score" data-progress-overall>0%</div></div>
       <div><div class="small">M1</div><strong data-phase-pct="m1">0%</strong></div>
       <div><div class="small">M2</div><strong data-phase-pct="m2">0%</strong></div>
-      <div><div class="small">Next decision</div><span class="status-chip chip-warn" data-next-decision>Keep building foundation</span></div>
+      <div><div class="small">Scale readiness</div><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div>
     </div>
     <div class="climb-track">
       <div class="climb-line"></div>
@@ -949,10 +1022,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     <h2>Growth climb · M1–M6</h2>
     <p class="small">Done = 100%, In progress / Waiting feedback = partial progress, Not started = 0%.</p>
     <div class="decision-panel">
-      <div class="decision-card"><span class="small">Overall</span><strong data-progress-overall>0%</strong></div>
+      <div class="decision-card"><span class="small">Weighted progress</span><strong data-progress-overall>0%</strong></div>
       <div class="decision-card"><span class="small">Foundation</span><strong data-phase-pct="m1">0%</strong></div>
       <div class="decision-card"><span class="small">System readiness</span><strong data-phase-pct="m2">0%</strong></div>
-      <div class="decision-card"><span class="small">Decision</span><span class="status-chip chip-warn" data-next-decision>Keep building foundation</span></div>
+      <div class="decision-card"><span class="small">Scale readiness</span><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div>
     </div>
     <div class="climb-track">
       <div class="climb-line"></div>
