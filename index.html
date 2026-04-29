@@ -12,7 +12,37 @@
 <div id="passwordScreen" class="password-screen"><div class="password-card"><div class="tag">Protected dashboard</div><h1>Zo Veilig Project Tracker</h1><p class="small">Enter the project password to view this dashboard.</p><input id="passwordInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') unlockDashboard()"><button class="btn" type="button" style="margin-top:12px" onclick="unlockDashboard()">Unlock dashboard</button><div id="passwordError" class="password-error"></div></div></div>
 <div class="app"><aside class="side"><div style="margin-bottom:12px;display:flex;gap:6px"><button class="btn" style="padding:6px 10px;font-size:11px" onclick="setLang('nl')">NL</button><button class="btn secondary" style="padding:6px 10px;font-size:11px" onclick="setLang('en')">EN</button></div><div class="brand">Zo Veilig</div><div class="subtitle">Project Tracker · Performance Marketing</div><div class="nav"><button class="active" data-tab="journey">01 Werkreis</button><button data-tab="gantt">02 Gantt · M1–M2</button><button data-tab="gantt_m3m4">03 Gantt · M3–M4</button><button data-tab="gantt_m5m6">04 Gantt · M5–M6</button><button data-tab="data_input">05 Weekly Data Input</button><button data-tab="dashboard">06 Performance Dashboard</button><button data-tab="weekly">07 Weekly Tracking</button><button data-tab="matrix">08 Measurement Matrix</button><button data-tab="raci">09 RACI / Approvals</button><button data-tab="targets">10 Cijfers</button></div></aside>
 <main class="main">
-<section id="journey" class="section active"><div class="card"><div class="tag">Project tracker</div><h1>De reis van het werk</h1><p class="small">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p></div><div class="timeline"><div class="phase active"><div class="tag">M1—M2</div><h2>Fundering</h2><p class="small">Audit, onderzoek, positionering, tracking en basiscontent.</p></div><div class="phase"><div class="tag">M3</div><h2>Test & Leer</h2><p class="small">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div><div class="phase"><div class="tag">M4—M5</div><h2>Opschalen</h2><p class="small">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div><div class="phase"><div class="tag">M6</div><h2>Consolideren</h2><p class="small">Rapportage, SOPs, playbooks en overdracht.</p></div></div><div class="month-row"><div class="month">M1</div><div class="month">M2</div><div class="month">M3</div><div class="month">M4</div><div class="month">M5</div><div class="month">M6</div></div></section>
+<section id="journey" class="section active"><div class="card"><div class="tag">Project tracker</div><h1>De reis van het werk</h1><p class="small">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p></div><div class="timeline"><div class="phase active"><div class="tag">M1—M2</div><h2>Fundering</h2><p class="small">Audit, onderzoek, positionering, tracking en basiscontent.</p></div><div class="phase"><div class="tag">M3</div><h2>Test & Leer</h2><p class="small">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div><div class="phase"><div class="tag">M4—M5</div><h2>Opschalen</h2><p class="small">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div><div class="phase"><div class="tag">M6</div><h2>Consolideren</h2><p class="small">Rapportage, SOPs, playbooks en overdracht.</p></div></div><div class="month-row"><div class="month">M1</div><div class="month">M2</div><div class="month">M3</div><div class="month">M4</div><div class="month">M5</div><div class="month">M6</div></div><div class="card">
+  <div class="tag">Milestones & Rhythm</div>
+  <h2>Key decision moments & cadence</h2>
+  <div class="grid cols2">
+    <div>
+      <h3>Operating rhythm</h3>
+      <ul class="small">
+        <li><b>Daily:</b> Veronica ↔ Krista (execution sync)</li>
+        <li><b>Bi-weekly:</b> Krista + Robert + Veronica (status & decisions)</li>
+        <li><b>Monthly:</b> Strategic checkpoint</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Key timeline (starting 29 April 2026)</h3>
+      <ul class="small">
+        <li><b>Now → mid May:</b> Audit, tracking plan, brand voice direction</li>
+        <li><b>Week of 13–17 May (morning):</b> Strategy + Brand Voice presentation</li>
+        <li><b>Mid May → June:</b> Website build, tracking, lifecycle flows</li>
+        <li><b>End June:</b> Website launch + tracking live</li>
+        <li><b>July:</b> Test & learn phase begins</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <b>Media spend guideline:</b><br>
+    M1–M2: Reduce waste, maintain learning budget.<br>
+    Post strategy: Controlled reallocation.<br>
+    Post website launch: Scale based on validated performance.
+  </div>
+</div>
+</section>
 <section id="gantt" class="section"><div class="card"><div class="tag">Gantt · M1–M2</div><h1>Fundering · Taken & Status</h1><p class="small">Markeer per taak: Not started, In progress, Waiting feedback, Done.</p></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M1</th><th>M2</th><th>Status</th><th>Owner / Note</th></tr><tbody id="ganttM1M2"></tbody></table></div></div></section>
 <section id="gantt_m3m4" class="section"><div class="card"><div class="tag">Gantt · M3–M4</div><h1>Test & Leer → Opschalen</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M3</th><th>M4</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM3M4"></tbody></table></div></div></section>
 <section id="gantt_m5m6" class="section"><div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM5M6"></tbody></table></div></div></section>
