@@ -3,1108 +3,270 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Zo Veilig · Project Tracker</title>
+<title>Zo Veilig · Growth Operating Dashboard</title>
 <style>
-:root{--ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;--lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;--green:#dff7e7;--amber:#fff1c9;--red:#ffe0e0;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.45}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900}.subtitle{font-size:12px;color:#cab9d8}.nav{display:grid;gap:8px;margin-top:24px}.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px;cursor:pointer;font-weight:750}.nav button.active{background:var(--lilac)}.main{padding:28px;max-width:1250px}.section{display:none}.section.active{display:block}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 22px rgba(20,10,40,.035)}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}h1{font-family:Georgia,serif;font-size:40px;line-height:1.05;margin:6px 0 10px}h2{font-family:Georgia,serif;font-size:28px;margin:4px 0 10px}h3{margin:6px 0 8px}.small{font-size:13px;color:var(--muted)}.grid{display:grid;gap:16px}.cols2{grid-template-columns:1fr 1fr}.cols3{grid-template-columns:repeat(3,1fr)}.cols4{grid-template-columns:repeat(4,1fr)}.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px}.phase.active{background:var(--soft);border-color:#d7baff}.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}.pill{display:inline-flex;border-radius:999px;background:var(--soft);color:#5b21b6;padding:6px 10px;font-size:12px;font-weight:800;margin:4px 4px 0 0}.table{width:100%;border-collapse:collapse}.table-scroll{width:100%;overflow-x:auto}.table-scroll .table{min-width:1120px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}textarea{min-height:72px}.status{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;background:#f4f4f4}.green{background:var(--green)}.amber{background:var(--amber)}.red{background:var(--red)}.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px}.score{font-size:34px;font-weight:950}.check{display:flex;gap:8px;margin:8px 0}.check input{width:auto;margin-top:3px}.progress-hero{position:relative;padding:24px 12px 8px}.climb-track{position:relative;height:190px;margin:10px 0 20px}.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .7s ease, transform .7s ease}.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900}.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d}.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a}.checkpoint small{display:block;color:var(--muted);font-size:11px}.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}.cat-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin:2px 0 5px}.readiness-card{background:linear-gradient(135deg,#fff,var(--soft));border:1px solid var(--line);border-radius:16px;padding:14px}.readiness-label{display:inline-flex;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.readiness-risk{background:var(--red)}.readiness-forming{background:var(--amber)}.readiness-ready{background:var(--green)}.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}.cat-fill{height:100%;width:0%;background:var(--lilac);border-radius:999px;transition:width .5s ease}.decision-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.decision-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.decision-card strong{display:block;font-size:20px}.status-chip{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}.chip-good{background:var(--green)}.chip-warn{background:var(--amber)}.chip-risk{background:var(--red)}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.btn.secondary{background:var(--lilac)}.report-only{display:none}.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}.password-card h1{font-size:30px}.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}.growth-chart{min-width:900px;height:320px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .3s ease}.bar-spend{background:#8b3ff2}.bar-leads{background:#30b66a}.bar-offers{background:#f2b84b}.bar-sales{background:#181018}.bar-upsell{background:#5b21b6}.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.mini-metric{background:var(--soft);border-radius:14px;padding:12px}.mini-metric strong{display:block;font-size:20px}.hidden{display:none!important}@media print{body{background:#fff}.password-screen{display:none!important}.side,.nav,.no-print{display:none!important}.app{display:block}.main{max-width:none;padding:0}.section{display:block!important;page-break-after:always}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}.report-only{display:block}.btn,input,select,textarea{display:none!important}}@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.cols2,.cols3,.cols4,.timeline,.month-row{grid-template-columns:1fr}.main{padding:18px}}
+:root{--ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;--lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;--green:#dff7e7;--amber:#fff1c9;--red:#ffe0e0;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.45}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900}.subtitle{font-size:12px;color:#cab9d8}.nav{display:grid;gap:8px;margin-top:24px}.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px;cursor:pointer;font-weight:750}.nav button.active{background:var(--lilac)}.main{padding:28px;max-width:1250px}.section{display:none}.section.active{display:block}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 22px rgba(20,10,40,.035)}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}h1{font-family:Georgia,serif;font-size:40px;line-height:1.05;margin:6px 0 10px}h2{font-family:Georgia,serif;font-size:28px;margin:4px 0 10px}.small{font-size:13px;color:var(--muted)}.grid{display:grid;gap:16px}.cols2{grid-template-columns:1fr 1fr}.cols4{grid-template-columns:repeat(4,1fr)}.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px}.phase.active{background:var(--soft);border-color:#d7baff}.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}.table{width:100%;border-collapse:collapse}.table-scroll{width:100%;overflow-x:auto}.table-scroll .table{min-width:1100px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}textarea{min-height:72px}.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px}.score{font-size:34px;font-weight:950}.progress-hero{position:relative;padding:24px 12px 8px}.climb-track{position:relative;height:190px;margin:10px 0 20px}.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .7s ease, transform .7s ease}.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900}.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d}.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a}.checkpoint small{display:block;color:var(--muted);font-size:11px}.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}.cat-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin:2px 0 5px}.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}.cat-fill{height:100%;width:0%;background:var(--lilac);border-radius:999px;transition:width .5s ease}.readiness-label{display:inline-flex;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.readiness-risk{background:var(--red)}.readiness-forming{background:var(--amber)}.readiness-ready{background:var(--green)}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.btn.secondary{background:var(--lilac)}.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}.password-card h1{font-size:30px}.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}.growth-chart{min-width:900px;height:320px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .3s ease}.bar-spend{background:#8b3ff2}.bar-leads{background:#30b66a}.bar-offers{background:#f2b84b}.bar-sales{background:#181018}.bar-upsell{background:#5b21b6}.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.spend-spark{height:120px;display:flex;align-items:end;gap:4px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;overflow-x:auto}.spend-spark span{display:block;min-width:10px;border-radius:999px 999px 0 0;background:var(--lilac);height:4px}.manual-progress{margin-top:14px;padding:14px;border:1px dashed #d7baff;border-radius:14px;background:#fff}.manual-progress input{accent-color:var(--lilac)}.mini-metric{background:var(--soft);border-radius:14px;padding:12px}.mini-metric strong{display:block;font-size:20px}.raci-card{border-left:4px solid var(--lilac)}.overdue-row{background:#fff6f6}.due-soon-row{background:#fffdf2}.flow-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.flow-node{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;font-weight:900}.flow-arrow{color:var(--lilac);font-weight:900}.sync-status{border-radius:14px;padding:12px;margin-top:12px;background:var(--soft);font-size:13px}.sync-ok{background:var(--green)}.sync-error{background:var(--red)}.codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#181018;color:#fff;border-radius:14px;padding:14px;overflow-x:auto;font-size:12px;line-height:1.5}.hidden{display:none!important}@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.cols2,.cols4,.timeline,.month-row{grid-template-columns:1fr}.main{padding:18px}}
 </style>
-<script>
-const roadmapPhases = [
-  { id:'m1', label:'M1', title:'Basecamp', left:5 },
-  { id:'m2', label:'M2', title:'Foundation ready', left:23 },
-  { id:'m3', label:'M3', title:'Test & Leer', left:41 },
-  { id:'m4', label:'M4', title:'Scale signal', left:59 },
-  { id:'m5', label:'M5', title:'Operational scale', left:77 },
-  { id:'m6', label:'M6', title:'Summit / handover', left:95 }
-];
-
-const categoryWeights = {
-  'Tracking & Data': 25,
-  'Lifecycle & Retention': 20,
-  'Commercial & Conversion': 20,
-  'Customer & Signal': 15,
-  'Media & Measurement': 10,
-  'Google Ads & Meta Audit': 10,
-  'Content & Brand': 10,
-  'Research & Foundation': 10,
-  'Systems & Governance': 10,
-  'Website & Trust': 10,
-  'Strategy & Budget': 10,
-  'Commercial Inputs': 8,
-  'Experimentation': 12,
-  'Measurement': 12,
-  'Optimization': 15,
-  'Automation': 15,
-  'Growth Operations': 15,
-  'Creative & Media': 12,
-  'Measurement & Intelligence': 15,
-  'Documentation': 8,
-  'Other': 5
-};
-
-function statusWeight(value){
-  if(!value) return 0;
-  const v = value.toLowerCase();
-  if(v.includes('done') || v.includes('goed') || v.includes('klaar')) return 1;
-  if(v.includes('waiting') || v.includes('feedback') || v.includes('wacht')) return 0.4;
-  if(v.includes('bezig') || v.includes('progress')) return 0.6;
-  if(v.includes('risico') || v.includes('risk')) return 0.25;
-  return 0;
-}
-
-function inferPhase(row){
-  if(row.dataset.phase) return row.dataset.phase;
-  if(row.closest('#gantt_m3m4')) return row.children[2]?.textContent.trim() ? 'm3' : 'm4';
-  if(row.closest('#gantt_m5m6')) return row.children[2]?.textContent.trim() ? 'm5' : 'm6';
-  if(row.closest('#gantt')) return row.children[2]?.textContent.trim() ? 'm1' : 'm2';
-  return 'm1';
-}
-
-function inferCategory(row){
-  if(row.dataset.category) return row.dataset.category;
-  const firstCell = row.querySelector('td');
-  if(firstCell && firstCell.rowSpan > 1) return firstCell.textContent.trim();
-  let previous = row.previousElementSibling;
-  while(previous){
-    const cell = previous.querySelector('td');
-    if(cell && cell.rowSpan > 1) return cell.textContent.trim();
-    previous = previous.previousElementSibling;
-  }
-  return 'Other';
-}
-
-function getTrackedRows(){
-  // Include BOTH weekly tracker rows AND Gantt rows
-  const weeklyRows = Array.from(document.querySelectorAll('[data-track-row]'));
-  const ganttRows = Array.from(document.querySelectorAll('#gantt tr, #gantt_m3m4 tr, #gantt_m5m6 tr'))
-    .filter(row => row.querySelector('select')); // only rows with status
-  
-  return [...weeklyRows, ...ganttRows];
-}
-
-function calculateProgress(){
-  const rows = getTrackedRows();
-  let weightedScore = 0;
-  let weightedTotal = 0;
-  const phaseTotals = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
-  const phaseScores = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
-  const catTotals = {};
-  const catScores = {};
-  const catWeightMap = {};
-
-  rows.forEach(row=>{
-    const status = row.querySelector('select')?.value || '';
-    const statusScore = statusWeight(status);
-    const phase = inferPhase(row);
-    const cat = inferCategory(row);
-    const importance = categoryWeights[cat] || categoryWeights.Other;
-
-    weightedScore += statusScore * importance;
-    weightedTotal += importance;
-
-    phaseTotals[phase] = (phaseTotals[phase] || 0) + importance;
-    phaseScores[phase] = (phaseScores[phase] || 0) + (statusScore * importance);
-
-    catTotals[cat] = (catTotals[cat] || 0) + importance;
-    catScores[cat] = (catScores[cat] || 0) + (statusScore * importance);
-    catWeightMap[cat] = importance;
-  });
-
-  const overall = weightedTotal ? Math.round((weightedScore / weightedTotal) * 100) : 0;
-  const phasePct = {};
-  Object.keys(phaseTotals).forEach(k=>{ phasePct[k] = phaseTotals[k] ? Math.round((phaseScores[k]/phaseTotals[k])*100) : 0; });
-  const catPct = {};
-  Object.keys(catTotals).forEach(k=>{ catPct[k] = Math.round((catScores[k]/catTotals[k])*100); });
-  return {overall, phasePct, catPct, catWeightMap, total:rows.length, weightedTotal};
-}
-
-function readinessState(score){
-  if(score < 35) return {label:'Foundation risk', cls:'readiness-risk', decision:'Foundation risk: unblock tracking, access, lifecycle states, and commercial clarity first.'};
-  if(score < 70) return {label:'System forming', cls:'readiness-forming', decision:'System forming: resolve feedback blockers and prepare M3 experiments.'};
-  return {label:'Ready to scale', cls:'readiness-ready', decision:'Ready to scale: define budget gates, experiment IDs, and controlled tests.'};
-}
-
-function renderJourneyProgress(){
-  const data = calculateProgress();
-  const state = readinessState(data.overall);
-  document.querySelectorAll('[data-progress-overall]').forEach(el=>el.textContent = data.overall + '%');
-  document.querySelectorAll('[data-progress-fill]').forEach(el=>el.style.width = data.overall + '%');
-  document.querySelectorAll('[data-readiness-label]').forEach(el=>{
-    el.textContent = state.label;
-    el.className = 'readiness-label ' + state.cls;
-  });
-  const climber = document.querySelector('[data-climber]');
-  if(climber){ climber.style.left = `calc(${data.overall}% - 23px)`; climber.style.transform = `translateY(${Math.sin(data.overall/100*Math.PI*2)*-12}px)`; }
-
-  roadmapPhases.forEach((phase)=>{
-    const pct = data.phasePct[phase.id] || 0;
-    document.querySelectorAll(`[data-phase-pct="${phase.id}"]`).forEach(el=>el.textContent = pct + '%');
-    const cp = document.querySelector(`[data-checkpoint="${phase.id}"]`);
-    if(cp){ cp.classList.toggle('done', pct >= 90); cp.classList.toggle('active', pct > 0 && pct < 90); }
-  });
-
-  const catWrap = document.querySelector('[data-category-progress]');
-  if(catWrap){
-    catWrap.innerHTML = Object.entries(data.catPct)
-      .sort(([a],[b]) => (categoryWeights[b] || 0) - (categoryWeights[a] || 0))
-      .map(([cat,pct])=>{
-        const weight = categoryWeights[cat] || categoryWeights.Other;
-        return `<div class="cat-progress"><div><b>${cat}</b><div class="cat-meta"><span>Weight ${weight}</span><span>${pct}% complete</span></div><div class="cat-bar"><div class="cat-fill" style="width:${pct}%"></div></div></div><strong>${pct}%</strong></div>`;
-      }).join('');
-  }
-
-  const decision = document.querySelector('[data-next-decision]');
-  if(decision){ decision.textContent = state.decision; }
-  applyLang();
-}
-
-function initNav(){
-  document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    btn.classList.add('active');
-    const targetSection = document.getElementById(btn.dataset.tab);
-    if(targetSection){ targetSection.classList.add('active'); }
-    renderJourneyProgress();
-  }));
-}
-
-function initProgressInputs(){
-  document.querySelectorAll('select').forEach(sel=>sel.addEventListener('change',renderJourneyProgress));
-}
-
-function buildDefaultWeeks(){
-  const weeks = {};
-  for(let i=1;i<=26;i++){
-    weeks['W'+i] = {spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0,retention_signal:'',what_changed:'',decision:''};
-  }
-  weeks.W1.decision = 'Build foundation';
-  weeks.W2.decision = 'Resolve blockers';
-  weeks.W3.decision = 'Prepare tests';
-  weeks.W4.decision = 'Confirm M3 readiness';
-  return weeks;
-}
-const defaultWeeks = buildDefaultWeeks();
-
-function getGrowthData(){
-  try {
-    const saved = JSON.parse(localStorage.getItem('zv_growth_data')) || {};
-    return {...defaultWeeks, ...saved};
-  } catch(e){
-    return defaultWeeks;
-  }
-}
-
-function saveGrowthData(data){
-  localStorage.setItem('zv_growth_data', JSON.stringify(data));
-}
-
-function numberValue(value){
-  const n = Number(String(value || '').replace(',', '.'));
-  return Number.isFinite(n) ? n : 0;
-}
-
-function selectedWeek(){
-  return document.querySelector('[data-week-select]')?.value || 'W1';
-}
-
-function loadWeekForm(){
-  const data = getGrowthData();
-  const week = selectedWeek();
-  const row = data[week] || defaultWeeks[week] || {};
-  document.querySelectorAll('[data-week-field]').forEach(input=>{
-    input.value = row[input.dataset.weekField] ?? '';
-  });
-}
-
-function saveWeekForm(){
-  const data = getGrowthData();
-  const week = selectedWeek();
-  data[week] = data[week] || {};
-  document.querySelectorAll('[data-week-field]').forEach(input=>{
-    data[week][input.dataset.weekField] = input.value;
-  });
-  saveGrowthData(data);
-  renderPerformanceDashboard();
-}
-
-function calcWeeklySummary(){
-  const data = getGrowthData();
-  const rows = Object.entries(data);
-  return rows.reduce((acc,[week,row])=>{
-    acc.spend += numberValue(row.spend);
-    acc.leads += numberValue(row.leads);
-    acc.offer_requests += numberValue(row.offer_requests);
-    acc.callbacks += numberValue(row.callbacks);
-    acc.sales += numberValue(row.sales);
-    acc.upsell_revenue += numberValue(row.upsell_revenue);
-    acc.churn_risk += numberValue(row.churn_risk);
-    return acc;
-  },{spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0});
-}
-
-function renderPerformanceDashboard(){
-  const data = getGrowthData();
-  const week = selectedWeek();
-  const row = data[week] || {};
-  const total = calcWeeklySummary();
-  const cac = total.sales > 0 ? Math.round(total.spend / total.sales) : 0;
-  const cpl = total.leads > 0 ? Math.round(total.spend / total.leads) : 0;
-  const offerRate = total.leads > 0 ? Math.round((total.offer_requests / total.leads) * 100) : 0;
-  const saleRate = total.offer_requests > 0 ? Math.round((total.sales / total.offer_requests) * 100) : 0;
-
-  const values = {
-    dash_spend:'€' + total.spend,
-    dash_leads:total.leads,
-    dash_offer_requests:total.offer_requests,
-    dash_sales:total.sales,
-    dash_cac:cac ? '€' + cac : '—',
-    dash_cpl:cpl ? '€' + cpl : '—',
-    dash_upsell:'€' + total.upsell_revenue,
-    dash_offer_rate:offerRate + '%',
-    dash_sale_rate:saleRate + '%',
-    dash_week_summary:row.what_changed || 'No weekly summary added yet.',
-    dash_next_action:row.decision || 'Add weekly data to generate next action.'
-  };
-  Object.entries(values).forEach(([key,value])=>{
-    document.querySelectorAll(`[data-kpi="${key}"]`).forEach(el=>el.textContent = value);
-  });
-  renderWeeklyOverviewTable();
-}
-
-function renderWeeklyOverviewTable(){
-  const table = document.querySelector('[data-weekly-overview]');
-  if(!table) return;
-  const data = getGrowthData();
-  const rows = Object.entries(data).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W','')));
-  table.innerHTML = rows.map(([week,row])=>{
-    const spend = numberValue(row.spend);
-    const leads = numberValue(row.leads);
-    const offers = numberValue(row.offer_requests);
-    const sales = numberValue(row.sales);
-    const cac = sales ? Math.round(spend / sales) : 0;
-    const cpl = leads ? Math.round(spend / leads) : 0;
-    const offerRate = leads ? Math.round((offers / leads) * 100) : 0;
-    const saleRate = offers ? Math.round((sales / offers) * 100) : 0;
-    return `<tr><td>${week}</td><td>€${spend}</td><td>${leads}</td><td>${offers}</td><td>${row.callbacks || 0}</td><td>${sales}</td><td>€${row.upsell_revenue || 0}</td><td>${cac ? '€'+cac : '—'}</td><td>${cpl ? '€'+cpl : '—'}</td><td>${offerRate}%</td><td>${saleRate}%</td><td>${row.what_changed || ''}</td><td>${row.decision || ''}</td></tr>`;
-  }).join('');
-  renderGrowthChart();
-}
-
-function renderGrowthChart(){
-  const chart = document.querySelector('[data-growth-chart]');
-  if(!chart) return;
-  const data = getGrowthData();
-  const rows = Object.entries(data).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W','')));
-  const max = Math.max(1, ...rows.flatMap(([_,row])=>[
-    numberValue(row.spend),
-    numberValue(row.leads),
-    numberValue(row.offer_requests),
-    numberValue(row.sales),
-    numberValue(row.upsell_revenue)
-  ]));
-  chart.innerHTML = rows.map(([week,row])=>{
-    const spend = numberValue(row.spend);
-    const leads = numberValue(row.leads);
-    const offers = numberValue(row.offer_requests);
-    const sales = numberValue(row.sales);
-    const upsell = numberValue(row.upsell_revenue);
-    const h = v => Math.max(2, Math.round((v / max) * 220));
-    return `<div class="chart-week" title="${week}: spend €${spend}, leads ${leads}, offers ${offers}, sales ${sales}, upsell €${upsell}">
-      <div class="bar bar-spend" style="height:${h(spend)}px"></div>
-      <div class="bar bar-leads" style="height:${h(leads)}px"></div>
-      <div class="bar bar-offers" style="height:${h(offers)}px"></div>
-      <div class="bar bar-sales" style="height:${h(sales)}px"></div>
-      <div class="bar bar-upsell" style="height:${h(upsell)}px"></div>
-      <div class="week-label">${week}</div>
-    </div>`;
-  }).join('');
-
-  const total = calcWeeklySummary();
-  const summary = {
-    chart_total_spend:'€' + total.spend,
-    chart_total_leads:total.leads,
-    chart_total_offers:total.offer_requests,
-    chart_total_sales:total.sales,
-    chart_total_upsell:'€' + total.upsell_revenue
-  };
-  Object.entries(summary).forEach(([key,value])=>{
-    document.querySelectorAll(`[data-chart-summary="${key}"]`).forEach(el=>el.textContent = value);
-  });
-}
-
-function downloadReport(){
-  try{
-    renderPerformanceDashboard();
-    renderJourneyProgress();
-    const passwordScreen = document.getElementById('passwordScreen');
-    if(passwordScreen) passwordScreen.classList.add('hidden');
-    document.body.classList.add('printing-report');
-    window.print();
-    setTimeout(()=>document.body.classList.remove('printing-report'), 300);
-  }catch(error){
-    alert('PDF export could not start. Press Ctrl/Cmd + P and choose Save as PDF.');
-    console.error(error);
-  }
-}
-window.downloadReport = downloadReport;
-
-function initPdfButtons(){
-  document.querySelectorAll('[data-pdf-button]').forEach(btn=>{
-    btn.addEventListener('click', downloadReport);
-  });
-}
-
-function initWeeklyDataInput(){
-  const weekSelect = document.querySelector('[data-week-select]');
-  if(weekSelect){ weekSelect.addEventListener('change',()=>{loadWeekForm();renderPerformanceDashboard();}); }
-  document.querySelectorAll('[data-week-field]').forEach(input=>input.addEventListener('input',saveWeekForm));
-  loadWeekForm();
-  renderPerformanceDashboard();
-}
-
-const translations = {
-  en: {
-    'Project Tracker · Performance Marketing':'Project Tracker · Performance Marketing',
-    '01 Werkreis':'01 Work Journey','02 Gantt · M1–M2':'02 Gantt · M1–M2','03 Gantt · M3–M4':'03 Gantt · M3–M4','04 Gantt · M5–M6':'04 Gantt · M5–M6','05 Weekly Data Input':'05 Weekly Data Input','06 Performance Dashboard':'06 Performance Dashboard','07 Weekly Tracking':'07 Weekly Tracking','08 Measurement Matrix':'08 Measurement Matrix','09 Cijfers':'09 Numbers',
-    'Project tracker':'Project tracker','De reis van het werk':'The work journey','Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.':'A simple stakeholder view: where we are, what we are building, what is being tested, what is being scaled, and what is being handed over.',
-    'Fundering':'Foundation','Audit, onderzoek, positionering, tracking en basiscontent.':'Audit, research, positioning, tracking, and basic content.','Test & Leer':'Test & Learn','Klein testen, eerste paid learnings, eerste CAC-uitlezing.':'Small tests, first paid learnings, first CAC readout.','Opschalen':'Scale','Winnaars krijgen budget. Verliezers stoppen zonder discussie.':'Winners get budget. Losers stop without debate.','Consolideren':'Consolidate','Rapportage, SOPs, playbooks en overdracht.':'Reporting, SOPs, playbooks, and handover.',
-    'M1—M2 · Fundering':'M1–M2 · Foundation','Wat opgeleverd wordt':'What gets delivered','Cluster-architectuur: gedragsclusters, journey-fases, boodschap-mapping':'Cluster architecture: behavioural clusters, journey phases, message mapping','Brand voice en content-strategie':'Brand voice and content strategy','Website-fundament: positionering, hoofdpagina\'s, vertrouwens-architectuur':'Website foundation: positioning, core pages, trust architecture','Tracking-stack: GA4, GTM, Meta- en Google-pixels, conversie-events':'Tracking stack: GA4, GTM, Meta and Google pixels, conversion events','Eerste educatieve content: privacy-uitleg, connected living, monteurs-pitch':'First educational content: privacy explanation, connected living, installer pitch','Verwachting Robert en Krista:':'Expectation for Robert and Krista:','nul nieuwe klanten via campagnes deze fase. Wel: eerste upsell-tests naar bestaande base. Eerste conversies in maand 2.':'zero new customers from campaigns in this phase. Yes: first upsell tests to existing base. First conversions in month 2.',
-    'M3 · Test & Leer':'M3 · Test & Learn','Wat getest wordt':'What gets tested','Eerste betaalde campagnes: klein, leerbaar':'First paid campaigns: small and learnable','Landingspagina A/B-testen op hoofdboodschap, formulier, bewijs en prijsframe':'Landing page A/B tests on main message, form, proof, and price framing','Tweede upsell-golf, verfijnd op basis van eerste':'Second upsell wave, refined based on the first','Eerste rapportage-cyclus':'First reporting cycle','Eerste echte CAC-uitlezing':'First real CAC readout',
-    'M4—M5 · Opschalen':'M4–M5 · Scale','Wat geschaald wordt':'What gets scaled','Winnende creatieven en kanalen krijgen meer budget':'Winning creatives and channels get more budget','Verliezers worden stilgelegd zonder discussie':'Losers are stopped without debate','Pillar content publiceert, SEO start te bijdragen':'Pillar content publishes, SEO starts contributing','Testimonial-oogst en eerste casestudies':'Testimonial harvesting and first case studies','Derde upsell-golf gesegmenteerd per cluster':'Third upsell wave segmented per cluster',
-    'M6 · Consolideren':'M6 · Consolidate','Wat gesloten wordt':'What gets closed','Performance-rapport over 6 maanden, met narratieve uitleg':'Six-month performance report, with narrative explanation','SOPs en playbooks voor doorgaande uitvoering door Zo Veilig':'SOPs and playbooks for ongoing execution by Zo Veilig','Asset-bibliotheek: creatieven, content, e-mails overgedragen':'Asset library: creatives, content, emails handed over','Year-2 plan optioneel, als verlenging in beeld komt':'Year-2 plan optional, if extension comes into view',
-    'Gantt · M1–M2':'Gantt · M1–M2','Fundering · Taken & Status':'Foundation · Tasks & Status','Markeer per taak: In progress, Waiting feedback, Done. Focus: M1–M2.':'Mark each task: In progress, Waiting feedback, Done. Focus: M1–M2.','Layer':'Layer','Taak':'Task','Status':'Status','Owner / Note':'Owner / Note','In progress':'In progress','Waiting feedback':'Waiting feedback','Done':'Done','Not started':'Not started',
-    'Gantt · M3–M4':'Gantt · M3–M4','Test & Leer → Opschalen (focus)':'Test & Learn → Scale (focus)','Gantt · M5–M6':'Gantt · M5–M6','Operational Scaling → Continuous Growth System':'Operational Scaling → Continuous Growth System',
-    'Live weekly input':'Live weekly input','Weekly data input':'Weekly data input','Select a week, enter the numbers, and the Performance Dashboard updates automatically. Data is saved in this browser via localStorage for now; later this can read from Google Sheets.':'Select a week, enter the numbers, and the Performance Dashboard updates automatically. Data is saved in this browser via localStorage for now; later this can read from Google Sheets.','Select week':'Select week','Media':'Media','Spend':'Spend','Acquisition':'Acquisition','Leads':'Leads','Conversion':'Conversion','Offer requests':'Offer requests','Sales':'Sales','Assisted sales':'Assisted sales','Callbacks':'Callbacks','Expansion':'Expansion','Upsell revenue':'Upsell revenue','Retention':'Retention','Churn risk signal':'Churn risk signal','Lifecycle':'Lifecycle','Retention signal':'Retention signal','What changed this week?':'What changed this week?','Scale / Iterate / Kill decision':'Scale / Iterate / Kill decision','Download / Save as PDF':'Download / Save as PDF','Update tracking overview':'Update tracking overview','Use Download / Save as PDF, then choose “Save as PDF” in your browser print window.':'Use Download / Save as PDF, then choose “Save as PDF” in your browser print window.',
-    'Executive Dashboard':'Executive Dashboard','Are we growing profitably?':'Are we growing profitably?','Top layer answers: performance. Lower layers explain why and what to do next.':'Top layer answers: performance. Lower layers explain why and what to do next.','Growth Journey Progress':'Growth Journey Progress','Van basecamp naar schaalbaar groeisysteem':'From basecamp to scalable growth system','Deze tracker leest de status van de weekly tracking taken en vertaalt die naar voortgang.':'This tracker reads the status of weekly tracking tasks and translates it into progress.','Overall progress':'Overall progress','Next decision':'Next decision','Executive Scorecard':'Executive Scorecard','Offer rate':'Offer rate','Lifecycle Health':'Lifecycle Health','Lead → Offer conversion':'Lead → Offer conversion','Offer → Sale conversion':'Offer → Sale conversion','Callback → Sale conversion':'Callback → Sale conversion','Time to convert':'Time to convert','Time to renew':'Time to renew','Reactivation rate':'Reactivation rate','Customer Signals (Retention Engine)':'Customer Signals (Retention Engine)','Usage trend':'Usage trend','WiFi issues':'WiFi issues','Support tickets':'Support tickets','Engagement score':'Engagement score','Churn risk':'Churn risk','Upsell propensity':'Upsell propensity','Media & Creative Performance':'Media & Creative Performance','Total spend':'Total spend','Offer request rate':'Offer request rate','CTR / CVR':'CTR / CVR','Winning creatives':'Winning creatives','Losing creatives':'Losing creatives','What should we do next?':'What should we do next?','Weekly change:':'Weekly change:','Recommended action:':'Recommended action:','Operating logic:':'Operating logic:','Top = performance':'Top = performance','Middle = drivers (lifecycle + signals)':'Middle = drivers (lifecycle + signals)','Bottom = execution (media + experiments)':'Bottom = execution (media + experiments)',
-    'Interactive weekly tracking':'Interactive weekly tracking','Weekly growth tracker':'Weekly growth tracker','Update status per lever. This feeds the visual progress tracker inside the Performance Dashboard.':'Update status per lever. This feeds the visual progress tracker inside the Performance Dashboard.','Visual progress tracker':'Visual progress tracker','Growth climb · M1–M6':'Growth climb · M1–M6','Done = 100%, In progress / Waiting feedback = partial progress, Not started = 0%.':'Done = 100%, In progress / Waiting feedback = partial progress, Not started = 0%.','Overall':'Overall','Foundation':'Foundation','System readiness':'System readiness','Decision':'Decision','Progress by success lever':'Progress by success lever','Weekly levers for success':'Weekly levers for success','Week':'Week','Lever':'Lever','Action':'Action','Proof / data':'Proof / data','Decision / next step':'Decision / next step',
-    'Attribution wins':'Attribution wins','Communications Measurement Matrix':'Communications Measurement Matrix','Gebaseerd op best practice: elke communicatie-inspanning moet gekoppeld zijn aan een meetmethode en ROI-indicator.':'Based on best practice: every communication effort must be linked to a measurement method and ROI indicator.','Refresh weekly table':'Refresh weekly table','Weekly Tracking Overview':'Weekly Tracking Overview','This table pulls from the Weekly Data Input tab. It acts like your simple internal spreadsheet view.':'This table pulls from the Weekly Data Input tab. It acts like your simple internal spreadsheet view.','Offers':'Offers','Upsell':'Upsell','Offer Rate':'Offer Rate','Sale Rate':'Sale Rate','What changed':'What changed','Measurement Mix':'Measurement Mix','Objective':'Objective','Key Metrics':'Key Metrics','Measurement Methods':'Measurement Methods','ROI Indicators':'ROI Indicators','Weekly input':'Weekly input',
-    'Eerlijk over de cijfers':'Honest about the numbers','Realistische klantdoelen':'Realistic customer targets','De 1.000 in zes maanden is ambitieus voor deze categorie. Ik werk er hard aan, maar laten we afspreken op realistische cijfers. Liever onder-beloven en over-leveren dan andersom.':'1,000 customers in six months is ambitious for this category. I will work hard toward it, but let’s agree on realistic numbers. Better to under-promise and over-deliver than the other way around.','Periode':'Period','Wat we doen':'What we do','Klanten':'Customers','Waarom dit lager is dan 1.000:':'Why this is lower than 1,000:','in een nieuwe categorie kost de eerste 60 dagen aan fundering en uitleg. Pas vanaf maand 4 begint paid serieus te leveren. Liever 350 echte klanten in 6 maanden dan 1.000 onhaalbaar beloofd in een rapport.':'in a new category, the first 60 days go into foundation and explanation. Paid starts delivering seriously from month 4. Better 350 real customers in six months than 1,000 unrealistic customers promised in a report.'
-  },
-  nl: {}
-};
-
-function setLang(lang){
-  document.documentElement.setAttribute('lang', lang);
-  localStorage.setItem('zv_lang', lang);
-  applyLang();
-  renderJourneyProgress();
-  renderPerformanceDashboard();
-}
-
-function rememberOriginals(){
-  document.querySelectorAll('body *').forEach(el=>{
-    if(!el.dataset.originalText && el.childNodes.length === 1 && el.childNodes[0].nodeType === Node.TEXT_NODE){
-      const text = el.textContent.trim();
-      if(text) el.dataset.originalText = text;
-    }
-    if((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.placeholder && !el.dataset.originalPlaceholder){
-      el.dataset.originalPlaceholder = el.placeholder;
-    }
-  });
-}
-
-Object.assign(translations.nl, {
-  'Protected dashboard':'Beveiligd dashboard','Enter the project password to view this dashboard.':'Voer het projectwachtwoord in om dit dashboard te bekijken.','Unlock dashboard':'Dashboard openen','Password':'Wachtwoord','Incorrect password':'Onjuist wachtwoord',
-  'Project Tracker · Performance Marketing':'Projecttracker · Performance Marketing','01 Work Journey':'01 Werkreis','05 Weekly Data Input':'05 Wekelijkse Data Input','06 Performance Dashboard':'06 Performance Dashboard','07 Weekly Tracking':'07 Weekly Tracking','08 Measurement Matrix':'08 Meetmatrix','09 Numbers':'09 Cijfers',
-  'The work journey':'De reis van het werk','A simple stakeholder view: where we are, what we are building, what is being tested, what is being scaled, and what is being handed over.':'Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.',
-  'Foundation':'Fundering','Audit, research, positioning, tracking, and basic content.':'Audit, onderzoek, positionering, tracking en basiscontent.','Test & Learn':'Test & Leer','Small tests, first paid learnings, first CAC readout.':'Klein testen, eerste paid learnings, eerste CAC-uitlezing.','Scale':'Opschalen','Winners get budget. Losers stop without debate.':'Winnaars krijgen budget. Verliezers stoppen zonder discussie.','Consolidate':'Consolideren','Reporting, SOPs, playbooks, and handover.':'Rapportage, SOPs, playbooks en overdracht.',
-  'What gets delivered':'Wat opgeleverd wordt','What gets tested':'Wat getest wordt','What gets scaled':'Wat geschaald wordt','What gets closed':'Wat gesloten wordt',
-  'Task':'Taak','Layer':'Laag','Owner / Note':'Eigenaar / Notitie','In progress':'Bezig','Waiting feedback':'Wacht op feedback','Done':'Klaar','Not started':'Niet gestart',
-  'Cluster architecture: behavioural clusters, journey phases, message mapping':'Cluster-architectuur: gedragsclusters, journey-fases, boodschap-mapping','Brand voice and content strategy':'Brand voice en content-strategie','Website foundation: positioning, core pages, trust architecture':'Website-fundament: positionering, hoofdpagina’s, vertrouwens-architectuur',
-  'Buying model (monthly / once-off / lease + NL legal check)':'Koopmodel (maandelijks / eenmalig / lease + NL legal check)','Define conversion path: Buy Now (direct)':'Conversiepad definiëren: Buy Now (direct)','Define conversion path: Get Callback (assisted)':'Conversiepad definiëren: Get Callback (assisted)','Identify drop-off between offer → client':'Drop-off tussen offer → klant identificeren','Document full funnel (Lead → Opportunity → Quote → Sale)':'Volledige funnel documenteren (Lead → Opportunity → Quote → Sale)','Validate funnel reality vs theory':'Funnel-realiteit vs theorie valideren',
-  'Segment: usage (active vs inactive)':'Segment: gebruik (actief vs inactief)','Segment: WiFi issues (risk signal)':'Segment: WiFi-problemen (risicosignaal)','Segment: contract type (maintenance vs not)':'Segment: contracttype (onderhoud vs geen onderhoud)','Define cluster: high-value / retained':'Cluster definiëren: high-value / retained','Define cluster: at-risk (low usage / tech issues)':'Cluster definiëren: at-risk (laag gebruik / technische issues)','Define cluster: new / onboarding + map journeys':'Cluster definiëren: nieuw / onboarding + journeys mappen',
-  'Define governance model with Nick (ownership Odoo)':'Governance model met Nick definiëren (ownership Odoo)','Audit flow: Landing pages → Odoo → NewCon → Sales':'Flow auditen: landingspagina’s → Odoo → NewCon → Sales','Standardise offer creation flow (NewCon)':'Offer-creatieflow standaardiseren (NewCon)','Audit quote approval process (Krista bottleneck)':'Quote-approval proces auditen (Krista bottleneck)','Define automation rules (reduce manual approvals)':'Automatiseringsregels definiëren (minder handmatige approvals)',
-  'Define core positioning':'Kernpositionering definiëren','Create 3 concept directions':'3 conceptrichtingen maken','Define value proposition clearly':'Value proposition scherp definiëren','Build Buy vs Callback flows':'Buy vs Callback flows bouwen','Integrate trust signals (BORG, Kiwa, MBV, VCA)':'Trust signals integreren (BORG, Kiwa, MBV, VCA)','Map full user journey (landing → brochure → offer)':'Volledige user journey mappen (landing → brochure → offer)',
-  'Define canonical customer ID (Odoo ↔ website ↔ media)':'Canonical customer ID definiëren (Odoo ↔ website ↔ media)','Define event taxonomy (naming structure)':'Event taxonomy definiëren (naming structuur)','Map data sources into unified structure':'Databronnen mappen naar één structuur','Implement GA4':'GA4 implementeren','Implement GTM':'GTM implementeren','Install Meta pixel':'Meta pixel installeren','Install Google Ads pixel':'Google Ads pixel installeren','Define events: brochure_download / offer_request / callback_request / sale_completed':'Events definiëren: brochure_download / offer_request / callback_request / sale_completed','Align tracking with funnel stages (moved earlier)':'Tracking koppelen aan funnel stages (eerder geplaatst)','Map full user journey (landing → brochure → offer) (moved to M1)':'Volledige user journey mappen (landing → brochure → offer) (naar M1 verplaatst)',
-  'Define lifecycle states (Lead, Brochure, Offer, Callback, Sale, Onboarded, Active, At-risk, Renewal, Churned)':'Lifecycle states definiëren (Lead, Brochure, Offer, Callback, Sale, Onboarded, Active, At-risk, Renewal, Churned)','Define decision logic (next-best-action rules)':'Decision logic definiëren (next-best-action regels)','Onboarding flow (expectation setting)':'Onboarding flow (verwachtingsmanagement)','Usage nudges':'Usage nudges','Education flows (prevent churn)':'Educatieflows (churn voorkomen)','Upsell test (7,300 base)':'Upsell test (7.300 base)','Activation campaigns (low usage)':'Activatiecampagnes (laag gebruik)','Define content cadence':'Content cadence definiëren','Experimentation framework (hypotheses, IDs, log)':'Experimentation framework (hypotheses, IDs, log)','Creative tagging system (hook/offer/stage + naming)':'Creative tagging system (hook/offer/stage + naming)',
-  'Define brand voice':'Brand voice definiëren','Define content pillars (education / prevention / usage)':'Content pillars definiëren (educatie / preventie / gebruik)','Create asset: privacy explanation':'Asset maken: privacy-uitleg','Create asset: connected living story':'Asset maken: connected living verhaal','Create asset: monteurs credibility pitch':'Asset maken: monteurs credibility pitch',
-  'Extract from agency: campaign structure':'Uit agency halen: campagnestructuur','Extract from agency: learnings history':'Uit agency halen: learnings history','Extract from agency: creative history':'Uit agency halen: creative history','Extract from agency: targeting logic':'Uit agency halen: targeting logic','Extract from agency: CAC / CPL benchmarks':'Uit agency halen: CAC / CPL benchmarks','Audit Google Ads account structure':'Google Ads accountstructuur auditen','Audit Meta account structure':'Meta accountstructuur auditen','Review targeting, creatives, messaging + performance (CPL/CAC)':'Targeting, creatives, messaging + performance reviewen (CPL/CAC)',
-  'Define inputs: customer clusters, funnel stages, offers':'Inputs definiëren: klantclusters, funnel stages, offers','Define outputs: creative variants':'Outputs definiëren: creative varianten','Define outputs: channel allocation':'Outputs definiëren: kanaalallocatie','Define outputs: budget decision logic':'Outputs definiëren: budget decision logic',
-  'Draft Strategy Deck (narrative + phases + milestones)':'Strategy Deck opstellen (narratief + fases + milestones)','Define media budget ranges (by channel)':'Media budget ranges definiëren (per kanaal)','Allocate test budgets (M3 pilots)':'Testbudgetten alloceren (M3 pilots)','Link budget to KPIs (CAC, CPL, conversion)':'Budget koppelen aan KPI’s (CAC, CPL, conversie)',
-  'Define final offer structure (Krista)':'Definitieve offerstructuur definiëren (Krista)','Gather CAC baseline':'CAC-baseline verzamelen','Gather LTV baseline':'LTV-baseline verzamelen','Audit ad spend + performance (Woeler) + map lead sources':'Ad spend + performance auditen (Woeler) + lead sources mappen',
-  'Define hypothesis framework (segment + message + outcome)':'Hypothesis framework definiëren (segment + boodschap + outcome)','Create experiment design rules (1 variable, fixed audience, budget)':'Experiment design rules maken (1 variabele, vaste audience, budget)','Implement experiment tracking (IDs across campaigns)':'Experiment tracking implementeren (IDs over campagnes)','Build learning log (test, result, confidence, next step)':'Learning log bouwen (test, resultaat, confidence, next step)','Apply creative tagging system (hook / offer / stage)':'Creative tagging toepassen (hook / offer / stage)','Run structured experiments (by segment)':'Gestructureerde experimenten draaien (per segment)',
-  'Scale winning channels & creatives':'Winnende kanalen en creatives opschalen','Pause underperforming campaigns':'Slecht presterende campagnes pauzeren','Activate lifecycle flows at scale':'Lifecycle flows op schaal activeren','Define core metrics per layer (CAC, churn, ARPU)':'Core metrics per laag definiëren (CAC, churn, ARPU)','Set up cohort tracking (by source + segment)':'Cohort tracking opzetten (per bron + segment)','Introduce holdout groups (lifecycle tests)':'Holdout groups introduceren (lifecycle tests)','Start incremental measurement (vs control)':'Incremental measurement starten (vs control)','Introduce retention, LTV tracking':'Retention en LTV tracking introduceren',
-  'Implement profit-based budget allocation':'Profit-based budgetallocatie implementeren','Budget shifts based on LTV, retention, marginal ROI':'Budgetshifts op basis van LTV, retention, marginal ROI','Run weekly growth loop (review → insight → decision → execution)':'Wekelijkse growth loop draaien (review → insight → besluit → uitvoering)','Introduce incremental measurement (holdouts, overlap, contribution)':'Incremental measurement introduceren (holdouts, overlap, contribution)','Deploy lifecycle automation at scale (onboarding, activation, at-risk, renewal)':'Lifecycle automation op schaal uitrollen (onboarding, activatie, at-risk, renewal)','Implement decision rules (next-best-action logic)':'Decision rules implementeren (next-best-action logic)','Introduce AI-assisted execution (creative, segments, briefs)':'AI-assisted execution introduceren (creative, segmenten, briefs)','Enable controlled automation (AI suggests → you validate → system executes)':'Controlled automation mogelijk maken (AI stelt voor → jij valideert → systeem voert uit)',
-  'Own experiment roadmap (monthly planning)':'Experiment roadmap ownen (maandplanning)','Manage test → learn → scale loop':'Test → learn → scale loop managen','Kill losers fast / expand winners structurally':'Verliezers snel stoppen / winnaars structureel uitbreiden','Maintain learning system (logs, insights, segment performance)':'Learning system onderhouden (logs, inzichten, segment performance)','Scale winning patterns (hook × offer × segment × stage)':'Winnende patronen opschalen (hook × offer × segment × stage)','Maintain creative library (tagged & reusable)':'Creative library onderhouden (tagged & reusable)','Run continuous creative iteration cycles':'Doorlopende creative iteratiecycli draaien','Build profit dashboard (retention, upsell, CAC payback)':'Profit dashboard bouwen (retention, upsell, CAC payback)','Track lifecycle performance (activation, engagement, churn reduction)':'Lifecycle performance tracken (activatie, engagement, churnreductie)','Introduce predictive signals (churn detection, upsell triggers)':'Predictive signals introduceren (churn detectie, upsell triggers)','Validate retention vs acquisition ROI':'Retention vs acquisition ROI valideren','Build cohort + lifecycle performance tracking (full funnel)':'Cohort + lifecycle performance tracking bouwen (full funnel)','Document system logic (segments → triggers → outcomes)':'Systeemlogica documenteren (segmenten → triggers → outcomes)','Create execution playbooks (campaigns, lifecycle flows)':'Execution playbooks maken (campagnes, lifecycle flows)','Build experiment knowledge base':'Experiment knowledge base bouwen','Define governance model (Zo Veilig vs strategy oversight)':'Governance model definiëren (Zo Veilig vs strategisch toezicht)',
-  'Keep building foundation: focus on access, tracking, and lifecycle states.':'Blijf de fundering bouwen: focus op toegang, tracking en lifecycle states.','Start tightening tests: resolve feedback blockers and prepare M3 experiments.':'Maak de tests scherper: los feedback blockers op en bereid M3-experimenten voor.','Ready for controlled testing: define budget gates and experiment IDs.':'Klaar voor gecontroleerd testen: definieer budget gates en experiment IDs.'
-});
-
-function translateText(text, lang){
-  if(lang === 'nl') return translations.nl[text] || text;
-  return translations.en[text] || text;
-}
-
-function applyLang(){
-  const lang = localStorage.getItem('zv_lang') || 'nl';
-  document.documentElement.setAttribute('lang', lang);
-
-  // TEXT NODES
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-    acceptNode(node){
-      const parent = node.parentElement;
-      if(!parent || ['SCRIPT','STYLE','INPUT','TEXTAREA','SELECT','OPTION'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
-      const text = node.nodeValue.trim();
-      if(!text) return NodeFilter.FILTER_REJECT;
-      if(!parent.dataset.originalTextFull) parent.dataset.originalTextFull = text;
-      return NodeFilter.FILTER_ACCEPT;
-    }
-  });
-
-  const nodes=[];
-  while(walker.nextNode()) nodes.push(walker.currentNode);
-
-  nodes.forEach(node=>{
-    const original = node.parentElement.dataset.originalTextFull || node.nodeValue.trim();
-    node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), translateText(original, lang));
-  });
-
-  // PLACEHOLDERS
-  document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(el=>{
-    if(!el.dataset.originalPlaceholder) el.dataset.originalPlaceholder = el.placeholder;
-    el.placeholder = translateText(el.dataset.originalPlaceholder, lang);
-  });
-
-  // BUTTONS + NAV (important fix)
-  document.querySelectorAll('button').forEach(btn=>{
-    const text = btn.textContent.trim();
-    if(!btn.dataset.originalText) btn.dataset.originalText = text;
-    btn.textContent = translateText(btn.dataset.originalText, lang);
-  });
-
-  // SELECT OPTIONS (missing before)
-  document.querySelectorAll('option').forEach(opt=>{
-    const text = opt.textContent.trim();
-    if(!opt.dataset.originalText) opt.dataset.originalText = text;
-    opt.textContent = translateText(opt.dataset.originalText, lang);
-  });
-}
-
-function initPersistentControls(){
-  document.querySelectorAll('input, textarea, select').forEach((el,index)=>{
-    if(el.hasAttribute('data-week-field') || el.hasAttribute('data-week-select')) return;
-    const key = 'zv_control_' + (el.name || el.id || index);
-    if(localStorage.getItem(key) !== null) el.value = localStorage.getItem(key);
-    el.addEventListener('input',()=>localStorage.setItem(key, el.value));
-    el.addEventListener('change',()=>localStorage.setItem(key, el.value));
-  });
-}
-
-function unlockDashboard(){
-  const input = document.getElementById('passwordInput');
-  const error = document.getElementById('passwordError');
-  if(input && input.value === 'zoveilig2026'){
-    sessionStorage.setItem('zv_unlocked','true');
-    document.getElementById('passwordScreen')?.classList.add('hidden');
-  } else if(error){
-    error.textContent = 'Incorrect password';
-  }
-}
-window.unlockDashboard = unlockDashboard;
-
-function initPasswordGate(){
-  if(sessionStorage.getItem('zv_unlocked') === 'true'){
-    document.getElementById('passwordScreen')?.classList.add('hidden');
-  }
-}
-
-window.downloadReport = downloadReport;
-window.renderPerformanceDashboard = renderPerformanceDashboard;
-window.setLang = setLang;
-
-document.addEventListener('DOMContentLoaded',()=>{
-  initPasswordGate();
-  initPersistentControls();
-  applyLang();
-  initNav();
-  initProgressInputs();
-  initWeeklyDataInput();
-  initPdfButtons();
-  renderJourneyProgress();
-  renderPerformanceDashboard();
-});
-</script>
 </head>
 <body>
-<div id="passwordScreen" class="password-screen">
-  <div class="password-card">
-    <div class="tag">Protected dashboard</div>
-    <h1>Zo Veilig Project Tracker</h1>
-    <p class="small">Enter the project password to view this dashboard.</p>
-    <input id="passwordInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') unlockDashboard()">
-    <button class="btn" type="button" style="margin-top:12px" onclick="unlockDashboard()">Unlock dashboard</button>
-    <div id="passwordError" class="password-error"></div>
-  </div>
-</div>
-<div class="app">
-<aside class="side">
-  <div style="margin-bottom:12px;display:flex;gap:6px">
-    <button class="btn" style="padding:6px 10px;font-size:11px" onclick="setLang('nl')">NL</button>
-    <button class="btn secondary" style="padding:6px 10px;font-size:11px" onclick="setLang('en')">EN</button>
-  </div>
-  <div class="brand">Zo Veilig</div>
-  <div class="subtitle">Project Tracker · Performance Marketing</div>
-  <div class="nav">
-    <button class="active" data-tab="journey">01 Werkreis</button>
-    <button data-tab="gantt">02 Gantt · M1–M2</button>
-    <button data-tab="gantt_m3m4">03 Gantt · M3–M4</button>
-    <button data-tab="gantt_m5m6">04 Gantt · M5–M6</button>
-    <button data-tab="data_input">05 Weekly Data Input</button>
-    <button data-tab="dashboard">06 Performance Dashboard</button>
-    <button data-tab="weekly">07 Weekly Tracking</button>
-    <button data-tab="matrix">08 Measurement Matrix</button>
-    <button data-tab="targets">09 Cijfers</button>
-  </div>
-</aside>
-
+<div id="passwordScreen" class="password-screen"><div class="password-card"><div class="tag">Protected dashboard</div><h1>Zo Veilig Project Tracker</h1><p class="small">Enter the project password to view this dashboard.</p><input id="passwordInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') unlockDashboard()"><button class="btn" type="button" style="margin-top:12px" onclick="unlockDashboard()">Unlock dashboard</button><div id="passwordError" class="password-error"></div></div></div>
+<div class="app"><aside class="side"><div style="margin-bottom:12px;display:flex;gap:6px"><button class="btn" style="padding:6px 10px;font-size:11px" onclick="setLang('nl')">NL</button><button class="btn secondary" style="padding:6px 10px;font-size:11px" onclick="setLang('en')">EN</button></div><div class="brand">Zo Veilig</div><div class="subtitle">Project Tracker · Performance Marketing</div><div class="nav"><button class="active" data-tab="journey">01 Werkreis</button><button data-tab="gantt">02 Gantt · M1–M2</button><button data-tab="gantt_m3m4">03 Gantt · M3–M4</button><button data-tab="gantt_m5m6">04 Gantt · M5–M6</button><button data-tab="data_input">05 Weekly Data Input</button><button data-tab="dashboard">06 Performance Dashboard</button><button data-tab="weekly">07 Weekly Tracking</button><button data-tab="matrix">08 Measurement Matrix</button><button data-tab="raci">09 RACI / Approvals</button><button data-tab="targets">10 Cijfers</button></div></aside>
 <main class="main">
+<section id="journey" class="section active"><div class="card"><div class="tag">Project tracker</div><h1>De reis van het werk</h1><p class="small">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p></div><div class="timeline"><div class="phase active"><div class="tag">M1—M2</div><h2>Fundering</h2><p class="small">Audit, onderzoek, positionering, tracking en basiscontent.</p></div><div class="phase"><div class="tag">M3</div><h2>Test & Leer</h2><p class="small">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div><div class="phase"><div class="tag">M4—M5</div><h2>Opschalen</h2><p class="small">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div><div class="phase"><div class="tag">M6</div><h2>Consolideren</h2><p class="small">Rapportage, SOPs, playbooks en overdracht.</p></div></div><div class="month-row"><div class="month">M1</div><div class="month">M2</div><div class="month">M3</div><div class="month">M4</div><div class="month">M5</div><div class="month">M6</div></div></section>
+<section id="gantt" class="section"><div class="card"><div class="tag">Gantt · M1–M2</div><h1>Fundering · Taken & Status</h1><p class="small">Markeer per taak: Not started, In progress, Waiting feedback, Done.</p></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M1</th><th>M2</th><th>Status</th><th>Owner / Note</th></tr><tbody id="ganttM1M2"></tbody></table></div></div></section>
+<section id="gantt_m3m4" class="section"><div class="card"><div class="tag">Gantt · M3–M4</div><h1>Test & Leer → Opschalen</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M3</th><th>M4</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM3M4"></tbody></table></div></div></section>
+<section id="gantt_m5m6" class="section"><div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM5M6"></tbody></table></div></div></section>
+<section id="sheet_sync" class="section"><div class="card"><div class="tag">Google Sheets Sync</div><h1>Connect Google Sheet</h1><p class="small">This dashboard can read live data from your Google Sheet via Apps Script. If the request is blocked, the dashboard will stay usable and show a clear error.</p></div><div class="card"><h2>Step 1 · Apps Script Web App URL</h2><input data-sheet-endpoint value="https://script.google.com/macros/s/AKfycbxzUdABkdUiyQLmbtY02yRZsef1NiLxYy5U_TiF1C2d-KJRUnsrnBC71DSk_M2Pvnr73w/exec" placeholder="https://script.google.com/macros/s/XXXXX/exec"><div class="action-row"><button class="btn" type="button" onclick="saveSheetEndpoint()">Save Sheet URL</button><button class="btn secondary" type="button" onclick="loadFromGoogleSheet()">Load from Sheet</button><button class="btn secondary" type="button" onclick="testSheetConnection()">Test connection</button><button class="btn secondary" type="button" onclick="openJsonpTestUrl()">Open JSONP test URL</button></div><div class="sync-status" data-sync-status>Not connected yet.</div></div><div class="grid cols2"><div class="card"><h2>Expected Sheet Tabs</h2><ul><li><b>Weekly_Data</b> updates Performance Dashboard + Measurement Matrix</li><li><b>RACI_Status</b> updates Approval & Development Flow</li></ul></div><div class="card"><h2>Fix for Failed to fetch</h2><p class="small">If normal fetch is blocked by Google/CORS, this dashboard falls back to JSONP. Your Apps Script must support <b>?callback=...</b>. Click <b>Open JSONP test URL</b>. If the page does not show something like <b>testCallback({ ... })</b>, the Apps Script has not been redeployed with the JSONP script.</p></div></div><div class="card"><h2>Weekly_Data columns</h2><div class="codebox">Week | Spend | Leads | Offer_Requests | Callbacks | Sales | Upsell_Revenue | Churn_Risk | Retention_Signal | What_Changed | Decision</div></div><div class="card"><h2>RACI_Status columns</h2><div class="codebox">Work_Item | Current_Owner | Due_Date | Status | Next_Action</div></div>
+  <div class="card"><h2>Fallback · Paste JSON from Sheet</h2><p class="small">If Google blocks the live connection, paste JSON here and click Apply. This keeps the dashboard usable while we sort the endpoint.</p><textarea data-json-import placeholder='{"weekly":[{"Week":"W1","Spend":0,"Leads":0}],"raci":[{"Work_Item":"Tracking implementation (GTM + website scripts)","Current_Owner":"Nick"}]}'></textarea><div class="action-row"><button class="btn" type="button" onclick="applyPastedJson()">Apply pasted JSON</button></div></div>
+  <div class="card"><h2>Apps Script code with JSONP support</h2><div class="codebox">function doGet(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const data = {
+    weekly: getSheetData(ss, 'Weekly_Data'),
+    raci: getSheetData(ss, 'RACI_Status')
+  };
 
-<section id="journey" class="section active">
-  <div class="card">
-    <div class="tag">Project tracker</div>
-    <h1>De reis van het werk</h1>
-    <p class="small">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p>
-  </div>
+  const json = JSON.stringify(data);
+  const callback = e.parameter.callback;
 
-  <div class="timeline">
-    <div class="phase active"><div class="tag">M1—M2</div><h2>Fundering</h2><p class="small">Audit, onderzoek, positionering, tracking en basiscontent.</p></div>
-    <div class="phase"><div class="tag">M3</div><h2>Test & Leer</h2><p class="small">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div>
-    <div class="phase"><div class="tag">M4—M5</div><h2>Opschalen</h2><p class="small">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div>
-    <div class="phase"><div class="tag">M6</div><h2>Consolideren</h2><p class="small">Rapportage, SOPs, playbooks en overdracht.</p></div>
-  </div>
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + '(' + json + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
 
-  <div class="month-row"><div class="month">M1</div><div class="month">M2</div><div class="month">M3</div><div class="month">M4</div><div class="month">M5</div><div class="month">M6</div></div>
+  return ContentService
+    .createTextOutput(json)
+    .setMimeType(ContentService.MimeType.JSON);
+}
 
-  <div class="grid cols2" style="margin-top:16px">
-    <div class="card"><div class="tag">M1—M2 · Fundering</div><h3>Wat opgeleverd wordt</h3><ul><li>Cluster-architectuur: gedragsclusters, journey-fases, boodschap-mapping</li><li>Brand voice en content-strategie</li><li>Website-fundament: positionering, hoofdpagina's, vertrouwens-architectuur</li><li>Tracking-stack: GA4, GTM, Meta- en Google-pixels, conversie-events</li><li>Eerste educatieve content: privacy-uitleg, connected living, monteurs-pitch</li></ul><div class="note"><b>Verwachting Robert en Krista:</b> nul nieuwe klanten via campagnes deze fase. Wel: eerste upsell-tests naar bestaande base. Eerste conversies in maand 2.</div></div>
-    <div class="card"><div class="tag">M3 · Test & Leer</div><h3>Wat getest wordt</h3><ul><li>Eerste betaalde campagnes: klein, leerbaar</li><li>Landingspagina A/B-testen op hoofdboodschap, formulier, bewijs en prijsframe</li><li>Tweede upsell-golf, verfijnd op basis van eerste</li><li>Eerste rapportage-cyclus</li><li>Eerste echte CAC-uitlezing</li></ul></div>
-    <div class="card"><div class="tag">M4—M5 · Opschalen</div><h3>Wat geschaald wordt</h3><ul><li>Winnende creatieven en kanalen krijgen meer budget</li><li>Verliezers worden stilgelegd zonder discussie</li><li>Pillar content publiceert, SEO start te bijdragen</li><li>Testimonial-oogst en eerste casestudies</li><li>Derde upsell-golf gesegmenteerd per cluster</li></ul></div>
-    <div class="card"><div class="tag">M6 · Consolideren</div><h3>Wat gesloten wordt</h3><ul><li>Performance-rapport over 6 maanden, met narratieve uitleg</li><li>SOPs en playbooks voor doorgaande uitvoering door Zo Veilig</li><li>Asset-bibliotheek: creatieven, content, e-mails overgedragen</li><li>Year-2 plan optioneel, als verlenging in beeld komt</li></ul></div>
-  </div>
-</section>
+function getSheetData(ss, sheetName) {
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return [];
+  const values = sheet.getDataRange().getValues();
+  const headers = values.shift();
+  return values
+    .filter(row => row.some(cell => cell !== ''))
+    .map(row => {
+      const obj = {};
+      headers.forEach((header, index) => obj[header] = row[index]);
+      return obj;
+    });
+}</div></div></section>
+<section id="data_input" class="section"><div class="card"><div class="tag">Live weekly input</div><h1>Weekly data input</h1><p class="small">Add weekly media and conversion numbers here. The Performance Dashboard updates automatically.</p></div>
+<div class="card"><div class="tag">Media spend growth</div><h2>Spend trend</h2><p class="small">Small live view of weekly spend across W1–W26.</p><div class="spend-spark" data-spend-spark></div></div><div class="card"><h2>Select week</h2><select data-week-select></select></div><div class="grid cols4"><div class="card"><div class="tag">Media</div><label class="small">Spend</label><input data-week-field="spend" type="number" placeholder="0"></div><div class="card"><div class="tag">Acquisition</div><label class="small">Leads</label><input data-week-field="leads" type="number" placeholder="0"></div><div class="card"><div class="tag">Conversion</div><label class="small">Offer requests</label><input data-week-field="offer_requests" type="number" placeholder="0"></div><div class="card"><div class="tag">Sales</div><label class="small">Sales</label><input data-week-field="sales" type="number" placeholder="0"></div></div><div class="grid cols4"><div class="card"><div class="tag">Assisted sales</div><label class="small">Callbacks</label><input data-week-field="callbacks" type="number" placeholder="0"></div><div class="card"><div class="tag">Expansion</div><label class="small">Upsell revenue</label><input data-week-field="upsell_revenue" type="number" placeholder="0"></div><div class="card"><div class="tag">Retention</div><label class="small">Churn risk signal</label><input data-week-field="churn_risk" type="number" placeholder="0"></div><div class="card"><div class="tag">Lifecycle</div><label class="small">Retention signal</label><input data-week-field="retention_signal" placeholder="e.g. WiFi complaints down"></div></div><div class="grid cols2"><div class="card"><h2>What changed this week?</h2><textarea data-week-field="what_changed" placeholder="Short weekly summary"></textarea></div><div class="card"><h2>Scale / Iterate / Kill decision</h2><textarea data-week-field="decision" placeholder="What should happen next?"></textarea></div></div></section>
+<section id="dashboard" class="section"><div class="card"><div class="tag">Executive Dashboard</div><h1>Are we growing profitably?</h1><p class="small">Top layer answers performance. Lower layers explain why and what to do next.</p></div><div class="card progress-hero"><div class="tag">Growth Journey Progress</div><h2>Van basecamp naar schaalbaar groeisysteem</h2><p class="small">Connected to Gantt task status and weekly tracking status.</p><div class="grid cols4"><div><div class="small">Weighted progress</div><div class="score" data-progress-overall>0%</div></div><div><div class="small">M1</div><strong data-phase-pct="m1">0%</strong></div><div><div class="small">M2</div><strong data-phase-pct="m2">0%</strong></div><div><div class="small">Scale readiness</div><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div></div><div class="climb-track"><div class="climb-line"></div><div class="climber" data-climber>⛰️</div><div class="checkpoint" data-checkpoint="m1" style="left:5%"><div class="checkpoint-dot">M1</div><small>Basecamp</small></div><div class="checkpoint" data-checkpoint="m2" style="left:23%"><div class="checkpoint-dot">M2</div><small>Foundation</small></div><div class="checkpoint" data-checkpoint="m3" style="left:41%"><div class="checkpoint-dot">M3</div><small>Test</small></div><div class="checkpoint" data-checkpoint="m4" style="left:59%"><div class="checkpoint-dot">M4</div><small>Scale</small></div><div class="checkpoint" data-checkpoint="m5" style="left:77%"><div class="checkpoint-dot">M5</div><small>Ops</small></div><div class="checkpoint" data-checkpoint="m6" style="left:95%"><div class="checkpoint-dot">M6</div><small>Summit</small></div></div><div class="cat-bar"><div class="cat-fill" data-progress-fill></div></div>
+<div class="manual-progress">
+  <div class="small"><b>Manual weekly progress override</b> · use this during stakeholder check-ins if you want to show a practical progress read beyond task status.</div>
+  <input type="range" min="0" max="100" value="-1" data-manual-progress oninput="setManualProgress(this.value)">
+  <div class="small">Manual view: <b data-manual-progress-label>Auto from Gantt</b></div>
+  <button class="btn secondary" type="button" style="margin-top:8px" onclick="clearManualProgress()">Use Gantt progress</button>
+</div></div><div class="card"><div class="tag">Weekly Growth Chart</div><h2>Performance trend per week</h2><div class="chart-summary"><div class="mini-metric"><span class="small">Spend</span><strong data-chart-summary="chart_total_spend">€0</strong></div><div class="mini-metric"><span class="small">Leads</span><strong data-chart-summary="chart_total_leads">0</strong></div><div class="mini-metric"><span class="small">Offers</span><strong data-chart-summary="chart_total_offers">0</strong></div><div class="mini-metric"><span class="small">Sales</span><strong data-chart-summary="chart_total_sales">0</strong></div><div class="mini-metric"><span class="small">Upsell</span><strong data-chart-summary="chart_total_upsell">€0</strong></div></div><div class="chart-wrap"><div class="growth-chart"><div class="chart-grid"></div><div class="chart-bars" data-growth-chart></div></div></div><div class="chart-legend"><span class="legend-item"><span class="legend-dot bar-spend"></span>Spend</span><span class="legend-item"><span class="legend-dot bar-leads"></span>Leads</span><span class="legend-item"><span class="legend-dot bar-offers"></span>Offers</span><span class="legend-item"><span class="legend-dot bar-sales"></span>Sales</span><span class="legend-item"><span class="legend-dot bar-upsell"></span>Upsell</span></div></div><div class="card"><h2>Executive Scorecard</h2><div class="grid cols4"><div><div class="small">Spend</div><div class="score" data-kpi="dash_spend">€0</div></div><div><div class="small">Leads</div><div class="score" data-kpi="dash_leads">0</div></div><div><div class="small">Offer requests</div><div class="score" data-kpi="dash_offer_requests">0</div></div><div><div class="small">Sales</div><div class="score" data-kpi="dash_sales">0</div></div><div><div class="small">CAC</div><div class="score" data-kpi="dash_cac">—</div></div><div><div class="small">CPL</div><div class="score" data-kpi="dash_cpl">—</div></div><div><div class="small">Upsell revenue</div><div class="score" data-kpi="dash_upsell">€0</div></div><div><div class="small">Offer rate</div><div class="score" data-kpi="dash_offer_rate">0%</div></div></div></div><div class="card"><h2>What should we do next?</h2><div class="note"><b>Weekly change:</b><br><span data-kpi="dash_week_summary">No weekly summary added yet.</span></div><br><div class="note"><b>Recommended action:</b><br><span data-kpi="dash_next_action">Add weekly data to generate next action.</span></div></div></section>
+<section id="weekly" class="section"><div class="card"><div class="tag">Interactive weekly tracking</div><h1>Weekly growth tracker</h1><p class="small">Update status per lever. This feeds progress scoring.</p></div><div class="card"><h2>Progress by success lever</h2><div data-category-progress></div></div></section>
+<section id="matrix" class="section"><div class="card"><div class="tag">Attribution wins</div><h1>Communications Measurement Matrix</h1><p class="small">A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.</p></div><div class="card"><h2>Weekly Tracking Overview</h2><div class="table-scroll"><table class="table"><tr><th>Week</th><th>Spend</th><th>Leads</th><th>Offers</th><th>Callbacks</th><th>Sales</th><th>Upsell</th><th>CAC</th><th>CPL</th><th>Offer Rate</th><th>Sale Rate</th><th>What changed</th><th>Decision</th></tr><tbody data-weekly-overview></tbody></table></div></div></section>
+<section id="raci" class="section"><div class="card"><div class="tag">RACI · Approval & Development Flow</div><h1>Approval & Development Flow</h1><p class="small">Veronica = Growth Lead. Krista = Operations Approval. Robert = Budget / Finance / Business Approval. Nick = Development / Technical / Odoo. Robi = Project Coordinator.</p></div><div class="grid cols4"><div class="card"><div class="tag">With Nick</div><div class="score" data-raci-kpi="raci_nick">0</div></div><div class="card"><div class="tag">With Krista</div><div class="score" data-raci-kpi="raci_krista">0</div></div><div class="card"><div class="tag">With Robert</div><div class="score" data-raci-kpi="raci_robert">0</div></div><div class="card"><div class="tag">With Robi</div><div class="score" data-raci-kpi="raci_robi">0</div></div></div><div class="grid cols4"><div class="card"><div class="tag">With Veronica</div><div class="score" data-raci-kpi="raci_veronica">0</div></div><div class="card"><div class="tag">Overdue</div><div class="score" data-raci-kpi="raci_overdue">0</div></div><div class="card"><div class="tag">Due soon</div><div class="score" data-raci-kpi="raci_due_soon">0</div></div><div class="card"><div class="tag">Approval queue</div><div class="score" data-raci-kpi="raci_approvals">0</div></div></div><div class="card"><h2>Approval tracker</h2><div class="table-scroll"><table class="table"><tr><th>Phase</th><th>Work item</th><th>Responsible</th><th>Accountable</th><th>Consulted</th><th>Informed</th><th>Current owner</th><th>Due date</th><th>Status</th><th>Next action</th></tr><tbody id="raciBody"></tbody></table></div></div><div class="card note"><b>Notifications:</b> Static HTML can flag overdue items visually. Email/push alerts require Google Apps Script triggers later.</div></section>
+<section id="targets" class="section"><div class="card"><div class="tag">Eerlijk over de cijfers</div><h1>Realistische klantdoelen</h1><p>De 1.000 in zes maanden is ambitieus. Beter onder-beloven en over-leveren.</p></div><div class="card"><table class="table"><tr><th>Periode</th><th>Wat we doen</th><th>Klanten</th></tr><tr><td>Q1 · M1—M3</td><td>Fundering. Eerste tests vanaf maand 3.</td><td>25–80</td></tr><tr><td>Q2 · M4—M6</td><td>Opschalen wat werkt.</td><td>200–400</td></tr><tr><td>6 maanden realistisch</td><td>Bandbreedte 250 tot 500.</td><td>250–500</td></tr></table></div></section>
+</main></div>
+<script>
+const roadmapPhases=[{id:'m1'},{id:'m2'},{id:'m3'},{id:'m4'},{id:'m5'},{id:'m6'}];
+const categoryWeights={'Tracking & Data':25,'Lifecycle & Retention':20,'Commercial & Conversion':20,'Customer & Signal':15,'Google Ads & Meta Audit':10,'Research & Foundation':10,'Systems & Governance':10,'Experimentation':12,'Measurement':12,'SEO':12,'Optimization':15,'Automation':15,Other:5};
+const DEFAULT_SHEET_ENDPOINT='https://script.google.com/macros/s/AKfycbxzUdABkdUiyQLmbtY02yRZsef1NiLxYy5U_TiF1C2d-KJRUnsrnBC71DSk_M2Pvnr73w/exec';
+const ganttM1M2=[['Research & Foundation',['Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)','Brand voice en content-strategie','Website-fundament (positionering, hoofdpagina’s, vertrouwens-architectuur)']],['Commercial & Conversion',['Buying model (monthly / once-off / lease + NL legal check)','Define conversion path: Buy Now','Define conversion path: Get Callback','Identify drop-off between offer → client','Document full funnel: Lead → Opportunity → Quote → Sale','Validate funnel reality vs theory']],['Customer & Signal',['Segment: usage active vs inactive','Segment: WiFi issues risk signal','Segment: contract type','Define high-value / retained cluster','Define at-risk cluster','Define new / onboarding journey']],['Systems & Governance',['Define governance model with Nick (Odoo)','Audit flow: Landing pages → Odoo → NewCon → Sales','Standardise NewCon offer creation flow','Audit quote approval process','Define automation rules']],['Tracking & Data',['Define canonical customer ID','Define event taxonomy','Implement GA4 + GTM','Install Meta + Google pixels','Define events: brochure_download, offer_request, callback_request, sale_completed','Align tracking with funnel stages']],['Google Ads & Meta Audit',['Extract campaign structure from agency','Extract learnings + creative history','Extract targeting logic','Extract CAC / CPL benchmarks','Audit Google Ads + Meta account structure']]];
+const ganttM3M4=[['Experimentation',['Define hypothesis framework','Create experiment design rules','Implement experiment tracking IDs','Build learning log','Apply creative tagging','Run structured experiments']],['Measurement',['Define CAC, churn, ARPU','Set up cohort tracking','Introduce holdout groups','Start incremental measurement','Introduce retention and LTV tracking']],['SEO',['Business discovery session','Initial tech audit','Full tech audit','Dev implementation phase','Post audit implementation checks','Keyword research','Dashboard creation / reporting','Metadata optimisation','Metadata implementation','Competitor analysis','Content analysis','Gap analysis','Backlink profile analysis','Backlink detox + disavow','Strategy roadmap months 4–6','Monthly reporting & client calls']]];
+const ganttM5M6=[['Optimization',['Implement profit-based budget allocation','Budget shifts based on LTV / retention / ROI','Run weekly growth loop','Introduce incremental measurement']],['Automation',['Deploy lifecycle automation at scale','Implement decision rules','Introduce AI-assisted execution','Controlled automation']]];
+const raciItems=[['M1','Meta + Google audit → approval','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M1','Tracking architecture plan (GA4 + GTM)','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Tracking implementation (GTM + website scripts)','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M1','Website structure / conversion logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Offer structure / pricing flow','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M1','Lead handling flow / Odoo logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Website development','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M2','Tracking QA / data validation','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Lifecycle flows: onboarding + upsell','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Creative direction / brand voice','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M3','Campaign launch: Meta + Google','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M3','Experiment framework / tracking IDs','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','Landing page testing','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','SEO strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M4','SEO implementation','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M4','Campaign scaling decisions','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M4','Content rollout: SEO + brand','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Krista'],['M5','Automation rollout: CRM + lifecycle','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M5','Budget allocation logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert'],['M5','Weekly growth loop','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Reporting & insights','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M6','Playbooks / documentation','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Year 2 strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert']];
+function unlockDashboard(){const input=document.getElementById('passwordInput'),error=document.getElementById('passwordError');if(input&&input.value==='zoveilig2026'){sessionStorage.setItem('zv_unlocked','true');document.getElementById('passwordScreen')?.classList.add('hidden')}else if(error){error.textContent='Incorrect password'}}window.unlockDashboard=unlockDashboard;
+function initPasswordGate(){if(sessionStorage.getItem('zv_unlocked')==='true')document.getElementById('passwordScreen')?.classList.add('hidden')}
+function setLang(lang){localStorage.setItem('zv_lang',lang);document.documentElement.lang=lang}window.setLang=setLang;
+function buildDefaultWeeks(){const weeks={};for(let i=1;i<=26;i++)weeks['W'+i]={spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0,retention_signal:'',what_changed:'',decision:''};return weeks}const defaultWeeks=buildDefaultWeeks();
+function getGrowthData(){try{return {...defaultWeeks,...(JSON.parse(localStorage.getItem('zv_growth_data'))||{})}}catch(e){return defaultWeeks}}
+function saveGrowthData(data){localStorage.setItem('zv_growth_data',JSON.stringify(data))}
+function numberValue(v){const n=Number(String(v||'').replace(',','.'));return Number.isFinite(n)?n:0}
+function selectedWeek(){return document.querySelector('[data-week-select]')?.value||'W1'}
+function statusWeight(value){const v=String(value||'').toLowerCase();if(v.includes('done')||v.includes('klaar'))return 1;if(v.includes('waiting')||v.includes('feedback'))return .4;if(v.includes('progress'))return .6;return 0}
+function statusSelect(){return '<select><option selected>Not started</option><option>In progress</option><option>Waiting feedback</option><option>Done</option></select>'}
+function renderGanttTable(targetId,groups,a,b){
+  const body=document.getElementById(targetId);
+  if(!body)return;
+  body.innerHTML=groups.map(([layer,tasks])=>tasks.map((task,i)=>{
+    const noteField='<td><input placeholder="Progress note / dependency"></td>';
+    return `<tr>${i===0?`<td rowspan="${tasks.length}"><b>${layer}</b></td>`:''}<td>${task}</td><td>■</td><td>${i%2?'■':''}</td><td>${statusSelect()}</td>${noteField}</tr>`;
+  }).join('')).join('')
+}
+function inferPhase(row){if(row.dataset.phase)return row.dataset.phase;if(row.closest('#gantt_m3m4'))return row.children[2]?.textContent.trim()?'m3':'m4';if(row.closest('#gantt_m5m6'))return row.children[2]?.textContent.trim()?'m5':'m6';if(row.closest('#gantt'))return row.children[2]?.textContent.trim()?'m1':'m2';return'm1'}
+function inferCategory(row){if(row.dataset.category)return row.dataset.category;const first=row.querySelector('td');if(first&&first.rowSpan>1)return first.textContent.trim();let prev=row.previousElementSibling;while(prev){const cell=prev.querySelector('td');if(cell&&cell.rowSpan>1)return cell.textContent.trim();prev=prev.previousElementSibling}return'Other'}
+function getTrackedRows(){return [...document.querySelectorAll('[data-track-row]'),...document.querySelectorAll('#gantt tr,#gantt_m3m4 tr,#gantt_m5m6 tr')].filter(r=>r.querySelector('select'))}
+function calculateProgress(){const rows=getTrackedRows();let score=0,total=0;const phaseTotals={m1:0,m2:0,m3:0,m4:0,m5:0,m6:0},phaseScores={m1:0,m2:0,m3:0,m4:0,m5:0,m6:0},catTotals={},catScores={};rows.forEach(row=>{const status=row.querySelector('select')?.value||'',s=statusWeight(status),phase=inferPhase(row),cat=inferCategory(row),w=categoryWeights[cat]||categoryWeights.Other;score+=s*w;total+=w;phaseTotals[phase]+=w;phaseScores[phase]+=s*w;catTotals[cat]=(catTotals[cat]||0)+w;catScores[cat]=(catScores[cat]||0)+s*w});const overall=total?Math.round(score/total*100):0,phasePct={},catPct={};Object.keys(phaseTotals).forEach(k=>phasePct[k]=phaseTotals[k]?Math.round(phaseScores[k]/phaseTotals[k]*100):0);Object.keys(catTotals).forEach(k=>catPct[k]=Math.round(catScores[k]/catTotals[k]*100));return{overall,phasePct,catPct}}
+function readinessState(score){if(score<35)return{label:'Foundation risk',cls:'readiness-risk'};if(score<70)return{label:'System forming',cls:'readiness-forming'};return{label:'Ready to scale',cls:'readiness-ready'}}
+function effectiveProgress(autoProgress){const manual=localStorage.getItem('zv_manual_progress');if(manual===null||manual==='')return autoProgress;const n=Number(manual);return Number.isFinite(n)?n:autoProgress}
+function setManualProgress(value){localStorage.setItem('zv_manual_progress',value);renderJourneyProgress()}window.setManualProgress=setManualProgress;
+function clearManualProgress(){localStorage.removeItem('zv_manual_progress');const slider=document.querySelector('[data-manual-progress]');if(slider)slider.value=0;renderJourneyProgress()}window.clearManualProgress=clearManualProgress;
+function renderJourneyProgress(){const data=calculateProgress(),displayProgress=effectiveProgress(data.overall),state=readinessState(displayProgress);document.querySelectorAll('[data-progress-overall]').forEach(el=>el.textContent=displayProgress+'%');document.querySelectorAll('[data-progress-fill]').forEach(el=>el.style.width=displayProgress+'%');document.querySelectorAll('[data-manual-progress-label]').forEach(el=>el.textContent=localStorage.getItem('zv_manual_progress')===null?'Auto from Gantt':displayProgress+'% manual view');const manualSlider=document.querySelector('[data-manual-progress]');if(manualSlider&&localStorage.getItem('zv_manual_progress')!==null)manualSlider.value=displayProgress;document.querySelectorAll('[data-readiness-label]').forEach(el=>{el.textContent=state.label;el.className='readiness-label '+state.cls});const climber=document.querySelector('[data-climber]');if(climber)climber.style.left=`calc(${displayProgress}% - 23px)`;roadmapPhases.forEach(p=>{const pct=data.phasePct[p.id]||0;document.querySelectorAll(`[data-phase-pct="${p.id}"]`).forEach(el=>el.textContent=pct+'%');const cp=document.querySelector(`[data-checkpoint="${p.id}"]`);if(cp){cp.classList.toggle('done',pct>=90);cp.classList.toggle('active',pct>0&&pct<90)}});const catWrap=document.querySelector('[data-category-progress]');if(catWrap)catWrap.innerHTML=Object.entries(data.catPct).sort(([x],[y])=>(categoryWeights[y]||0)-(categoryWeights[x]||0)).map(([cat,pct])=>`<div class="cat-progress"><div><b>${cat}</b><div class="cat-meta"><span>Weight ${categoryWeights[cat]||categoryWeights.Other}</span><span>${pct}% complete</span></div><div class="cat-bar"><div class="cat-fill" style="width:${pct}%"></div></div></div><strong>${pct}%</strong></div>`).join('')}
+function calcWeeklySummary(){return Object.values(getGrowthData()).reduce((a,r)=>{a.spend+=numberValue(r.spend);a.leads+=numberValue(r.leads);a.offer_requests+=numberValue(r.offer_requests);a.callbacks+=numberValue(r.callbacks);a.sales+=numberValue(r.sales);a.upsell_revenue+=numberValue(r.upsell_revenue);return a},{spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0})}
+function renderPerformanceDashboard(){const data=getGrowthData(),row=data[selectedWeek()]||{},t=calcWeeklySummary(),cac=t.sales?Math.round(t.spend/t.sales):0,cpl=t.leads?Math.round(t.spend/t.leads):0,offerRate=t.leads?Math.round(t.offer_requests/t.leads*100):0;const values={dash_spend:'€'+t.spend,dash_leads:t.leads,dash_offer_requests:t.offer_requests,dash_sales:t.sales,dash_cac:cac?'€'+cac:'—',dash_cpl:cpl?'€'+cpl:'—',dash_upsell:'€'+t.upsell_revenue,dash_offer_rate:offerRate+'%',dash_week_summary:row.what_changed||'No weekly summary added yet.',dash_next_action:row.decision||'Add weekly data to generate next action.'};Object.entries(values).forEach(([k,v])=>document.querySelectorAll(`[data-kpi="${k}"]`).forEach(el=>el.textContent=v));renderWeeklyOverviewTable()}
+function renderWeeklyOverviewTable(){const body=document.querySelector('[data-weekly-overview]');if(!body)return;body.innerHTML=Object.entries(getGrowthData()).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W',''))).map(([week,r])=>{const spend=numberValue(r.spend),leads=numberValue(r.leads),offers=numberValue(r.offer_requests),sales=numberValue(r.sales),cac=sales?Math.round(spend/sales):0,cpl=leads?Math.round(spend/leads):0,or=leads?Math.round(offers/leads*100):0,sr=offers?Math.round(sales/offers*100):0;return`<tr><td>${week}</td><td>€${spend}</td><td>${leads}</td><td>${offers}</td><td>${r.callbacks||0}</td><td>${sales}</td><td>€${r.upsell_revenue||0}</td><td>${cac?'€'+cac:'—'}</td><td>${cpl?'€'+cpl:'—'}</td><td>${or}%</td><td>${sr}%</td><td>${r.what_changed||''}</td><td>${r.decision||''}</td></tr>`}).join('');renderGrowthChart()}
+function renderSpendSpark(rows){const spark=document.querySelector('[data-spend-spark]');if(!spark)return;const max=Math.max(1,...rows.map(([_,r])=>numberValue(r.spend)));spark.innerHTML=rows.map(([week,r])=>`<span title="${week}: €${numberValue(r.spend)}" style="height:${Math.max(4,Math.round(numberValue(r.spend)/max*95))}px"></span>`).join('')}
+function renderGrowthChart(){const chart=document.querySelector('[data-growth-chart]');if(!chart)return;const rows=Object.entries(getGrowthData()).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W','')));renderSpendSpark(rows);const max=Math.max(1,...rows.flatMap(([_,r])=>[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)]));chart.innerHTML=rows.map(([week,r])=>{const vals=[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)],h=v=>Math.max(2,Math.round(v/max*220));return`<div class="chart-week" title="${week}"><div class="bar bar-spend" style="height:${h(vals[0])}px"></div><div class="bar bar-leads" style="height:${h(vals[1])}px"></div><div class="bar bar-offers" style="height:${h(vals[2])}px"></div><div class="bar bar-sales" style="height:${h(vals[3])}px"></div><div class="bar bar-upsell" style="height:${h(vals[4])}px"></div><div class="week-label">${week}</div></div>`}).join('');const total=calcWeeklySummary();const summary={chart_total_spend:'€'+total.spend,chart_total_leads:total.leads,chart_total_offers:total.offer_requests,chart_total_sales:total.sales,chart_total_upsell:'€'+total.upsell_revenue};Object.entries(summary).forEach(([k,v])=>document.querySelectorAll(`[data-chart-summary="${k}"]`).forEach(el=>el.textContent=v))}
+function initWeekSelect(){const sel=document.querySelector('[data-week-select]');if(!sel)return;sel.innerHTML=Array.from({length:26},(_,i)=>`<option value="W${i+1}">W${i+1}</option>`).join('')}
+function loadWeekForm(){const row=getGrowthData()[selectedWeek()]||{};document.querySelectorAll('[data-week-field]').forEach(input=>input.value=row[input.dataset.weekField]??'')}
+function saveWeekForm(){const data=getGrowthData(),week=selectedWeek();data[week]=data[week]||{};document.querySelectorAll('[data-week-field]').forEach(input=>data[week][input.dataset.weekField]=input.value);saveGrowthData(data);renderPerformanceDashboard()}
+        
+function initWeeklyDataInput(){initWeekSelect();document.querySelector('[data-week-select]')?.addEventListener('change',()=>{loadWeekForm();renderPerformanceDashboard()});document.querySelectorAll('[data-week-field]').forEach(input=>input.addEventListener('input',saveWeekForm));loadWeekForm()}
+function daysUntil(dateString){if(!dateString)return null;const today=new Date();today.setHours(0,0,0,0);const due=new Date(dateString+'T00:00:00');if(Number.isNaN(due.getTime()))return null;return Math.ceil((due-today)/(1000*60*60*24))}
+function renderRaciTable(){const body=document.getElementById('raciBody');if(!body)return;body.innerHTML=raciItems.map(([phase,item,r,a,c,i,owner])=>`<tr data-raci-row><td>${phase}</td><td>${item}</td><td>${r}</td><td>${a}</td><td>${c}</td><td>${i}</td><td><select data-raci-owner><option${owner==='Veronica'?' selected':''}>Veronica</option><option${owner==='Krista'?' selected':''}>Krista</option><option${owner==='Robert'?' selected':''}>Robert</option><option${owner==='Nick'?' selected':''}>Nick</option><option${owner==='Robi'?' selected':''}>Robi</option><option>Robert & Krista</option></select></td><td><input data-raci-due type="date"></td><td><select data-raci-status><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input placeholder="Next action"></td></tr>`).join('')}
+function getRaciRows(){return [...document.querySelectorAll('[data-raci-row]')]}
+function renderRaciOverview(){
+  let nick=0,krista=0,robert=0,veronica=0,robi=0,approvals=0,overdue=0,dueSoon=0;
+  getRaciRows().forEach(row=>{
+    const owner=row.querySelector('[data-raci-owner]')?.value||'';
+    const status=row.querySelector('[data-raci-status]')?.value||'';
+    const due=row.querySelector('[data-raci-due]')?.value||'';
+    const accountable=row.children[3]?.textContent||''; // Accountable column
+    const days=daysUntil(due);
 
-<section id="gantt" class="section">
-  <div class="card">
-    <div class="tag">Gantt · M1–M2</div>
-    <h1>Fundering · Taken & Status</h1>
-    <p class="small">Markeer per taak: In progress, Waiting feedback, Done. Focus: M1–M2.</p>
-  </div>
+    row.classList.remove('overdue-row','due-soon-row');
 
-  <div class="card">
-    <table class="table">
-      <tr>
-        <th>Layer</th>
-        <th>Taak</th>
-        <th>M1</th>
-        <th>M2</th>
-        <th>Status</th>
-        <th>Owner / Note</th>
-      </tr>
+    // ownership counts
+    if(owner.includes('Nick'))nick++;
+    if(owner.includes('Veronica'))veronica++;
+    if(owner.includes('Robi'))robi++;
 
-      <!-- 0. Research & Foundation (explicit) -->
-      <tr><td rowspan="3"><b>Research & Foundation</b></td>
-        <td>Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)</td>
-        <td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td>
-        <td><input placeholder=""></td></tr>
-      <tr>
-        <td>Brand voice en content-strategie</td>
-        <td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td>
-        <td><input></td></tr>
-      <tr>
-        <td>Website-fundament (positionering, hoofdpagina's, vertrouwens-architectuur)</td>
-        <td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td>
-        <td><input></td></tr>
+    // 👇 Krista logic FIX
+    // count if:
+    // 1. currently with Krista
+    // 2. OR requires Krista approval (Accountable includes Krista)
+    if(owner.includes('Krista') || accountable.includes('Krista')){
+      krista++;
+      approvals++;
+    }
 
-      <!-- 1. Commercial & Conversion -->
-      <tr><td rowspan="6"><b>Commercial & Conversion</b></td>
-        <td>Buying model (monthly / once-off / lease + NL legal check)</td>
-        <td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td>
-        <td><input></td></tr>
-      <tr><td>Define conversion path: Buy Now (direct)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define conversion path: Get Callback (assisted)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Identify drop-off between offer → client</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Document full funnel (Lead → Opportunity → Quote → Sale)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Validate funnel reality vs theory</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    // 👇 Robert approval logic
+    if(owner.includes('Robert') || accountable.includes('Robert')){
+      robert++;
+      approvals++;
+    }
 
-      <!-- 2. Customer & Signal Clustering -->
-      <tr><td rowspan="6"><b>Customer & Signal</b></td>
-        <td>Segment: usage (active vs inactive)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Segment: WiFi issues (risk signal)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Segment: contract type (maintenance vs not)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define cluster: high-value / retained</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define cluster: at-risk (low usage / tech issues)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define cluster: new / onboarding + map journeys</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    // deadlines
+    if(status!=='Done'&&days!==null&&days<0){
+      overdue++;
+      row.classList.add('overdue-row');
+    }else if(status!=='Done'&&days!==null&&days<=3){
+      dueSoon++;
+      row.classList.add('due-soon-row');
+    }
+  });
 
-      <!-- 3. Systems & Governance -->
-      <tr><td rowspan="5"><b>Systems & Governance</b></td>
-        <td>Define governance model with Nick (ownership Odoo)</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Audit flow: Landing pages → Odoo → NewCon → Sales</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Standardise offer creation flow (NewCon)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Audit quote approval process (Krista bottleneck)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define automation rules (reduce manual approvals)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+  const vals={
+    raci_nick:nick,
+    raci_krista:krista,
+    raci_robert:robert,
+    raci_veronica:veronica,
+    raci_robi:robi,
+    raci_approvals:approvals,
+    raci_overdue:overdue,
+    raci_due_soon:dueSoon
+  };
 
-      <!-- 4. Website & Trust -->
-      <tr><td rowspan="6"><b>Website & Trust</b></td>
-        <td>Define core positioning</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Create 3 concept directions</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define value proposition clearly</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Build Buy vs Callback flows</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Integrate trust signals (BORG, Kiwa, MBV, VCA)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Map full user journey (landing → brochure → offer)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+  Object.entries(vals).forEach(([k,v])=>
+    document.querySelectorAll(`[data-raci-kpi="${k}"]`).forEach(el=>el.textContent=v)
+  );
+}
+function initRaci(){renderRaciTable();document.querySelectorAll('[data-raci-row] input,[data-raci-row] select').forEach(el=>{el.addEventListener('input',renderRaciOverview);el.addEventListener('change',renderRaciOverview)});renderRaciOverview()}
+function setSyncStatus(message,type=''){const el=document.querySelector('[data-sync-status]');if(!el)return;el.textContent=message;el.className='sync-status '+(type?'sync-'+type:'')}
+function saveSheetEndpoint(){const input=document.querySelector('[data-sheet-endpoint]');if(input){localStorage.setItem('zv_sheet_endpoint',input.value.trim());setSyncStatus('Sheet URL saved locally. Click Load from Sheet to sync.','ok')}}window.saveSheetEndpoint=saveSheetEndpoint;
+function initSheetSync(){const input=document.querySelector('[data-sheet-endpoint]');if(input)input.value=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT}
+function normalizeSheetKey(value){return String(value||'').trim().toLowerCase().replaceAll(' ','_')}
+function applyWeeklySheetRows(rows){const data=getGrowthData();rows.forEach(item=>{const week=item.Week||item.week;if(!week)return;data[week]=data[week]||{};data[week].spend=item.Spend||item.spend||0;data[week].leads=item.Leads||item.leads||0;data[week].offer_requests=item.Offer_Requests||item.offer_requests||item.Offers||0;data[week].callbacks=item.Callbacks||0;data[week].sales=item.Sales||0;data[week].upsell_revenue=item.Upsell_Revenue||item.Upsell||0;data[week].churn_risk=item.Churn_Risk||0;data[week].retention_signal=item.Retention_Signal||'';data[week].what_changed=item.What_Changed||'';data[week].decision=item.Decision||''});saveGrowthData(data)}
+function applyRaciSheetRows(rows){const dash=getRaciRows();rows.forEach(item=>{const workItem=item.Work_Item||item.work_item||item['Work item'];if(!workItem)return;const target=dash.find(row=>normalizeSheetKey(row.children[1]?.textContent)===normalizeSheetKey(workItem));if(!target)return;const owner=item.Current_Owner||item.Owner,status=item.Status,due=item.Due_Date||item.Due,next=item.Next_Action||item.Next;const ownerField=target.querySelector('[data-raci-owner]'),statusField=target.querySelector('[data-raci-status]'),dueField=target.querySelector('[data-raci-due]'),nextField=target.querySelector('td:last-child input');if(owner&&ownerField)ownerField.value=owner;if(status&&statusField)statusField.value=status;if(due&&dueField)dueField.value=String(due).slice(0,10);if(next&&nextField)nextField.value=next});renderRaciOverview()}
+function fetchSheetJsonp(endpoint){
+  return new Promise((resolve)=>{
+    const callbackName = 'zvSheetCallback_' + Date.now();
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const script = document.createElement('script');
+    let finished = false;
 
-      <!-- 5. Tracking & Data -->
-      <tr><td rowspan="10"><b>Tracking & Data</b></td>
-        <td>Define canonical customer ID (Odoo ↔ website ↔ media)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define event taxonomy (naming structure)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Map data sources into unified structure</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Implement GA4</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Implement GTM</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Install Meta pixel</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Install Google Ads pixel</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define events: brochure_download / offer_request / callback_request / sale_completed</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Align tracking with funnel stages (moved earlier)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Map full user journey (landing → brochure → offer) (moved to M1)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    window[callbackName] = function(data){
+      finished = true;
+      cleanup();
+      resolve({ok:true,data});
+    };
 
-      <!-- 6. Lifecycle -->
-      <tr><td rowspan="10"><b>Lifecycle & Retention</b></td>
-        <td>Define lifecycle states (Lead, Brochure, Offer, Callback, Sale, Onboarded, Active, At-risk, Renewal, Churned)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define decision logic (next-best-action rules)</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Onboarding flow (expectation setting)</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Usage nudges</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Education flows (prevent churn)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Upsell test (7,300 base)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Activation campaigns (low usage)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define content cadence</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Experimentation framework (hypotheses, IDs, log)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Creative tagging system (hook/offer/stage + naming)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    function cleanup(){
+      delete window[callbackName];
+      script.remove();
+    }
 
-      <!-- 7. Content & Brand -->
-      <tr><td rowspan="5"><b>Content & Brand</b></td>
-        <td>Define brand voice</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define content pillars (education / prevention / usage)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Create asset: privacy explanation</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Create asset: connected living story</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Create asset: monteurs credibility pitch</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    script.onerror = function(){
+      if(finished) return;
+      cleanup();
+      resolve({ok:false,error:'JSONP fallback failed. Make sure Apps Script supports ?callback=... and is deployed as Anyone with the link.'});
+    };
 
-      <!-- 8. Google Ads & Meta Audit -->
-      <tr><td rowspan="8"><b>Google Ads & Meta Audit</b></td>
-        <td>Extract from agency: campaign structure</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input placeholder="Woeler / access"></td></tr>
-      <tr><td>Extract from agency: learnings history</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Extract from agency: creative history</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Extract from agency: targeting logic</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Extract from agency: CAC / CPL benchmarks</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Audit Google Ads account structure</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Audit Meta account structure</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Review targeting, creatives, messaging + performance (CPL/CAC)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    script.src = endpoint + separator + 'callback=' + callbackName + '&t=' + Date.now();
+    document.body.appendChild(script);
 
-      <!-- AI-ready media system (lean, M3 prep) -->
-      <tr><td rowspan="4"><b>AI-ready Media System</b></td>
-        <td>Define inputs: customer clusters, funnel stages, offers</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input placeholder="low prio"></td></tr>
-      <tr><td>Define outputs: creative variants</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define outputs: channel allocation</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define outputs: budget decision logic</td><td></td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+    setTimeout(()=>{
+      if(finished) return;
+      cleanup();
+      resolve({ok:false,error:'JSONP fallback timed out. Check Apps Script deployment and callback support.'});
+    },8000);
+  });
+}
 
-      <!-- 9. Strategy & Budget -->
-      <tr><td rowspan="4"><b>Strategy & Budget</b></td>
-        <td>Draft Strategy Deck (narrative + phases + milestones)</td><td>■</td><td>■</td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Define media budget ranges (by channel)</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Allocate test budgets (M3 pilots)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Link budget to KPIs (CAC, CPL, conversion)</td><td></td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+async function fetchSheetPayload(endpoint){
+  if(!endpoint) return {ok:false,error:'No Apps Script URL provided.'};
+  const url = endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now();
+  try{
+    const response = await fetch(url,{method:'GET',cache:'no-store',redirect:'follow'});
+    if(!response.ok) return fetchSheetJsonp(endpoint);
+    const json = await response.json();
+    return {ok:true,data:json};
+  }catch(error){
+    return fetchSheetJsonp(endpoint);
+  }
+}
+function applySheetPayload(payload){
+  if(payload.weekly) applyWeeklySheetRows(payload.weekly);
+  if(payload.raci) applyRaciSheetRows(payload.raci);
+  loadWeekForm();
+  renderPerformanceDashboard();
+  renderJourneyProgress();
+  setSyncStatus('Data applied. Dashboard updated.','ok');
+}
 
-      <!-- 10. Commercial Inputs -->
-      <tr><td rowspan="4"><b>Commercial Inputs</b></td>
-        <td>Define final offer structure (Krista)</td><td>■</td><td></td>
-        <td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Gather CAC baseline</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Gather LTV baseline</td><td>■</td><td></td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr><td>Audit ad spend + performance (Woeler) + map lead sources</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
+async function loadFromGoogleSheet(){
+  const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;
+  setSyncStatus('Loading sheet data...');
+  const result=await fetchSheetPayload(endpoint);
+  if(!result.ok){
+    setSyncStatus(result.error+' Use the Paste JSON fallback below for now.','error');
+    return;
+  }
+  applySheetPayload(result.data||{});
+}
+window.loadFromGoogleSheet=loadFromGoogleSheet;
 
-    </table>
-  </div>
-</section>
-
-<section id="gantt_m3m4" class="section">
-  <div class="card"><div class="tag">Gantt · M3–M4</div><h1>Test & Leer → Opschalen (focus)</h1></div>
-  <div class="card">
-    <table class="table">
-      <tr><th>Layer</th><th>Taak</th><th>M3</th><th>M4</th><th>Status</th></tr>
-
-      <!-- Experimentation -->
-      <tr><td rowspan="6"><b>Experimentation</b></td>
-        <td>Define hypothesis framework (segment + message + outcome)</td><td>■</td><td></td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Create experiment design rules (1 variable, fixed audience, budget)</td><td>■</td><td></td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Implement experiment tracking (IDs across campaigns)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Build learning log (test, result, confidence, next step)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Apply creative tagging system (hook / offer / stage)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Run structured experiments (by segment)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Media Scaling -->
-      <tr><td rowspan="2"><b>Media</b></td>
-        <td>Scale winning channels & creatives</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Pause underperforming campaigns</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Lifecycle -->
-      <tr><td rowspan="1"><b>Lifecycle</b></td>
-        <td>Activate lifecycle flows at scale</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Measurement -->
-      <tr><td rowspan="5"><b>Measurement</b></td>
-        <td>Define core metrics per layer (CAC, churn, ARPU)</td><td>■</td><td></td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Set up cohort tracking (by source + segment)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Introduce holdout groups (lifecycle tests)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Start incremental measurement (vs control)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Introduce retention, LTV tracking</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-    </table>
-  </div>
-</section>
-
-<section id="gantt_m5m6" class="section">
-  <div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div>
-  <div class="card">
-    <table class="table">
-      <tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th></tr>
-
-      <!-- Optimization -->
-      <tr><td rowspan="4"><b>Optimization</b></td>
-        <td>Implement profit-based budget allocation</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Budget shifts based on LTV, retention, marginal ROI</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Run weekly growth loop (review → insight → decision → execution)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Introduce incremental measurement (holdouts, overlap, contribution)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Automation -->
-      <tr><td rowspan="4"><b>Automation</b></td>
-        <td>Deploy lifecycle automation at scale (onboarding, activation, at-risk, renewal)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Implement decision rules (next-best-action logic)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Introduce AI-assisted execution (creative, segments, briefs)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Enable controlled automation (AI suggests → you validate → system executes)</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Growth Operations -->
-      <tr><td rowspan="4"><b>Growth Operations</b></td>
-        <td>Own experiment roadmap (monthly planning)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Manage test → learn → scale loop</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Kill losers fast / expand winners structurally</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Maintain learning system (logs, insights, segment performance)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Creative & Media -->
-      <tr><td rowspan="3"><b>Creative & Media</b></td>
-        <td>Scale winning patterns (hook × offer × segment × stage)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Maintain creative library (tagged & reusable)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Run continuous creative iteration cycles</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Measurement & Intelligence -->
-      <tr><td rowspan="5"><b>Measurement & Intelligence</b></td>
-        <td>Build profit dashboard (retention, upsell, CAC payback)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Track lifecycle performance (activation, engagement, churn reduction)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Introduce predictive signals (churn detection, upsell triggers)</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Validate retention vs acquisition ROI</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Build cohort + lifecycle performance tracking (full funnel)</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-      <!-- Documentation -->
-      <tr><td rowspan="4"><b>Documentation</b></td>
-        <td>Document system logic (segments → triggers → outcomes)</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Create execution playbooks (campaigns, lifecycle flows)</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Build experiment knowledge base</td><td>■</td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-      <tr><td>Define governance model (Zo Veilig vs strategy oversight)</td><td></td><td>■</td><td><select><option>In progress</option><option>Done</option></select></td></tr>
-
-    </table>
-  </div>
-</section>
-
-<section id="data_input" class="section">
-  <div class="card no-print">
-    <div class="action-row">
-      <button class="btn" type="button" data-pdf-button>Download / Save as PDF</button>
-      <button class="btn secondary" type="button" onclick="renderPerformanceDashboard()">Update tracking overview</button>
-    </div>
-    <p class="small">Use Download / Save as PDF, then choose “Save as PDF” in your browser print window.</p>
-  </div>
-
-  <div class="card">
-    <div class="tag">Live weekly input</div>
-    <h1>Weekly data input</h1>
-    <p class="small">Select a week, enter the numbers, and the Performance Dashboard updates automatically. Data is saved in this browser via localStorage for now; later this can read from Google Sheets.</p>
-  </div>
-
-  <div class="card">
-    <h2>Select week</h2>
-    <select data-week-select>
-      <option value="W1">W1</option><option value="W2">W2</option><option value="W3">W3</option><option value="W4">W4</option><option value="W5">W5</option><option value="W6">W6</option><option value="W7">W7</option><option value="W8">W8</option><option value="W9">W9</option><option value="W10">W10</option><option value="W11">W11</option><option value="W12">W12</option><option value="W13">W13</option><option value="W14">W14</option><option value="W15">W15</option><option value="W16">W16</option><option value="W17">W17</option><option value="W18">W18</option><option value="W19">W19</option><option value="W20">W20</option><option value="W21">W21</option><option value="W22">W22</option><option value="W23">W23</option><option value="W24">W24</option><option value="W25">W25</option><option value="W26">W26</option>
-    </select>
-  </div>
-
-  <div class="grid cols4">
-    <div class="card"><div class="tag">Media</div><label class="small">Spend</label><input data-week-field="spend" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Acquisition</div><label class="small">Leads</label><input data-week-field="leads" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Conversion</div><label class="small">Offer requests</label><input data-week-field="offer_requests" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Sales</div><label class="small">Sales</label><input data-week-field="sales" type="number" placeholder="0"></div>
-  </div>
-
-  <div class="grid cols4">
-    <div class="card"><div class="tag">Assisted sales</div><label class="small">Callbacks</label><input data-week-field="callbacks" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Expansion</div><label class="small">Upsell revenue</label><input data-week-field="upsell_revenue" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Retention</div><label class="small">Churn risk signal</label><input data-week-field="churn_risk" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Lifecycle</div><label class="small">Retention signal</label><input data-week-field="retention_signal" placeholder="e.g. WiFi complaints down"></div>
-  </div>
-
-  <div class="grid cols2">
-    <div class="card"><h2>What changed this week?</h2><textarea data-week-field="what_changed" placeholder="Short weekly summary"></textarea></div>
-    <div class="card"><h2>Scale / Iterate / Kill decision</h2><textarea data-week-field="decision" placeholder="What should happen next?"></textarea></div>
-  </div>
-</section>
-
-<section id="dashboard" class="section">
-  
-
-  <div class="card">
-    <div class="tag">Executive Dashboard</div>
-    <h1>Are we growing profitably?</h1>
-    <p class="small">Top layer answers: performance. Lower layers explain why and what to do next.</p>
-  </div>
-
-  <div class="card progress-hero">
-    <div class="tag">Growth Journey Progress</div>
-    <h2>Van basecamp naar schaalbaar groeisysteem</h2>
-    <p class="small">Deze tracker leest de status van de weekly tracking taken en vertaalt die naar voortgang.</p>
-    <div class="grid cols4">
-      <div><div class="small">Weighted progress</div><div class="score" data-progress-overall>0%</div></div>
-      <div><div class="small">M1</div><strong data-phase-pct="m1">0%</strong></div>
-      <div><div class="small">M2</div><strong data-phase-pct="m2">0%</strong></div>
-      <div><div class="small">Scale readiness</div><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div>
-    </div>
-    <div class="climb-track">
-      <div class="climb-line"></div>
-      <div class="climber" data-climber title="Progress indicator">⛰️</div>
-      <div class="checkpoint" data-checkpoint="m1" style="left:5%"><div class="checkpoint-dot">M1</div><small>Basecamp</small></div>
-      <div class="checkpoint" data-checkpoint="m2" style="left:23%"><div class="checkpoint-dot">M2</div><small>Foundation</small></div>
-      <div class="checkpoint" data-checkpoint="m3" style="left:41%"><div class="checkpoint-dot">M3</div><small>Test</small></div>
-      <div class="checkpoint" data-checkpoint="m4" style="left:59%"><div class="checkpoint-dot">M4</div><small>Scale</small></div>
-      <div class="checkpoint" data-checkpoint="m5" style="left:77%"><div class="checkpoint-dot">M5</div><small>Ops</small></div>
-      <div class="checkpoint" data-checkpoint="m6" style="left:95%"><div class="checkpoint-dot">M6</div><small>Summit</small></div>
-    </div>
-    <div class="cat-bar"><div class="cat-fill" data-progress-fill></div></div>
-  </div>
-
-  <!-- Growth Chart -->
-  <div class="card">
-    <div class="tag">Weekly Growth Chart</div>
-    <h2>Performance trend per week</h2>
-    <p class="small">This chart updates from Weekly Data Input and shows the trend across W1–W26.</p>
-    <div class="chart-summary">
-      <div class="mini-metric"><span class="small">Spend</span><strong data-chart-summary="chart_total_spend">€0</strong></div>
-      <div class="mini-metric"><span class="small">Leads</span><strong data-chart-summary="chart_total_leads">0</strong></div>
-      <div class="mini-metric"><span class="small">Offers</span><strong data-chart-summary="chart_total_offers">0</strong></div>
-      <div class="mini-metric"><span class="small">Sales</span><strong data-chart-summary="chart_total_sales">0</strong></div>
-      <div class="mini-metric"><span class="small">Upsell</span><strong data-chart-summary="chart_total_upsell">€0</strong></div>
-    </div>
-    <div class="chart-wrap">
-      <div class="growth-chart">
-        <div class="chart-grid"></div>
-        <div class="chart-bars" data-growth-chart></div>
-      </div>
-    </div>
-    <div class="chart-legend">
-      <span class="legend-item"><span class="legend-dot bar-spend"></span>Spend</span>
-      <span class="legend-item"><span class="legend-dot bar-leads"></span>Leads</span>
-      <span class="legend-item"><span class="legend-dot bar-offers"></span>Offers</span>
-      <span class="legend-item"><span class="legend-dot bar-sales"></span>Sales</span>
-      <span class="legend-item"><span class="legend-dot bar-upsell"></span>Upsell</span>
-    </div>
-  </div>
-
-  <!-- Executive Scorecard -->
-  <div class="card">
-    <h2>Executive Scorecard</h2>
-    <div class="grid cols4">
-      <div><div class="small">Spend</div><div class="score" data-kpi="dash_spend">€0</div></div>
-      <div><div class="small">Leads</div><div class="score" data-kpi="dash_leads">0</div></div>
-      <div><div class="small">Offer requests</div><div class="score" data-kpi="dash_offer_requests">0</div></div>
-      <div><div class="small">Sales</div><div class="score" data-kpi="dash_sales">0</div></div>
-      <div><div class="small">CAC</div><div class="score" data-kpi="dash_cac">—</div></div>
-      <div><div class="small">CPL</div><div class="score" data-kpi="dash_cpl">—</div></div>
-      <div><div class="small">Upsell revenue</div><div class="score" data-kpi="dash_upsell">€0</div></div>
-      <div><div class="small">Offer rate</div><div class="score" data-kpi="dash_offer_rate">0%</div></div>
-    </div>
-  </div>
-
-  <!-- Lifecycle Health -->
-  <div class="card">
-    <h2>Lifecycle Health</h2>
-    <div class="grid cols3">
-      <div><div class="small">Lead → Offer conversion</div><div class="score" data-kpi="dash_offer_rate">0%</div></div>
-      <div><div class="small">Offer → Sale conversion</div><div class="score" data-kpi="dash_sale_rate">0%</div></div>
-      <div><div class="small">Callback → Sale conversion</div><input></div>
-      <div><div class="small">Time to convert</div><input></div>
-      <div><div class="small">Time to renew</div><input></div>
-      <div><div class="small">Reactivation rate</div><input></div>
-    </div>
-  </div>
-
-  <!-- Customer Signals -->
-  <div class="card">
-    <h2>Customer Signals (Retention Engine)</h2>
-    <div class="grid cols3">
-      <div><div class="small">Usage trend</div><input></div>
-      <div><div class="small">WiFi issues</div><input></div>
-      <div><div class="small">Support tickets</div><input></div>
-      <div><div class="small">Engagement score</div><input></div>
-      <div><div class="small">Churn risk</div><input></div>
-      <div><div class="small">Upsell propensity</div><input></div>
-    </div>
-  </div>
-
-  <!-- Media & Creative -->
-  <div class="card">
-    <h2>Media & Creative Performance</h2>
-    <div class="grid cols3">
-      <div><div class="small">Total spend</div><div class="score" data-kpi="dash_spend">€0</div></div>
-      <div><div class="small">CAC</div><div class="score" data-kpi="dash_cac">—</div></div>
-      <div><div class="small">Offer request rate</div><div class="score" data-kpi="dash_offer_rate">0%</div></div>
-      <div><div class="small">CTR / CVR</div><input></div>
-      <div><div class="small">Winning creatives</div><input></div>
-      <div><div class="small">Losing creatives</div><input></div>
-    </div>
-  </div>
-
-  <!-- What to do next -->
-  <div class="card">
-    <h2>What should we do next?</h2>
-    <div class="note"><b>Weekly change:</b><br><span data-kpi="dash_week_summary">No weekly summary added yet.</span></div>
-    <br>
-    <div class="note"><b>Recommended action:</b><br><span data-kpi="dash_next_action">Add weekly data to generate next action.</span></div>
-  </div>
-
-  <div class="card note">
-    <b>Operating logic:</b><br>
-    Top = performance<br>
-    Middle = drivers (lifecycle + signals)<br>
-    Bottom = execution (media + experiments)
-  </div>
-
-</section>
-
-<section id="weekly" class="section">
-  <div class="card">
-    <div class="tag">Interactive weekly tracking</div>
-    <h1>Weekly growth tracker</h1>
-    <p class="small">Update status per lever. This feeds the visual progress tracker inside the Performance Dashboard.</p>
-  </div>
-
-  <div class="card progress-hero">
-    <div class="tag">Visual progress tracker</div>
-    <h2>Growth climb · M1–M6</h2>
-    <p class="small">Done = 100%, In progress / Waiting feedback = partial progress, Not started = 0%.</p>
-    <div class="decision-panel">
-      <div class="decision-card"><span class="small">Weighted progress</span><strong data-progress-overall>0%</strong></div>
-      <div class="decision-card"><span class="small">Foundation</span><strong data-phase-pct="m1">0%</strong></div>
-      <div class="decision-card"><span class="small">System readiness</span><strong data-phase-pct="m2">0%</strong></div>
-      <div class="decision-card"><span class="small">Scale readiness</span><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div>
-    </div>
-    <div class="climb-track">
-      <div class="climb-line"></div>
-      <div class="climber" data-climber>⛰️</div>
-      <div class="checkpoint" data-checkpoint="m1" style="left:5%"><div class="checkpoint-dot">M1</div><small>Basecamp</small></div>
-      <div class="checkpoint" data-checkpoint="m2" style="left:23%"><div class="checkpoint-dot">M2</div><small>Foundation</small></div>
-      <div class="checkpoint" data-checkpoint="m3" style="left:41%"><div class="checkpoint-dot">M3</div><small>Test</small></div>
-      <div class="checkpoint" data-checkpoint="m4" style="left:59%"><div class="checkpoint-dot">M4</div><small>Scale</small></div>
-      <div class="checkpoint" data-checkpoint="m5" style="left:77%"><div class="checkpoint-dot">M5</div><small>Ops</small></div>
-      <div class="checkpoint" data-checkpoint="m6" style="left:95%"><div class="checkpoint-dot">M6</div><small>Summit</small></div>
-    </div>
-    <div class="cat-bar"><div class="cat-fill" data-progress-fill></div></div>
-  </div>
-
-  <div class="card">
-    <h2>Progress by success lever</h2>
-    <div data-category-progress></div>
-  </div>
-
-  <div class="card">
-    <h2>Weekly levers for success</h2>
-    <table class="table">
-      <tr><th>Week</th><th>Lever</th><th>Action</th><th>Proof / data</th><th>Status</th><th>Decision / next step</th></tr>
-      <tr data-track-row data-phase="m1" data-category="Research & Foundation"><td>W1</td><td>Research & Foundation</td><td><input placeholder="Cluster architecture / journey mapping"></td><td><input placeholder="Doc / insight / screenshot"></td><td><select><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input placeholder="Next action"></td></tr>
-      <tr data-track-row data-phase="m1" data-category="Commercial & Conversion"><td>W1</td><td>Commercial & Conversion</td><td><input placeholder="Buying model / Buy vs Callback"></td><td><input></td><td><select><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m1" data-category="Tracking & Data"><td>W1</td><td>Unified Data Model</td><td><input placeholder="Customer ID + event taxonomy"></td><td><input></td><td><select><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m2" data-category="Customer & Signal"><td>W2</td><td>Customer & Signal</td><td><input placeholder="Usage / WiFi / contract segmentation"></td><td><input></td><td><select><option>Not started</option><option>In progress</option><option selected>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m2" data-category="Lifecycle & Retention"><td>W2</td><td>Lifecycle States</td><td><input placeholder="Lead → Brochure → Offer → Sale → Active"></td><td><input></td><td><select><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m2" data-category="Content & Brand"><td>W3</td><td>Content & Brand</td><td><input placeholder="Brand voice, pillars, first assets"></td><td><input></td><td><select><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m2" data-category="Media & Measurement"><td>W3</td><td>Media & Measurement</td><td><input placeholder="Agency audit, PMAX UTM, Meta test logic"></td><td><input></td><td><select><option selected>Not started</option><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-      <tr data-track-row data-phase="m2" data-category="Decision Logic"><td>W4</td><td>Decision Logic</td><td><input placeholder="If signal → next best action rules"></td><td><input></td><td><select><option selected>Not started</option><option>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input></td></tr>
-    </table>
-  </div>
-</section>
-
-<section id="matrix" class="section">
-  <div class="card">
-    <div class="tag">Attribution wins</div>
-    <h1>Communications Measurement Matrix</h1>
-    <p class="small">Gebaseerd op best practice: elke communicatie-inspanning moet gekoppeld zijn aan een meetmethode en ROI-indicator.</p>
-    <div class="action-row no-print">
-      <button class="btn" type="button" data-pdf-button>Download / Save as PDF</button>
-      <button class="btn secondary" type="button" onclick="renderPerformanceDashboard()">Refresh weekly table</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Weekly Tracking Overview</h2>
-    <p class="small">This table pulls from the Weekly Data Input tab. It acts like your simple internal spreadsheet view.</p>
-    <div class="table-scroll">
-      <table class="table">
-        <tr>
-          <th>Week</th>
-          <th>Spend</th>
-          <th>Leads</th>
-          <th>Offers</th>
-          <th>Callbacks</th>
-          <th>Sales</th>
-          <th>Upsell</th>
-          <th>CAC</th>
-          <th>CPL</th>
-          <th>Offer Rate</th>
-          <th>Sale Rate</th>
-          <th>What changed</th>
-          <th>Decision</th>
-        </tr>
-        <tbody data-weekly-overview></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="targets" class="section">
-  <div class="card"><div class="tag">Eerlijk over de cijfers</div><h1>Realistische klantdoelen</h1><p>De 1.000 in zes maanden is ambitieus voor deze categorie. Ik werk er hard aan, maar laten we afspreken op realistische cijfers. Liever onder-beloven en over-leveren dan andersom.</p></div>
-  <div class="card"><table class="table"><tr><th>Periode</th><th>Wat we doen</th><th>Klanten</th></tr><tr><td>Q1 · M1—M3</td><td>Fundering. Geen mediabudget in maand 1 en 2. Eerste klein upsell-golfje. Eerste paid-tests vanaf maand 3.</td><td>25–80</td></tr><tr><td>Q2 · M4—M6</td><td>Opschalen wat werkt. Verliezers stilleggen. Tweede en derde upsell-golf. CRO-winnaars rollen uit.</td><td>200–400</td></tr><tr><td>6-maanden, realistisch</td><td>Bandbreedte 250 tot 500. Vastgelegde ondergrens 250. De 1.000 is het jaardoel waar we momentum voor opbouwen, niet een 6-maands-belofte. Q3 en Q4 leveren dan de rest.</td><td>250–500</td></tr></table></div>
-  <div class="card note"><b>Waarom dit lager is dan 1.000:</b> in een nieuwe categorie kost de eerste 60 dagen aan fundering en uitleg. Pas vanaf maand 4 begint paid serieus te leveren. Liever 350 echte klanten in 6 maanden dan 1.000 onhaalbaar beloofd in een rapport.</div>
-</section>
-
-</main>
-</div>
+function applyPastedJson(){
+  const box=document.querySelector('[data-json-import]');
+  if(!box || !box.value.trim()){
+    setSyncStatus('Paste JSON first.','error');
+    return;
+  }
+  try{
+    const payload=JSON.parse(box.value.trim());
+    applySheetPayload(payload);
+  }catch(error){
+    setSyncStatus('Invalid JSON. Check commas, quotes, and brackets.','error');
+  }
+}
+window.applyPastedJson=applyPastedJson;
+async function testSheetConnection(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;setSyncStatus('Testing connection...');const result=await fetchSheetPayload(endpoint);if(!result.ok){setSyncStatus('Connection test failed: '+result.error+' Click Open JSONP test URL. It must show testCallback({...}).','error');return}const payload=result.data||{};setSyncStatus(`Connection ok. weekly=${Array.isArray(payload.weekly)}, raci=${Array.isArray(payload.raci)}.`,'ok')}window.testSheetConnection=testSheetConnection;
+function openJsonpTestUrl(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;if(!endpoint){setSyncStatus('Paste your Apps Script URL first.','error');return}const sep=endpoint.includes('?')?'&':'?';window.open(endpoint+sep+'callback=testCallback&t='+Date.now(),'_blank')}window.openJsonpTestUrl=openJsonpTestUrl;
+function initNav(){document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab)?.classList.add('active');renderJourneyProgress();renderPerformanceDashboard();renderRaciOverview()}))}
+function initProgressInputs(){document.querySelectorAll('select').forEach(sel=>sel.addEventListener('change',()=>{renderJourneyProgress();renderRaciOverview()}))}
+function initTests(){console.assert(statusWeight('Done')===1,'Done should be 1');console.assert(statusWeight('In progress')===.6,'In progress should be .6');console.assert(statusWeight('Waiting feedback')===.4,'Waiting feedback should be .4');console.assert(statusWeight('Not started')===0,'Not started should be 0');console.assert(Object.keys(defaultWeeks).length===26,'Should build 26 weeks');fetchSheetPayload('').then(r=>console.assert(r.ok===false,'Empty endpoint should fail safely'));console.assert(typeof fetchSheetJsonp==='function','JSONP fallback should exist')}
+document.addEventListener('DOMContentLoaded',()=>{
+  initTests();initPasswordGate();renderGanttTable('ganttM1M2',ganttM1M2,'M1','M2');renderGanttTable('ganttM3M4',ganttM3M4,'M3','M4');renderGanttTable('ganttM5M6',ganttM5M6,'M5','M6');initNav();initWeeklyDataInput();initSheetSync();
+const savedEndpoint=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;if(savedEndpoint){loadFromGoogleSheet().catch(()=>{});}initRaci();initProgressInputs();renderJourneyProgress();renderPerformanceDashboard()});
+</script>
 </body>
 </html>
