@@ -100,7 +100,61 @@ function getSheetData(ss, sheetName) {
 const roadmapPhases=[{id:'m1'},{id:'m2'},{id:'m3'},{id:'m4'},{id:'m5'},{id:'m6'}];
 const categoryWeights={'Tracking & Data':25,'Lifecycle & Retention':20,'Commercial & Conversion':20,'Customer & Signal':15,'Google Ads & Meta Audit':10,'Research & Foundation':10,'Systems & Governance':10,'Experimentation':12,'Measurement':12,'SEO':12,'Optimization':15,'Automation':15,Other:5};
 const DEFAULT_SHEET_ENDPOINT='https://script.google.com/macros/s/AKfycbxzUdABkdUiyQLmbtY02yRZsef1NiLxYy5U_TiF1C2d-KJRUnsrnBC71DSk_M2Pvnr73w/exec';
-const ganttM1M2=[['Research & Foundation',['Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)','Brand voice en content-strategie','Website-fundament (positionering, hoofdpagina’s, vertrouwens-architectuur)']],['Commercial & Conversion',['Buying model (monthly / once-off / lease + NL legal check)','Define conversion path: Buy Now','Define conversion path: Get Callback','Identify drop-off between offer → client','Document full funnel: Lead → Opportunity → Quote → Sale','Validate funnel reality vs theory']],['Customer & Signal',['Segment: usage active vs inactive','Segment: WiFi issues risk signal','Segment: contract type','Define high-value / retained cluster','Define at-risk cluster','Define new / onboarding journey']],['Systems & Governance',['Define governance model with Nick (Odoo)','Audit flow: Landing pages → Odoo → NewCon → Sales','Standardise NewCon offer creation flow','Audit quote approval process','Define automation rules']],['Tracking & Data',['Define canonical customer ID','Define event taxonomy','Implement GA4 + GTM','Install Meta + Google pixels','Define events: brochure_download, offer_request, callback_request, sale_completed','Align tracking with funnel stages']],['Google Ads & Meta Audit',['Extract campaign structure from agency','Extract learnings + creative history','Extract targeting logic','Extract CAC / CPL benchmarks','Audit Google Ads + Meta account structure']]];
+const ganttM1M2=[
+['Research & Foundation',[
+'Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)',
+'Brand voice en content-strategie',
+'Website-fundament (positionering, hoofdpagina’s, vertrouwens-architectuur)',
+'Business discovery & stakeholder alignment',
+'Current performance baseline (Meta + Google Ads)',
+'Budget allocation audit (current spend vs performance)',
+'Agency output review (what has been done vs results)',
+'Define growth targets vs realistic capacity',
+'Document gaps in current marketing + sales flow'
+]],
+['Commercial & Conversion',[
+'Buying model (monthly / once-off / lease + NL legal check)',
+'Define conversion path: Buy Now',
+'Define conversion path: Get Callback',
+'Identify drop-off between offer → client',
+'Document full funnel: Lead → Opportunity → Quote → Sale',
+'Validate funnel reality vs theory'
+]],
+['Customer & Signal',[
+'Segment: usage active vs inactive',
+'Segment: WiFi issues risk signal',
+'Segment: contract type',
+'Define high-value / retained cluster',
+'Define at-risk cluster',
+'Define new / onboarding journey'
+]],
+['Systems & Governance',[
+'Define governance model with Nick (Odoo)',
+'Audit flow: Landing pages → Odoo → NewCon → Sales',
+'Standardise NewCon offer creation flow',
+'Audit quote approval process',
+'Define budget approval process (Robert & Krista)',
+'Define escalation paths for delays',
+'Define automation rules'
+]],
+['Tracking & Data',[
+'Define canonical customer ID',
+'Define event taxonomy',
+'Implement GA4 + GTM',
+'Install Meta + Google pixels',
+'Define events: brochure_download, offer_request, callback_request, sale_completed',
+'Align tracking with funnel stages'
+]],
+['Google Ads & Meta Audit',[
+'Extract campaign structure from agency',
+'Extract learnings + creative history',
+'Extract targeting logic',
+'Extract CAC / CPL benchmarks',
+'Full media audit (performance, waste, scaling gaps)',
+'Identify budget inefficiencies + reallocation opportunities',
+'Define new media strategy direction'
+]]
+];
 const ganttM3M4=[['Experimentation',['Define hypothesis framework','Create experiment design rules','Implement experiment tracking IDs','Build learning log','Apply creative tagging','Run structured experiments']],['Measurement',['Define CAC, churn, ARPU','Set up cohort tracking','Introduce holdout groups','Start incremental measurement','Introduce retention and LTV tracking']],['SEO',['Business discovery session','Initial tech audit','Full tech audit','Dev implementation phase','Post audit implementation checks','Keyword research','Dashboard creation / reporting','Metadata optimisation','Metadata implementation','Competitor analysis','Content analysis','Gap analysis','Backlink profile analysis','Backlink detox + disavow','Strategy roadmap months 4–6','Monthly reporting & client calls']]];
 const ganttM5M6=[['Optimization',['Implement profit-based budget allocation','Budget shifts based on LTV / retention / ROI','Run weekly growth loop','Introduce incremental measurement']],['Automation',['Deploy lifecycle automation at scale','Implement decision rules','Introduce AI-assisted execution','Controlled automation']]];
 const raciItems=[['M1','Meta + Google audit → approval','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M1','Tracking architecture plan (GA4 + GTM)','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Tracking implementation (GTM + website scripts)','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M1','Website structure / conversion logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Offer structure / pricing flow','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M1','Lead handling flow / Odoo logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Website development','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M2','Tracking QA / data validation','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Lifecycle flows: onboarding + upsell','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Creative direction / brand voice','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M3','Campaign launch: Meta + Google','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M3','Experiment framework / tracking IDs','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','Landing page testing','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','SEO strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M4','SEO implementation','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M4','Campaign scaling decisions','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M4','Content rollout: SEO + brand','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Krista'],['M5','Automation rollout: CRM + lifecycle','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M5','Budget allocation logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert'],['M5','Weekly growth loop','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Reporting & insights','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M6','Playbooks / documentation','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Year 2 strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert']];
