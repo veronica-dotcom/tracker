@@ -656,10 +656,38 @@ function initProgressInputs(){
   }))
 }
 function initTests(){console.assert(statusWeight('Done')===1,'Done should be 1');console.assert(statusWeight('In progress')===.6,'In progress should be .6');console.assert(statusWeight('Waiting feedback')===.4,'Waiting feedback should be .4');console.assert(statusWeight('Not started')===0,'Not started should be 0');console.assert(Object.keys(defaultWeeks).length===26,'Should build 26 weeks');fetchSheetPayload('').then(r=>console.assert(r.ok===false,'Empty endpoint should fail safely'));console.assert(typeof fetchSheetJsonp==='function','JSONP fallback should exist')}
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',async()=>{
   applyClientTranslations();
-  initTests();initPasswordGate();renderGanttTable('ganttM1M2',ganttM1M2,'M1','M2');renderGanttTable('ganttM3M4',ganttM3M4,'M3','M4');renderGanttTable('ganttM5M6',ganttM5M6,'M5','M6');restorePersistedControls();initNav();initWeeklyDataInput();initSheetSync();
-const savedEndpoint=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;if(savedEndpoint){loadFromGoogleSheet().catch(()=>{});}initRaci();initProgressInputs();renderJourneyProgress();renderPerformanceDashboard();applyClientTranslations()});
+  initTests();
+  initPasswordGate();
+
+  // 1. Build all dynamic tables first
+  renderGanttTable('ganttM1M2',ganttM1M2,'M1','M2');
+  renderGanttTable('ganttM3M4',ganttM3M4,'M3','M4');
+  renderGanttTable('ganttM5M6',ganttM5M6,'M5','M6');
+  renderRaciTable();
+
+  // 2. Initialise controls and navigation
+  initNav();
+  initWeeklyDataInput();
+  initSheetSync();
+  initProgressInputs();
+
+  // 3. Restore local fallback only as temporary state
+  restorePersistedControls();
+
+  // 4. Load central Google Sheet data AFTER tables exist
+  const savedEndpoint=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;
+  if(savedEndpoint){
+    await loadFromGoogleSheet().catch(()=>{});
+  }
+
+  // 5. Final render from central/fallback state
+  renderRaciOverview();
+  renderJourneyProgress();
+  renderPerformanceDashboard();
+  applyClientTranslations();
+});
 </script>
 </body>
 </html>
