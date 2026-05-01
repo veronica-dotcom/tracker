@@ -5,1763 +5,715 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zo Veilig · Growth Operating Dashboard</title>
 <style>
-:root{
-  --ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;
-  --lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;
-  --green:#dff7e7;--green-ink:#126138;
-  --amber:#fff1c9;--amber-ink:#7a4b00;
-  --red:#ffe0e0;--red-ink:#8a1f1f;
-  --white:#fff;
-  --shadow-sm:0 4px 10px rgba(20,10,40,.04);
-  --shadow-md:0 8px 22px rgba(20,10,40,.05);
-  --shadow-lg:0 16px 40px rgba(20,10,40,.08);
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,Arial,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
-button{font-family:inherit}
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh;overflow-y:auto}
-.brand{font-size:24px;font-weight:900;letter-spacing:-.02em}
-.subtitle{font-size:12px;color:#cab9d8;margin-top:2px}
-.nav{display:grid;gap:6px;margin-top:24px}
-.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px 12px;cursor:pointer;font-weight:700;font-size:13px;transition:background .15s ease, transform .15s ease;display:flex;align-items:center;gap:8px}
-.nav button:hover{background:rgba(255,255,255,.08)}
-.nav button.active{background:var(--lilac);box-shadow:0 6px 18px rgba(139,63,242,.4)}
-.nav .nav-key{font-size:10px;opacity:.55;font-weight:600;background:rgba(255,255,255,.1);padding:2px 5px;border-radius:5px;margin-left:auto}
-.main{padding:28px;max-width:1280px}
-.section{display:none;animation:fadeIn .25s ease}
-.section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow-md)}
-.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}
-h1{font-family:Georgia,serif;font-size:38px;line-height:1.05;margin:6px 0 10px;letter-spacing:-.01em}
-h2{font-family:Georgia,serif;font-size:26px;margin:4px 0 10px;letter-spacing:-.005em}
-h3{font-size:14px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.08em;color:#5b21b6}
-.small{font-size:13px;color:var(--muted)}
-.grid{display:grid;gap:16px}
-.cols2{grid-template-columns:1fr 1fr}
-.cols3{grid-template-columns:repeat(3,1fr)}
-.cols4{grid-template-columns:repeat(4,1fr)}
-.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}
-.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;transition:transform .2s ease, box-shadow .2s ease}
-.phase:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.phase.active{background:var(--soft);border-color:#d7baff}
-.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}
-.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}
-.table{width:100%;border-collapse:collapse}
-.table-scroll{width:100%;overflow-x:auto}
-.table-scroll .table{min-width:1100px}
-.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top;font-size:13px}
-.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em;background:#fbf8fe;position:sticky;top:0}
-.table tr:hover td{background:#fbf8ff}
-input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff;font-family:inherit;font-size:13px;color:var(--ink)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--lilac);box-shadow:0 0 0 3px rgba(139,63,242,.15)}
-textarea{min-height:72px;resize:vertical}
-.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px;font-size:13.5px}
-.note b{color:#3b1768}
-.score{font-size:32px;font-weight:950;letter-spacing:-.02em;line-height:1.1}
-.score-trend{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:800;margin-left:6px;padding:3px 7px;border-radius:999px;vertical-align:middle}
-.trend-up{background:var(--green);color:var(--green-ink)}
-.trend-down{background:var(--red);color:var(--red-ink)}
-.trend-flat{background:#f3f0f5;color:#62596b}
-.progress-hero{position:relative;padding:24px 12px 8px}
-.climb-track{position:relative;height:200px;margin:10px 0 20px}
-.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}
-.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .8s cubic-bezier(.5,0,.2,1), transform .7s ease;z-index:2}
-.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}
-.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900;transition:background .3s, border-color .3s, transform .3s}
-.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d;transform:scale(1.05)}
-.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a;transform:scale(1.1);box-shadow:0 0 0 4px rgba(240,199,90,.25)}
-.checkpoint small{display:block;color:var(--muted);font-size:11px}
-.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}
-.cat-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin:2px 0 5px}
-.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}
-.cat-fill{height:100%;width:0%;background:linear-gradient(90deg,#a86bff,var(--lilac));border-radius:999px;transition:width .6s cubic-bezier(.5,0,.2,1)}
-.readiness-label{display:inline-flex;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:900;align-items:center;gap:6px}
-.readiness-label::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.7}
-.readiness-risk{background:var(--red);color:var(--red-ink)}
-.readiness-forming{background:var(--amber);color:var(--amber-ink)}
-.readiness-ready{background:var(--green);color:var(--green-ink)}
-.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 16px;font-weight:800;cursor:pointer;font-size:13px;transition:transform .12s ease, opacity .12s ease, box-shadow .15s ease}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.btn:active{transform:translateY(0)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn.secondary{background:var(--lilac)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.btn.ghost:hover{background:#fbf8fe}
-.btn.small{padding:6px 12px;font-size:12px}
-.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}
-.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}
-.password-card h1{font-size:30px}
-.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}
-.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}
-.growth-chart{min-width:900px;height:340px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}
-.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}
-.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}
-.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}
-.chart-week:hover .week-tooltip{opacity:1;transform:translateX(-50%) translateY(0)}
-.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .4s cubic-bezier(.5,0,.2,1)}
-.bar-spend{background:#8b3ff2}
-.bar-leads{background:#30b66a}
-.bar-offers{background:#f2b84b}
-.bar-sales{background:#181018}
-.bar-upsell{background:#5b21b6}
-.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}
-.week-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--dark);color:#fff;padding:8px 10px;border-radius:8px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease, transform .15s ease;z-index:10;box-shadow:var(--shadow-lg)}
-.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
-.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
-.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}
-.spend-spark{height:120px;display:flex;align-items:end;gap:4px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;overflow-x:auto}
-.spend-spark span{display:block;min-width:10px;border-radius:999px 999px 0 0;background:var(--lilac);height:4px;transition:height .4s ease}
-.manual-progress{margin-top:14px;padding:14px;border:1px dashed #d7baff;border-radius:14px;background:#fff}
-.manual-progress input{accent-color:var(--lilac)}
-.mini-metric{background:var(--soft);border-radius:14px;padding:12px}
-.mini-metric strong{display:block;font-size:20px;font-weight:900}
-.raci-card{border-left:4px solid var(--lilac)}
-.overdue-row td{background:#fff6f6 !important}
-.due-soon-row td{background:#fffdf2 !important}
-.flow-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.flow-node{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;font-weight:900}
-.flow-arrow{color:var(--lilac);font-weight:900}
-.sync-status{border-radius:14px;padding:12px;margin-top:12px;background:var(--soft);font-size:13px;display:flex;align-items:center;gap:10px;transition:background .2s ease}
-.sync-ok{background:var(--green);color:var(--green-ink)}
-.sync-error{background:var(--red);color:var(--red-ink)}
-.sync-loading{background:var(--amber);color:var(--amber-ink)}
-.spinner{width:14px;height:14px;border:2px solid rgba(122,75,0,.25);border-top-color:var(--amber-ink);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.status-not-started{background:#f3f0f5 !important;color:#62596b !important}
-.status-in-progress{background:#fff1c9 !important;color:#7a4b00 !important}
-.status-waiting-feedback{background:#ffe0e0 !important;color:#8a1f1f !important}
-.status-done{background:#dff7e7 !important;color:#126138 !important}
-.status-cell{border-radius:10px;font-weight:800}
-.codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#181018;color:#fff;border-radius:14px;padding:14px;overflow-x:auto;font-size:12px;line-height:1.5;white-space:pre}
-.empty-state{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
-.empty-state-icon{font-size:32px;opacity:.4;margin-bottom:8px}
-.kbd{display:inline-block;background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:2px 6px;font-size:11px;font-family:ui-monospace,Menlo,monospace;color:var(--ink)}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:14px 18px;border-radius:12px;box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;z-index:9000;opacity:0;transform:translateY(8px);transition:opacity .2s ease, transform .2s ease;max-width:340px}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast.success{background:#126138}
-.toast.error{background:#8a1f1f}
-.hidden{display:none !important}
-.side-settings{margin-top:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#cab9d8;font-size:11px;border-radius:10px;padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;transition:background .15s ease, color .15s ease;font-family:inherit}
-.side-settings:hover{background:rgba(255,255,255,.1);color:#fff}
-.side-sync-dot{width:8px;height:8px;border-radius:50%;background:#6f6870;flex-shrink:0;transition:background .25s ease}
-.side-sync-dot.is-ok{background:#5fc985;box-shadow:0 0 6px rgba(95,201,133,.6)}
-.side-sync-dot.is-loading{background:#f0c75a;animation:pulse 1.2s ease-in-out infinite}
-.side-sync-dot.is-error{background:#e35b5b}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@media(max-width:900px){
-  .app{grid-template-columns:1fr}
-  .side{position:relative;height:auto}
-  .cols2,.cols3,.cols4,.timeline,.month-row{grid-template-columns:1fr}
-  .main{padding:18px}
-  h1{font-size:30px}
-  h2{font-size:22px}
-  .nav{grid-template-columns:repeat(2,1fr);gap:6px}
-  .nav .nav-key{display:none}
-  .chart-summary{grid-template-columns:repeat(2,1fr)}
-}
-@media print{
-  body{background:#fff}
-  .side,.password-screen,.action-row,.btn,.manual-progress,.toast{display:none !important}
-  .app{grid-template-columns:1fr}
-  .main{padding:0;max-width:none}
-  .section{display:block !important;page-break-after:always}
-  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
-  h1{font-size:24px}
-  h2{font-size:18px}
-  .table-scroll{overflow:visible}
-  .table-scroll .table{min-width:0}
-  .growth-chart{min-width:0;height:auto}
-  .chart-bars{position:relative;left:auto;right:auto}
-}
+:root{--ink:#141014;--muted:#6f6870;--line:#e9e1ef;--soft:#f8f2ff;--lilac:#8b3ff2;--dark:#181018;--bg:#faf8fb;--green:#dff7e7;--amber:#fff1c9;--red:#ffe0e0;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.45}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:24px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900}.subtitle{font-size:12px;color:#cab9d8}.nav{display:grid;gap:8px;margin-top:24px}.nav button{border:0;border-radius:12px;background:transparent;color:#fff;text-align:left;padding:11px;cursor:pointer;font-weight:750}.nav button.active{background:var(--lilac)}.main{padding:28px;max-width:1250px}.section{display:none}.section.active{display:block}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 22px rgba(20,10,40,.035)}.tag{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:var(--lilac);font-weight:900}h1{font-family:Georgia,serif;font-size:40px;line-height:1.05;margin:6px 0 10px}h2{font-family:Georgia,serif;font-size:28px;margin:4px 0 10px}.small{font-size:13px;color:var(--muted)}.grid{display:grid;gap:16px}.cols2{grid-template-columns:1fr 1fr}.cols4{grid-template-columns:repeat(4,1fr)}.timeline{display:grid;grid-template-columns:1.3fr .9fr 1.3fr .9fr;gap:12px}.phase{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px}.phase.active{background:var(--soft);border-color:#d7baff}.month-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}.month{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px;text-align:center;font-weight:900}.table{width:100%;border-collapse:collapse}.table-scroll{width:100%;overflow-x:auto}.table-scroll .table{min-width:1100px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{font-size:11px;text-transform:uppercase;color:#5b21b6;letter-spacing:.08em}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff}textarea{min-height:72px}.note{background:var(--soft);border-left:4px solid var(--lilac);border-radius:14px;padding:14px}.score{font-size:34px;font-weight:950}.progress-hero{position:relative;padding:24px 12px 8px}.climb-track{position:relative;height:190px;margin:10px 0 20px}.climb-line{position:absolute;left:4%;right:4%;top:92px;height:8px;border-radius:999px;background:linear-gradient(90deg,#d7baff,var(--lilac));transform:skewY(-8deg);opacity:.55}.climber{position:absolute;top:58px;left:0%;width:46px;height:46px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 12px 24px rgba(20,10,40,.25);transition:left .7s ease, transform .7s ease}.checkpoint{position:absolute;top:76px;transform:translateX(-50%);text-align:center;min-width:80px}.checkpoint-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 7px;display:grid;place-items:center;font-size:11px;font-weight:900}.checkpoint.done .checkpoint-dot{background:var(--green);border-color:#70c58d}.checkpoint.active .checkpoint-dot{background:var(--amber);border-color:#f0c75a}.checkpoint small{display:block;color:var(--muted);font-size:11px}.cat-progress{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:10px 0}.cat-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin:2px 0 5px}.cat-bar{height:10px;background:#eee7f4;border-radius:999px;overflow:hidden}.cat-fill{height:100%;width:0%;background:var(--lilac);border-radius:999px;transition:width .5s ease}.readiness-label{display:inline-flex;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.readiness-risk{background:var(--red)}.readiness-forming{background:var(--amber)}.readiness-ready{background:var(--green)}.action-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.btn{border:0;border-radius:999px;background:var(--dark);color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.btn.secondary{background:var(--lilac)}.password-screen{position:fixed;inset:0;background:linear-gradient(135deg,#181018,#3b1768);z-index:9999;display:grid;place-items:center;padding:24px}.password-card{background:#fff;border-radius:22px;padding:28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35)}.password-card h1{font-size:30px}.password-error{color:#b42318;font-size:13px;margin-top:8px;min-height:18px}.chart-wrap{width:100%;overflow-x:auto;padding:10px 0}.growth-chart{min-width:900px;height:320px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:18px;position:relative}.chart-grid{position:absolute;left:50px;right:20px;top:28px;bottom:54px;background:repeating-linear-gradient(to top,#f2edf7 0,#f2edf7 1px,transparent 1px,transparent 52px)}.chart-bars{position:absolute;left:50px;right:20px;bottom:54px;height:235px;display:grid;grid-template-columns:repeat(26,1fr);gap:8px;align-items:end}.chart-week{display:flex;gap:3px;align-items:end;justify-content:center;height:100%;position:relative}.bar{width:6px;border-radius:999px 999px 0 0;min-height:2px;transition:height .3s ease}.bar-spend{background:#8b3ff2}.bar-leads{background:#30b66a}.bar-offers{background:#f2b84b}.bar-sales{background:#181018}.bar-upsell{background:#5b21b6}.week-label{position:absolute;bottom:-26px;font-size:10px;color:var(--muted);transform:rotate(-45deg)}.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}.legend-item{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.chart-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.spend-spark{height:120px;display:flex;align-items:end;gap:4px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;overflow-x:auto}.spend-spark span{display:block;min-width:10px;border-radius:999px 999px 0 0;background:var(--lilac);height:4px}.manual-progress{margin-top:14px;padding:14px;border:1px dashed #d7baff;border-radius:14px;background:#fff}.manual-progress input{accent-color:var(--lilac)}.mini-metric{background:var(--soft);border-radius:14px;padding:12px}.mini-metric strong{display:block;font-size:20px}.raci-card{border-left:4px solid var(--lilac)}.overdue-row{background:#fff6f6}.due-soon-row{background:#fffdf2}.flow-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.flow-node{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#fff;font-weight:900}.flow-arrow{color:var(--lilac);font-weight:900}.sync-status{border-radius:14px;padding:12px;margin-top:12px;background:var(--soft);font-size:13px}.sync-ok{background:var(--green)}.sync-error{background:var(--red)}.status-not-started{background:#f3f0f5!important;color:#62596b!important}.status-in-progress{background:#fff1c9!important;color:#7a4b00!important}.status-waiting-feedback{background:#ffe0e0!important;color:#8a1f1f!important}.status-done{background:#dff7e7!important;color:#126138!important}.status-cell{border-radius:10px;font-weight:800}.codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#181018;color:#fff;border-radius:14px;padding:14px;overflow-x:auto;font-size:12px;line-height:1.5}.hidden{display:none!important}@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.cols2,.cols4,.timeline,.month-row{grid-template-columns:1fr}.main{padding:18px}}
 </style>
 </head>
 <body>
-<div id="passwordScreen" class="password-screen">
-  <div class="password-card">
-    <div class="tag">Protected dashboard</div>
-    <h1>Zo Veilig Project Tracker</h1>
-    <p class="small">Enter the project password to view this dashboard.</p>
-    <input id="passwordInput" type="password" placeholder="Password" autofocus onkeydown="if(event.key==='Enter') unlockDashboard(); if(event.key==='Escape') document.getElementById('passwordInput').value=''">
-    <button class="btn" type="button" style="margin-top:12px" onclick="unlockDashboard()">Unlock dashboard</button>
-    <div id="passwordError" class="password-error"></div>
+<div id="passwordScreen" class="password-screen"><div class="password-card"><div class="tag">Protected dashboard</div><h1>Zo Veilig Project Tracker</h1><p class="small">Enter the project password to view this dashboard.</p><input id="passwordInput" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') unlockDashboard()"><button class="btn" type="button" style="margin-top:12px" onclick="unlockDashboard()">Unlock dashboard</button><div id="passwordError" class="password-error"></div></div></div>
+<div class="app"><aside class="side"><div style="margin-bottom:12px;display:flex;gap:6px"><button class="btn" style="padding:6px 10px;font-size:11px" onclick="setLang('nl')">NL</button><button class="btn secondary" style="padding:6px 10px;font-size:11px" onclick="setLang('en')">EN</button></div><div class="brand">Zo Veilig</div><div class="subtitle">Project Tracker · Performance Marketing</div><div class="nav"><button data-tab="sheet_sync">00 Admin Sync</button><button class="active" data-tab="journey" data-i18n="nav_journey">01 Werkreis</button><button data-tab="gantt">02 Gantt · M1–M2</button><button data-tab="gantt_m3m4">03 Gantt · M3–M4</button><button data-tab="gantt_m5m6">04 Gantt · M5–M6</button><button data-tab="data_input" data-i18n="nav_data">05 Weekly Data Input</button><button data-tab="dashboard" data-i18n="nav_dashboard">06 Performance Dashboard</button><button data-tab="weekly" data-i18n="nav_weekly">07 Weekly Tracking</button><button data-tab="matrix" data-i18n="nav_matrix">08 Measurement Matrix</button><button data-tab="raci" data-i18n="nav_raci">09 RACI / Approvals</button><button data-tab="targets" data-i18n="nav_targets">10 Cijfers</button></div></aside>
+<main class="main">
+<section id="journey" class="section active"><div class="card"><div class="tag" data-i18n="journey_tag">Project tracker</div><h1 data-i18n="journey_title">De reis van het werk</h1><p class="small" data-i18n="journey_intro">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p></div><div class="timeline"><div class="phase active"><div class="tag">M1—M2</div><h2 data-i18n="phase_foundation">Fundering</h2><p class="small" data-i18n="phase_foundation_desc">Audit, onderzoek, positionering, tracking en basiscontent.</p></div><div class="phase"><div class="tag">M3</div><h2 data-i18n="phase_test">Test & Leer</h2><p class="small" data-i18n="phase_test_desc">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div><div class="phase"><div class="tag">M4—M5</div><h2 data-i18n="phase_scale">Opschalen</h2><p class="small" data-i18n="phase_scale_desc">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div><div class="phase"><div class="tag">M6</div><h2 data-i18n="phase_consolidate">Consolideren</h2><p class="small" data-i18n="phase_consolidate_desc">Rapportage, SOPs, playbooks en overdracht.</p></div></div><div class="month-row"><div class="month">M1</div><div class="month">M2</div><div class="month">M3</div><div class="month">M4</div><div class="month">M5</div><div class="month">M6</div></div><div class="card">
+  <div class="tag" data-i18n="milestone_tag">Milestones & Rhythm</div>
+  <h2 data-i18n="milestone_title">Key decision moments & cadence</h2>
+  <div class="grid cols2">
+    <div>
+      <h3 data-i18n="operating_rhythm">Operating rhythm</h3>
+      <ul class="small">
+        <li data-i18n="daily"><b>Daily:</b> Veronica ↔ Krista (execution sync)</li>
+        <li data-i18n="biweekly"><b>Bi-weekly:</b> Krista + Robert + Veronica (status & decisions)</li>
+        <li data-i18n="monthly"><b>Monthly:</b> Strategic checkpoint</li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-i18n="timeline_title">Key timeline (starting 29 April 2026)</h3>
+      <ul class="small">
+        <li data-i18n="timeline_1"><b>Now → mid May:</b> Audit, tracking plan, brand voice direction</li>
+        <li data-i18n="timeline_2"><b>Week of 13–17 May (morning):</b> Strategy + Brand Voice presentation</li>
+        <li data-i18n="timeline_3"><b>Mid May → June:</b> Website build, tracking, lifecycle flows</li>
+        <li data-i18n="timeline_4"><b>End June:</b> Website launch + tracking live</li>
+        <li data-i18n="timeline_5"><b>July:</b> Test & learn phase begins</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <b data-i18n="media_guideline">Media spend guideline:</b><br>
+    <span data-i18n="media_1">M1–M2: Reduce waste, maintain learning budget.</span><br>
+    <span data-i18n="media_2">Post strategy: Controlled reallocation.</span><br>
+    <span data-i18n="media_3">Post website launch: Scale based on validated performance.</span>
+  </div>
+</div>
+<div class="card">
+  <div class="tag">Growth opportunity overview</div>
+  <h2>Week 1 · Audit signals (strategic view)</h2>
+  <p class="small">These are not framed as problems, but as signals that inform strategic direction and prioritisation.</p>
+  <div class="grid cols2">
+    <div class="note">
+      <b>Website · Ownership & Attribution</b><br>
+      Domain ownership and attribution setup are not fully aligned within a single controlled stack. This limits visibility and long-term scalability of tracking and performance optimisation.
+    </div>
+    <div class="note">
+      <b>CRM · Data access & feedback loop</b><br>
+      No direct access to CRM (Odoo). Current visibility is limited to top-level reporting, which restricts closed-loop learning between marketing, sales, and retention.
+    </div>
   </div>
 </div>
 
-<div class="app">
-  <aside class="side">
-    <div style="margin-bottom:12px;display:flex;gap:6px">
-      <button class="btn small" type="button" onclick="setLang('nl')" data-lang-btn="nl">NL</button>
-      <button class="btn small secondary" type="button" onclick="setLang('en')" data-lang-btn="en">EN</button>
-    </div>
-    <div class="brand">Zo Veilig</div>
-    <div class="subtitle">Project Tracker · Performance Marketing</div>
-    <div class="nav">
-      <button class="active" data-tab="journey" data-i18n="nav_journey">01 Werkreis<span class="nav-key">1</span></button>
-      <button data-tab="gantt">02 Gantt · M1–M2<span class="nav-key">2</span></button>
-      <button data-tab="gantt_m3m4">03 Gantt · M3–M4<span class="nav-key">3</span></button>
-      <button data-tab="gantt_m5m6">04 Gantt · M5–M6<span class="nav-key">4</span></button>
-      <button data-tab="data_input" data-i18n="nav_data">05 Weekly Data Input<span class="nav-key">5</span></button>
-      <button data-tab="dashboard" data-i18n="nav_dashboard">06 Performance Dashboard<span class="nav-key">6</span></button>
-      <button data-tab="weekly" data-i18n="nav_weekly">07 Weekly Tracking<span class="nav-key">7</span></button>
-      <button data-tab="matrix" data-i18n="nav_matrix">08 Measurement Matrix<span class="nav-key">8</span></button>
-      <button data-tab="raci" data-i18n="nav_raci">09 RACI / Approvals<span class="nav-key">9</span></button>
-      <button data-tab="targets" data-i18n="nav_targets">10 Cijfers</button>
-    </div>
-    <div style="margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:#cab9d8;line-height:1.5">
-      <div><span class="kbd" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)">1–9</span> tab nav</div>
-      <div style="margin-top:6px"><span class="kbd" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.15)">⌘P</span> print view</div>
-      <button type="button" class="side-settings" onclick="activateTab('sheet_sync')" title="Sync settings (Google Sheets)">
-        <span class="side-sync-dot" data-side-sync-dot></span>
-        <span style="flex:1;text-align:left">Sync settings</span>
-        <span style="opacity:.6">⚙</span>
-      </button>
-    </div>
-  </aside>
-<main class="main">
-
-<section id="journey" class="section active">
-  <div class="card">
-    <div class="tag" data-i18n="journey_tag">Project tracker</div>
-    <h1 data-i18n="journey_title">De reis van het werk</h1>
-    <p class="small" data-i18n="journey_intro">Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.</p>
-  </div>
-  <div class="timeline">
-    <div class="phase active"><div class="tag">M1—M2</div><h2 data-i18n="phase_foundation">Fundering</h2><p class="small" data-i18n="phase_foundation_desc">Audit, onderzoek, positionering, tracking en basiscontent.</p></div>
-    <div class="phase"><div class="tag">M3</div><h2 data-i18n="phase_test">Test & Leer</h2><p class="small" data-i18n="phase_test_desc">Klein testen, eerste paid learnings, eerste CAC-uitlezing.</p></div>
-    <div class="phase"><div class="tag">M4—M5</div><h2 data-i18n="phase_scale">Opschalen</h2><p class="small" data-i18n="phase_scale_desc">Winnaars krijgen budget. Verliezers stoppen zonder discussie.</p></div>
-    <div class="phase"><div class="tag">M6</div><h2 data-i18n="phase_consolidate">Consolideren</h2><p class="small" data-i18n="phase_consolidate_desc">Rapportage, SOPs, playbooks en overdracht.</p></div>
-  </div>
-  <div class="month-row">
-    <div class="month">M1</div><div class="month">M2</div><div class="month">M3</div>
-    <div class="month">M4</div><div class="month">M5</div><div class="month">M6</div>
-  </div>
-
-  <div class="card">
-    <div class="tag" data-i18n="milestone_tag">Milestones & Rhythm</div>
-    <h2 data-i18n="milestone_title">Key decision moments & cadence</h2>
-    <div class="grid cols2">
-      <div>
-        <h3 data-i18n="operating_rhythm">Operating rhythm</h3>
-        <ul class="small" style="padding-left:18px;margin:0">
-          <li data-i18n="daily"><b>Daily:</b> Veronica ↔ Krista (execution sync)</li>
-          <li data-i18n="biweekly"><b>Bi-weekly:</b> Krista + Robert + Veronica (status & decisions)</li>
-          <li data-i18n="monthly"><b>Monthly:</b> Strategic checkpoint</li>
-        </ul>
-      </div>
-      <div>
-        <h3 data-i18n="timeline_title">Key timeline (starting 29 April 2026)</h3>
-        <ul class="small" style="padding-left:18px;margin:0">
-          <li data-i18n="timeline_1"><b>Now → mid May:</b> Audit, tracking plan, brand voice direction</li>
-          <li data-i18n="timeline_2"><b>Week of 13–17 May (morning):</b> Strategy + Brand Voice presentation</li>
-          <li data-i18n="timeline_3"><b>Mid May → June:</b> Website build, tracking, lifecycle flows</li>
-          <li data-i18n="timeline_4"><b>End June:</b> Website launch + tracking live</li>
-          <li data-i18n="timeline_5"><b>July:</b> Test & learn phase begins</li>
-        </ul>
-      </div>
-    </div>
-    <div class="note" style="margin-top:14px">
-      <b data-i18n="media_guideline">Media spend guideline:</b><br>
-      <span data-i18n="media_1">M1–M2: Reduce waste, maintain learning budget.</span><br>
-      <span data-i18n="media_2">Post strategy: Controlled reallocation.</span><br>
-      <span data-i18n="media_3">Post website launch: Scale based on validated performance.</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="tag">Growth opportunity overview</div>
-    <h2>Week 1 · Audit signals (strategic view)</h2>
-    <p class="small">These are not framed as problems, but as signals that inform strategic direction and prioritisation.</p>
-    <div class="grid cols2">
-      <div class="note">
-        <b>Website · Ownership & Attribution</b><br>
-        Domain ownership and attribution setup are not fully aligned within a single controlled stack. This limits visibility and long-term scalability of tracking and performance optimisation.
-      </div>
-      <div class="note">
-        <b>CRM · Data access & feedback loop</b><br>
-        No direct access to CRM (Odoo). Current visibility is limited to top-level reporting, which restricts closed-loop learning between marketing, sales, and retention.
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="tag">Week 1 · Reporting snapshot</div>
-    <h2>Initial performance & setup status</h2>
-    <div class="grid cols2">
-      <div class="note">
-        <b>CRM · Data access</b><br>
-        Data access from Odoo attained on <b>1 May</b>. Audit of CRM structure, lead flow, and reporting reliability will begin.
-      </div>
-      <div class="note">
-        <b>Meta Ads · Performance</b><br>
-        Campaigns delivered <b>36,483 reach</b> and <b>1,237 website visits</b> on <b>€1.63K spend</b> (€0.79 CPC). Strong traffic generation, but <b>no leads yet</b>, indicating a conversion gap across funnel, creative, or targeting (currently limited by visibility).
-      </div>
-      <div class="note">
-        <b>Media & Agency</b><br>
-        Meta Ads project reviewed with Woeler. Google Ads access is available, but no consolidated Meta overview yet.
-      </div>
-      <div class="note">
-        <b>Next steps in motion</b><br>
-        Product session booked for <b>6 May</b>. Action plan aligned with Krista to structure overall approach across media, tracking, and conversion flow.
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="gantt" class="section">
-  <div class="card">
-    <div class="tag">Gantt · M1–M2</div>
-    <h1>Fundering · Taken & Status</h1>
-    <p class="small">Markeer per taak: Not started, In progress, Waiting feedback, Done.</p>
-  </div>
-  <div class="card">
-    <div class="table-scroll">
-      <table class="table">
-        <thead><tr><th>Layer</th><th>Taak</th><th>M1</th><th>M2</th><th>Status</th><th>Owner / Note</th></tr></thead>
-        <tbody id="ganttM1M2"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="gantt_m3m4" class="section">
-  <div class="card"><div class="tag">Gantt · M3–M4</div><h1>Test & Leer → Opschalen</h1></div>
-  <div class="card">
-    <div class="table-scroll">
-      <table class="table">
-        <thead><tr><th>Layer</th><th>Taak</th><th>M3</th><th>M4</th><th>Status</th><th>Progress note</th></tr></thead>
-        <tbody id="ganttM3M4"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="gantt_m5m6" class="section">
-  <div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div>
-  <div class="card">
-    <div class="table-scroll">
-      <table class="table">
-        <thead><tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th><th>Progress note</th></tr></thead>
-        <tbody id="ganttM5M6"></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="sheet_sync" class="section">
-  <div class="card">
-    <div class="tag">Google Sheets Sync</div>
-    <h1>Connect Google Sheet</h1>
-    <p class="small">This dashboard can read live data from your Google Sheet via Apps Script. If the request is blocked, the dashboard will stay usable and show a clear error.</p>
-  </div>
-  <div class="card">
-    <h2>Step 1 · Apps Script Web App URL</h2>
-    <input data-sheet-endpoint value="https://script.google.com/macros/s/AKfycbzJm93h6hFEyqbzFyUrr2zBePJy_HKGbxgplrABQqaM/exec" placeholder="https://script.google.com/macros/s/XXXXX/exec">
-    <div class="action-row">
-      <button class="btn" type="button" onclick="saveSheetEndpoint()">Save Sheet URL</button>
-      <button class="btn secondary" type="button" onclick="loadFromGoogleSheet()">Load from Sheet</button>
-      <button class="btn ghost" type="button" onclick="testSheetConnection()">Test connection</button>
-      <button class="btn ghost" type="button" onclick="openJsonpTestUrl()">Open JSONP test URL</button>
-    </div>
-    <div class="sync-status" data-sync-status>Not connected yet.</div>
-  </div>
+<div class="card">
+  <div class="tag">Week 1 · Reporting snapshot</div>
+  <h2>Initial performance & setup status</h2>
   <div class="grid cols2">
-    <div class="card">
-      <h2>Expected Sheet Tabs</h2>
-      <ul style="font-size:13px;line-height:1.6">
-        <li><b>Weekly_Data</b> updates Performance Dashboard + Measurement Matrix</li>
-        <li><b>RACI_Status</b> updates Approval & Development Flow</li>
-        <li><b>Gantt_Status</b> updates Gantt task status + notes</li>
-      </ul>
+    <div class="note">
+      <b>CRM · Data access</b><br>
+      Data access from Odoo attained on <b>1 May</b>. Audit of CRM structure, lead flow, and reporting reliability will begin.
     </div>
-    <div class="card">
-      <h2>Fix for "Failed to fetch"</h2>
-      <p class="small">If normal fetch is blocked by Google/CORS, this dashboard falls back to JSONP. Your Apps Script must support <b>?callback=...</b>. Click <b>Open JSONP test URL</b>. If the page does not show something like <b>testCallback({ ... })</b>, the Apps Script has not been redeployed with the JSONP script.</p>
+    <div class="note">
+      <b>Meta Ads · Performance</b><br>
+      Campaigns delivered <b>36,483 reach</b> and <b>1,237 website visits</b> on <b>€1.63K spend</b> (€0.79 CPC). Strong traffic generation, but <b>no leads yet</b>, indicating a conversion gap across funnel, creative, or targeting (currently limited by visibility).
     </div>
-  </div>
-  <div class="card"><h2>Weekly_Data columns</h2><div class="codebox">Week | Spend | Leads | Offer_Requests | Callbacks | Sales | Upsell_Revenue | Churn_Risk | Retention_Signal | What_Changed | Decision</div></div>
-  <div class="card"><h2>RACI_Status columns</h2><div class="codebox">Work_Item | Current_Owner | Due_Date | Status | Next_Action</div></div>
-  <div class="card">
-    <h2>Fallback · Paste JSON from Sheet</h2>
-    <p class="small">If Google blocks the live connection, paste JSON here and click Apply. This keeps the dashboard usable while we sort the endpoint.</p>
-    <textarea data-json-import placeholder='{"weekly":[{"Week":"W1","Spend":0,"Leads":0}],"raci":[{"Work_Item":"Tracking implementation (GTM + website scripts)","Current_Owner":"Nick"}]}'></textarea>
-    <div class="action-row">
-      <button class="btn" type="button" onclick="applyPastedJson()">Apply pasted JSON</button>
+    <div class="note">
+      <b>Media & Agency</b><br>
+      Meta Ads project reviewed with Woeler. Google Ads access is available, but no consolidated Meta overview yet.
+    </div>
+    <div class="note">
+      <b>Next steps in motion</b><br>
+      Product session booked for <b>6 May</b>. Action plan aligned with Krista to structure overall approach across media, tracking, and conversion flow.
     </div>
   </div>
-  <div class="card">
-    <h2>Final Apps Script for Google Sheets sync</h2>
-    <div class="codebox">function doGet(e) {
+</div>
+</section>
+<section id="gantt" class="section"><div class="card"><div class="tag">Gantt · M1–M2</div><h1>Fundering · Taken & Status</h1><p class="small">Markeer per taak: Not started, In progress, Waiting feedback, Done.</p></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M1</th><th>M2</th><th>Status</th><th>Owner / Note</th></tr><tbody id="ganttM1M2"></tbody></table></div></div></section>
+<section id="gantt_m3m4" class="section"><div class="card"><div class="tag">Gantt · M3–M4</div><h1>Test & Leer → Opschalen</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M3</th><th>M4</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM3M4"></tbody></table></div></div></section>
+<section id="gantt_m5m6" class="section"><div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM5M6"></tbody></table></div></div></section>
+<section id="sheet_sync" class="section"><div class="card"><div class="tag">Google Sheets Sync</div><h1>Connect Google Sheet</h1><p class="small">This dashboard can read live data from your Google Sheet via Apps Script. If the request is blocked, the dashboard will stay usable and show a clear error.</p></div><div class="card"><h2>Step 1 · Apps Script Web App URL</h2><input data-sheet-endpoint value="https://script.google.com/macros/s/AKfycbzJm93h6hFEyqbzFyUrr2zBePJy_HKGbxgplrABQqaM/exec" placeholder="https://script.google.com/macros/s/XXXXX/exec"><div class="action-row"><button class="btn" type="button" onclick="saveSheetEndpoint()">Save Sheet URL</button><button class="btn secondary" type="button" onclick="loadFromGoogleSheet()">Load from Sheet</button><button class="btn secondary" type="button" onclick="pushAllGanttToSheet()">Push Gantt to Sheet</button><button class="btn secondary" type="button" onclick="testSheetConnection()">Test connection</button></div><div class="sync-status" data-sync-status>Not connected yet.</div></div><div class="grid cols2"><div class="card"><h2>Expected Sheet Tabs</h2><ul><li><b>Weekly_Data</b> updates Performance Dashboard + Measurement Matrix</li><li><b>RACI_Status</b> updates Approval & Development Flow</li><li><b>Gantt_Status</b> stores central Gantt task status and notes</li></ul></div><div class="card"><h2>Fix for Failed to fetch</h2><p class="small">If normal fetch is blocked by Google/CORS, this dashboard falls back to JSONP. Your Apps Script must support <b>?callback=...</b>. Click <b>Open JSONP test URL</b>. If the page does not show something like <b>testCallback({ ... })</b>, the Apps Script has not been redeployed with the JSONP script.</p></div></div><div class="card"><h2>Weekly_Data columns</h2><div class="codebox">Week | Spend | Leads | Offer_Requests | Callbacks | Sales | Upsell_Revenue | Churn_Risk | Retention_Signal | What_Changed | Decision</div></div><div class="card"><h2>RACI_Status columns</h2><div class="codebox">Work_Item | Current_Owner | Due_Date | Status | Next_Action</div></div>
+  <div class="card"><h2>Gantt_Status columns</h2><div class="codebox">Task_ID | Phase | Layer | Task | Status | Progress_Note</div></div>
+  <div class="card"><h2>Fallback · Paste JSON from Sheet</h2><p class="small">If Google blocks the live connection, paste JSON here and click Apply. This keeps the dashboard usable while we sort the endpoint.</p><textarea data-json-import placeholder='{"weekly":[{"Week":"W1","Spend":0,"Leads":0}],"raci":[{"Work_Item":"Tracking implementation (GTM + website scripts)","Current_Owner":"Nick"}]}'></textarea><div class="action-row"><button class="btn" type="button" onclick="applyPastedJson()">Apply pasted JSON</button></div></div>
+  <div class="card"><h2>Final Apps Script for Google Sheets sync</h2><div class="codebox">function doGet(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const data = {
     weekly: getSheetData(ss, 'Weekly_Data'),
     raci: getSheetData(ss, 'RACI_Status'),
     gantt: getSheetData(ss, 'Gantt_Status')
   };
+
   const json = JSON.stringify(data);
   const callback = e && e.parameter && e.parameter.callback;
+
   if (callback) {
     return ContentService
       .createTextOutput(callback + '(' + json + ')')
       .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
+
   return ContentService
     .createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
 }
+
 function doPost(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const body = JSON.parse(e.postData.contents || '{}');
   const type = body.type;
   const payload = body.payload || {};
-  if (type === 'weekly') upsertRow(ss, 'Weekly_Data', 'Week', payload);
-  if (type === 'raci')   upsertRow(ss, 'RACI_Status', 'Work_Item', payload);
-  if (type === 'gantt')  upsertRow(ss, 'Gantt_Status', 'Task_ID', payload);
+
+  if (type === 'weekly') {
+    upsertRow(ss, 'Weekly_Data', 'Week', payload);
+  }
+
+  if (type === 'raci') {
+    upsertRow(ss, 'RACI_Status', 'Work_Item', payload);
+  }
+
+  if (type === 'gantt') {
+    upsertRow(ss, 'Gantt_Status', 'Task_ID', payload);
+  }
+
   return ContentService
     .createTextOutput(JSON.stringify({ success: true, type: type }))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
 function getSheetData(ss, sheetName) {
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) return [];
+
   const values = sheet.getDataRange().getValues();
-  if (values.length &lt; 2) return [];
+  if (values.length < 2) return [];
+
   const headers = values.shift();
+
   return values
-    .filter(row =&gt; row.some(cell =&gt; cell !== ''))
-    .map(row =&gt; {
+    .filter(row => row.some(cell => cell !== ''))
+    .map(row => {
       const obj = {};
-      headers.forEach((header, index) =&gt; { obj[header] = row[index]; });
+      headers.forEach((header, index) => {
+        obj[header] = row[index];
+      });
       return obj;
     });
 }
+
 function upsertRow(ss, sheetName, keyColumn, payload) {
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) throw new Error('Missing sheet: ' + sheetName);
+
   const values = sheet.getDataRange().getValues();
   const headers = values[0];
   const keyIndex = headers.indexOf(keyColumn);
+
   if (keyIndex === -1) throw new Error('Missing key column: ' + keyColumn);
+
   const keyValue = payload[keyColumn];
   if (!keyValue) throw new Error('Missing key value for: ' + keyColumn);
+
   let rowIndex = -1;
-  for (let i = 1; i &lt; values.length; i++) {
+  for (let i = 1; i < values.length; i++) {
     if (String(values[i][keyIndex]) === String(keyValue)) {
-      rowIndex = i + 1; break;
+      rowIndex = i + 1;
+      break;
     }
   }
-  const row = headers.map(header =&gt; getPayloadValue(header, payload));
-  if (rowIndex &gt; -1) {
+
+  const row = headers.map(header => getPayloadValue(header, payload));
+
+  if (rowIndex > -1) {
     sheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
   } else {
     sheet.appendRow(row);
   }
 }
+
 function getPayloadValue(header, payload) {
   if (payload[header] !== undefined) return payload[header];
+
   const aliases = {
     'Leads (MQL)': 'Leads',
     'Sales (SQL)': 'Sales',
+    'What_Changed': 'What_Changed',
     'Work Item': 'Work_Item',
     'Current Owner': 'Current_Owner',
     'Due Date': 'Due_Date',
     'Next Action': 'Next_Action',
     'Progress Note': 'Progress_Note'
   };
+
   const alias = aliases[header];
   if (alias && payload[alias] !== undefined) return payload[alias];
+
   return '';
-}</div>
-  </div>
-</section>
-
-<section id="data_input" class="section">
-  <div class="card">
-    <div class="tag">Live weekly input</div>
-    <h1>Weekly data input</h1>
-    <p class="small">Add weekly media and conversion numbers here. The Performance Dashboard updates automatically.</p>
-  </div>
-  <div class="card">
-    <div class="tag">Media spend growth</div>
-    <h2>Spend trend</h2>
-    <p class="small">Small live view of weekly spend across W1–W26.</p>
-    <div class="spend-spark" data-spend-spark></div>
-  </div>
-  <div class="card">
-    <h2>Select week</h2>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <select data-week-select style="max-width:240px"></select>
-      <button class="btn ghost small" type="button" onclick="jumpToCurrentWeek()">Jump to current week</button>
-      <button class="btn ghost small" type="button" onclick="exportWeeklyCSV()">Export CSV</button>
-    </div>
-  </div>
-  <div class="grid cols4">
-    <div class="card"><div class="tag">Media</div><label class="small">Spend</label><input data-week-field="spend" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Acquisition</div><label class="small">Leads</label><input data-week-field="leads" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Conversion</div><label class="small">Offer requests</label><input data-week-field="offer_requests" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Sales</div><label class="small">Sales</label><input data-week-field="sales" type="number" placeholder="0"></div>
-  </div>
-  <div class="grid cols4">
-    <div class="card"><div class="tag">Assisted sales</div><label class="small">Callbacks</label><input data-week-field="callbacks" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Expansion</div><label class="small">Upsell revenue</label><input data-week-field="upsell_revenue" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Retention</div><label class="small">Churn risk signal</label><input data-week-field="churn_risk" type="number" placeholder="0"></div>
-    <div class="card"><div class="tag">Lifecycle</div><label class="small">Retention signal</label><input data-week-field="retention_signal" placeholder="e.g. WiFi complaints down"></div>
-  </div>
-  <div class="grid cols2">
-    <div class="card"><h2>What changed this week?</h2><textarea data-week-field="what_changed" placeholder="Short weekly summary"></textarea></div>
-    <div class="card"><h2>Scale / Iterate / Kill decision</h2><textarea data-week-field="decision" placeholder="What should happen next?"></textarea></div>
-  </div>
-</section>
-
-<section id="dashboard" class="section">
-  <div class="card">
-    <div class="tag" data-i18n="dashboard_tag">Executive Dashboard</div>
-    <h1 data-i18n="dashboard_title">Are we growing profitably?</h1>
-    <p class="small" data-i18n="dashboard_intro">Top layer answers performance. Lower layers explain why and what to do next.</p>
-  </div>
-  <div class="card progress-hero">
-    <div class="tag" data-i18n="progress_tag">Growth Journey Progress</div>
-    <h2 data-i18n="progress_title">Van basecamp naar schaalbaar groeisysteem</h2>
-    <p class="small" data-i18n="progress_intro">Connected to Gantt task status and weekly tracking status.</p>
-    <div class="grid cols4">
-      <div><div class="small" data-i18n="weighted_progress">Weighted progress</div><div class="score" data-progress-overall>0%</div></div>
-      <div><div class="small">M1</div><strong data-phase-pct="m1">0%</strong></div>
-      <div><div class="small">M2</div><strong data-phase-pct="m2">0%</strong></div>
-      <div><div class="small" data-i18n="scale_readiness">Scale readiness</div><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div>
-    </div>
-    <div class="climb-track">
-      <div class="climb-line"></div>
-      <div class="climber" data-climber>⛰️</div>
-      <div class="checkpoint" data-checkpoint="m1" style="left:5%"><div class="checkpoint-dot">M1</div><small>Basecamp</small></div>
-      <div class="checkpoint" data-checkpoint="m2" style="left:23%"><div class="checkpoint-dot">M2</div><small>Foundation</small></div>
-      <div class="checkpoint" data-checkpoint="m3" style="left:41%"><div class="checkpoint-dot">M3</div><small>Test</small></div>
-      <div class="checkpoint" data-checkpoint="m4" style="left:59%"><div class="checkpoint-dot">M4</div><small>Scale</small></div>
-      <div class="checkpoint" data-checkpoint="m5" style="left:77%"><div class="checkpoint-dot">M5</div><small>Ops</small></div>
-      <div class="checkpoint" data-checkpoint="m6" style="left:95%"><div class="checkpoint-dot">M6</div><small>Summit</small></div>
-    </div>
-    <div class="cat-bar"><div class="cat-fill" data-progress-fill></div></div>
-    <div class="manual-progress">
-      <div class="small"><b data-i18n="manual_title">Manual weekly progress override</b> · <span data-i18n="manual_desc">use this during stakeholder check-ins if you want to show a practical progress read beyond task status.</span></div>
-      <input type="range" min="0" max="100" value="0" data-manual-progress oninput="setManualProgress(this.value)">
-      <div class="small"><span data-i18n="manual_view">Manual view:</span> <b data-manual-progress-label>Auto from Gantt</b></div>
-      <button class="btn ghost small" type="button" style="margin-top:8px" onclick="clearManualProgress()" data-i18n="use_gantt">Use Gantt progress</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="tag" data-i18n="weekly_chart">Weekly Growth Chart</div>
-    <h2 data-i18n="performance_trend">Performance trend per week</h2>
-    <div class="chart-summary">
-      <div class="mini-metric"><span class="small">Spend</span><strong data-chart-summary="chart_total_spend">€0</strong></div>
-      <div class="mini-metric"><span class="small">Leads</span><strong data-chart-summary="chart_total_leads">0</strong></div>
-      <div class="mini-metric"><span class="small">Offers</span><strong data-chart-summary="chart_total_offers">0</strong></div>
-      <div class="mini-metric"><span class="small">Sales</span><strong data-chart-summary="chart_total_sales">0</strong></div>
-      <div class="mini-metric"><span class="small">Upsell</span><strong data-chart-summary="chart_total_upsell">€0</strong></div>
-    </div>
-    <div class="chart-wrap">
-      <div class="growth-chart">
-        <div class="chart-grid"></div>
-        <div class="chart-bars" data-growth-chart></div>
-      </div>
-    </div>
-    <div class="chart-legend">
-      <span class="legend-item"><span class="legend-dot bar-spend"></span>Spend</span>
-      <span class="legend-item"><span class="legend-dot bar-leads"></span>Leads</span>
-      <span class="legend-item"><span class="legend-dot bar-offers"></span>Offers</span>
-      <span class="legend-item"><span class="legend-dot bar-sales"></span>Sales</span>
-      <span class="legend-item"><span class="legend-dot bar-upsell"></span>Upsell</span>
-    </div>
-  </div>
-  <div class="card">
-    <h2 data-i18n="executive_scorecard">Executive Scorecard</h2>
-    <p class="small">Trend chips compare the selected week to the previous week.</p>
-    <div class="grid cols4">
-      <div><div class="small">Spend</div><div class="score" data-kpi="dash_spend">€0</div><div data-trend="spend"></div></div>
-      <div><div class="small">Leads</div><div class="score" data-kpi="dash_leads">0</div><div data-trend="leads"></div></div>
-      <div><div class="small">Offer requests</div><div class="score" data-kpi="dash_offer_requests">0</div><div data-trend="offer_requests"></div></div>
-      <div><div class="small">Sales</div><div class="score" data-kpi="dash_sales">0</div><div data-trend="sales"></div></div>
-      <div><div class="small">CAC</div><div class="score" data-kpi="dash_cac">—</div></div>
-      <div><div class="small">CPL</div><div class="score" data-kpi="dash_cpl">—</div></div>
-      <div><div class="small">Upsell revenue</div><div class="score" data-kpi="dash_upsell">€0</div><div data-trend="upsell_revenue"></div></div>
-      <div><div class="small">Offer rate</div><div class="score" data-kpi="dash_offer_rate">0%</div></div>
-    </div>
-  </div>
-  <div class="card">
-    <h2 data-i18n="what_next">What should we do next?</h2>
-    <div class="note"><b data-i18n="weekly_change">Weekly change:</b><br><span data-kpi="dash_week_summary">No weekly summary added yet.</span></div>
-    <br>
-    <div class="note"><b data-i18n="recommended_action">Recommended action:</b><br><span data-kpi="dash_next_action">Add weekly data to generate next action.</span></div>
-  </div>
-</section>
-
-<section id="weekly" class="section">
-  <div class="card">
-    <div class="tag">Interactive weekly tracking</div>
-    <h1>Weekly growth tracker</h1>
-    <p class="small">Update status per lever. This feeds progress scoring.</p>
-  </div>
-  <div class="card">
-    <h2>Progress by success lever</h2>
-    <div data-category-progress></div>
-  </div>
-</section>
-
-<section id="matrix" class="section">
-  <div class="card">
-    <div class="tag" data-i18n="matrix_tag">Attribution wins</div>
-    <h1 data-i18n="matrix_title">Communications Measurement Matrix</h1>
-    <p class="small" data-i18n="matrix_intro">A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.</p>
-  </div>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px">
-      <h2 data-i18n="weekly_overview" style="margin:0">Weekly Tracking Overview</h2>
-      <button class="btn ghost small" type="button" onclick="exportWeeklyCSV()">Export CSV</button>
-    </div>
-    <div class="table-scroll">
-      <table class="table">
-        <thead><tr><th>Week</th><th>Spend</th><th>Leads</th><th>Offers</th><th>Callbacks</th><th>Sales</th><th>Upsell</th><th>CAC</th><th>CPL</th><th>Offer Rate</th><th>Sale Rate</th><th>What changed</th><th>Decision</th></tr></thead>
-        <tbody data-weekly-overview></tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="raci" class="section">
-  <div class="card">
-    <div class="tag" data-i18n="raci_tag">RACI · Approval & Development Flow</div>
-    <h1 data-i18n="raci_title">Approval & Development Flow</h1>
-    <p class="small" data-i18n="raci_intro">Veronica = Growth Lead. Krista = Operations Approval. Robert = Budget / Finance / Business Approval. Nick = Development / Technical / Odoo. Robi = Project Coordinator.</p>
-  </div>
-  <div class="grid cols4">
-    <div class="card"><div class="tag" data-i18n="with_nick">With Nick</div><div class="score" data-raci-kpi="raci_nick">0</div></div>
-    <div class="card"><div class="tag" data-i18n="with_krista">With Krista</div><div class="score" data-raci-kpi="raci_krista">0</div></div>
-    <div class="card"><div class="tag" data-i18n="with_robert">With Robert</div><div class="score" data-raci-kpi="raci_robert">0</div></div>
-    <div class="card"><div class="tag" data-i18n="with_robi">With Robi</div><div class="score" data-raci-kpi="raci_robi">0</div></div>
-  </div>
-  <div class="grid cols4">
-    <div class="card"><div class="tag" data-i18n="with_veronica">With Veronica</div><div class="score" data-raci-kpi="raci_veronica">0</div></div>
-    <div class="card"><div class="tag" data-i18n="overdue">Overdue</div><div class="score" data-raci-kpi="raci_overdue">0</div></div>
-    <div class="card"><div class="tag" data-i18n="due_soon">Due soon</div><div class="score" data-raci-kpi="raci_due_soon">0</div></div>
-    <div class="card"><div class="tag" data-i18n="approval_queue">Approval queue</div><div class="score" data-raci-kpi="raci_approvals">0</div></div>
-  </div>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px">
-      <h2 data-i18n="approval_tracker" style="margin:0">Approval tracker</h2>
-      <button class="btn ghost small" type="button" onclick="exportRaciCSV()">Export CSV</button>
-    </div>
-    <div class="table-scroll">
-      <table class="table">
-        <thead><tr><th>Phase</th><th>Work item</th><th>Responsible</th><th>Accountable</th><th>Consulted</th><th>Informed</th><th>Current owner</th><th>Due date</th><th>Status</th><th>Next action</th></tr></thead>
-        <tbody id="raciBody"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="card note"><b data-i18n="notifications">Notifications:</b> <span data-i18n="notifications_text">Static HTML can flag overdue items visually. Email/push alerts require Google Apps Script triggers later.</span></div>
-</section>
-
-<section id="targets" class="section">
-  <div class="card">
-    <div class="tag" data-i18n="targets_tag">Eerlijk over de cijfers</div>
-    <h1 data-i18n="targets_title">Realistische klantdoelen</h1>
-    <p data-i18n="targets_intro">De 1.000 in zes maanden is ambitieus. Beter onder-beloven en over-leveren.</p>
-  </div>
-  <div class="card">
-    <table class="table">
-      <thead><tr><th>Periode</th><th>Wat we doen</th><th>Klanten</th></tr></thead>
-      <tbody>
-        <tr><td>Q1 · M1—M3</td><td>Fundering. Eerste tests vanaf maand 3.</td><td>25–80</td></tr>
-        <tr><td>Q2 · M4—M6</td><td>Opschalen wat werkt.</td><td>200–400</td></tr>
-        <tr><td>6 maanden realistisch</td><td>Bandbreedte 250 tot 500.</td><td>250–500</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
+}</div></div></section>
+<section id="data_input" class="section"><div class="card"><div class="tag">Live weekly input</div><h1>Weekly data input</h1><p class="small">Add weekly media and conversion numbers here. The Performance Dashboard updates automatically.</p></div>
+<div class="card"><div class="tag">Media spend growth</div><h2>Spend trend</h2><p class="small">Small live view of weekly spend across W1–W26.</p><div class="spend-spark" data-spend-spark></div></div><div class="card"><h2>Select week</h2><select data-week-select></select></div><div class="grid cols4"><div class="card"><div class="tag">Media</div><label class="small">Spend</label><input data-week-field="spend" type="number" placeholder="0"></div><div class="card"><div class="tag">Acquisition</div><label class="small">Leads</label><input data-week-field="leads" type="number" placeholder="0"></div><div class="card"><div class="tag">Conversion</div><label class="small">Offer requests</label><input data-week-field="offer_requests" type="number" placeholder="0"></div><div class="card"><div class="tag">Sales</div><label class="small">Sales</label><input data-week-field="sales" type="number" placeholder="0"></div></div><div class="grid cols4"><div class="card"><div class="tag">Assisted sales</div><label class="small">Callbacks</label><input data-week-field="callbacks" type="number" placeholder="0"></div><div class="card"><div class="tag">Expansion</div><label class="small">Upsell revenue</label><input data-week-field="upsell_revenue" type="number" placeholder="0"></div><div class="card"><div class="tag">Retention</div><label class="small">Churn risk signal</label><input data-week-field="churn_risk" type="number" placeholder="0"></div><div class="card"><div class="tag">Lifecycle</div><label class="small">Retention signal</label><input data-week-field="retention_signal" placeholder="e.g. WiFi complaints down"></div></div><div class="grid cols2"><div class="card"><h2>What changed this week?</h2><textarea data-week-field="what_changed" placeholder="Short weekly summary"></textarea></div><div class="card"><h2>Scale / Iterate / Kill decision</h2><textarea data-week-field="decision" placeholder="What should happen next?"></textarea></div></div></section>
+<section id="dashboard" class="section"><div class="card"><div class="tag" data-i18n="dashboard_tag">Executive Dashboard</div><h1 data-i18n="dashboard_title">Are we growing profitably?</h1><p class="small" data-i18n="dashboard_intro">Top layer answers performance. Lower layers explain why and what to do next.</p></div><div class="card progress-hero"><div class="tag" data-i18n="progress_tag">Growth Journey Progress</div><h2 data-i18n="progress_title">Van basecamp naar schaalbaar groeisysteem</h2><p class="small" data-i18n="progress_intro">Connected to Gantt task status and weekly tracking status.</p><div class="grid cols4"><div><div class="small" data-i18n="weighted_progress">Weighted progress</div><div class="score" data-progress-overall>0%</div></div><div><div class="small">M1</div><strong data-phase-pct="m1">0%</strong></div><div><div class="small">M2</div><strong data-phase-pct="m2">0%</strong></div><div><div class="small" data-i18n="scale_readiness">Scale readiness</div><span data-readiness-label class="readiness-label readiness-risk">Foundation risk</span></div></div><div class="climb-track"><div class="climb-line"></div><div class="climber" data-climber>⛰️</div><div class="checkpoint" data-checkpoint="m1" style="left:5%"><div class="checkpoint-dot">M1</div><small>Basecamp</small></div><div class="checkpoint" data-checkpoint="m2" style="left:23%"><div class="checkpoint-dot">M2</div><small>Foundation</small></div><div class="checkpoint" data-checkpoint="m3" style="left:41%"><div class="checkpoint-dot">M3</div><small>Test</small></div><div class="checkpoint" data-checkpoint="m4" style="left:59%"><div class="checkpoint-dot">M4</div><small>Scale</small></div><div class="checkpoint" data-checkpoint="m5" style="left:77%"><div class="checkpoint-dot">M5</div><small>Ops</small></div><div class="checkpoint" data-checkpoint="m6" style="left:95%"><div class="checkpoint-dot">M6</div><small>Summit</small></div></div><div class="cat-bar"><div class="cat-fill" data-progress-fill></div></div>
+<div class="manual-progress">
+  <div class="small"><b data-i18n="manual_title">Manual weekly progress override</b> · <span data-i18n="manual_desc">use this during stakeholder check-ins if you want to show a practical progress read beyond task status.</span></div>
+  <input type="range" min="0" max="100" value="-1" data-manual-progress oninput="setManualProgress(this.value)">
+  <div class="small"><span data-i18n="manual_view">Manual view:</span> <b data-manual-progress-label>Auto from Gantt</b></div>
+  <button class="btn secondary" type="button" style="margin-top:8px" onclick="clearManualProgress()" data-i18n="use_gantt">Use Gantt progress</button>
+</div></div><div class="card"><div class="tag" data-i18n="weekly_chart">Weekly Growth Chart</div><h2 data-i18n="performance_trend">Performance trend per week</h2><div class="chart-summary"><div class="mini-metric"><span class="small">Spend</span><strong data-chart-summary="chart_total_spend">€0</strong></div><div class="mini-metric"><span class="small">Leads</span><strong data-chart-summary="chart_total_leads">0</strong></div><div class="mini-metric"><span class="small">Offers</span><strong data-chart-summary="chart_total_offers">0</strong></div><div class="mini-metric"><span class="small">Sales</span><strong data-chart-summary="chart_total_sales">0</strong></div><div class="mini-metric"><span class="small">Upsell</span><strong data-chart-summary="chart_total_upsell">€0</strong></div></div><div class="chart-wrap"><div class="growth-chart"><div class="chart-grid"></div><div class="chart-bars" data-growth-chart></div></div></div><div class="chart-legend"><span class="legend-item"><span class="legend-dot bar-spend"></span>Spend</span><span class="legend-item"><span class="legend-dot bar-leads"></span>Leads</span><span class="legend-item"><span class="legend-dot bar-offers"></span>Offers</span><span class="legend-item"><span class="legend-dot bar-sales"></span>Sales</span><span class="legend-item"><span class="legend-dot bar-upsell"></span>Upsell</span></div></div><div class="card"><h2 data-i18n="executive_scorecard">Executive Scorecard</h2><div class="grid cols4"><div><div class="small">Spend</div><div class="score" data-kpi="dash_spend">€0</div></div><div><div class="small">Leads</div><div class="score" data-kpi="dash_leads">0</div></div><div><div class="small">Offer requests</div><div class="score" data-kpi="dash_offer_requests">0</div></div><div><div class="small">Sales</div><div class="score" data-kpi="dash_sales">0</div></div><div><div class="small">CAC</div><div class="score" data-kpi="dash_cac">—</div></div><div><div class="small">CPL</div><div class="score" data-kpi="dash_cpl">—</div></div><div><div class="small">Upsell revenue</div><div class="score" data-kpi="dash_upsell">€0</div></div><div><div class="small">Offer rate</div><div class="score" data-kpi="dash_offer_rate">0%</div></div></div></div><div class="card"><h2 data-i18n="what_next">What should we do next?</h2><div class="note"><b data-i18n="weekly_change">Weekly change:</b><br><span data-kpi="dash_week_summary">No weekly summary added yet.</span></div><br><div class="note"><b data-i18n="recommended_action">Recommended action:</b><br><span data-kpi="dash_next_action">Add weekly data to generate next action.</span></div></div></section>
+<section id="weekly" class="section"><div class="card"><div class="tag">Interactive weekly tracking</div><h1>Weekly growth tracker</h1><p class="small">Update status per lever. This feeds progress scoring.</p></div><div class="card"><h2>Progress by success lever</h2><div data-category-progress></div></div></section>
+<section id="matrix" class="section"><div class="card"><div class="tag" data-i18n="matrix_tag">Attribution wins</div><h1 data-i18n="matrix_title">Communications Measurement Matrix</h1><p class="small" data-i18n="matrix_intro">A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.</p></div><div class="card"><h2 data-i18n="weekly_overview">Weekly Tracking Overview</h2><div class="table-scroll"><table class="table"><tr><th>Week</th><th>Spend</th><th>Leads</th><th>Offers</th><th>Callbacks</th><th>Sales</th><th>Upsell</th><th>CAC</th><th>CPL</th><th>Offer Rate</th><th>Sale Rate</th><th>What changed</th><th>Decision</th></tr><tbody data-weekly-overview></tbody></table></div></div></section>
+<section id="raci" class="section"><div class="card"><div class="tag" data-i18n="raci_tag">RACI · Approval & Development Flow</div><h1 data-i18n="raci_title">Approval & Development Flow</h1><p class="small" data-i18n="raci_intro">Veronica = Growth Lead. Krista = Operations Approval. Robert = Budget / Finance / Business Approval. Nick = Development / Technical / Odoo. Robi = Project Coordinator.</p></div><div class="grid cols4"><div class="card"><div class="tag" data-i18n="with_nick">With Nick</div><div class="score" data-raci-kpi="raci_nick">0</div></div><div class="card"><div class="tag" data-i18n="with_krista">With Krista</div><div class="score" data-raci-kpi="raci_krista">0</div></div><div class="card"><div class="tag" data-i18n="with_robert">With Robert</div><div class="score" data-raci-kpi="raci_robert">0</div></div><div class="card"><div class="tag" data-i18n="with_robi">With Robi</div><div class="score" data-raci-kpi="raci_robi">0</div></div></div><div class="grid cols4"><div class="card"><div class="tag" data-i18n="with_veronica">With Veronica</div><div class="score" data-raci-kpi="raci_veronica">0</div></div><div class="card"><div class="tag" data-i18n="overdue">Overdue</div><div class="score" data-raci-kpi="raci_overdue">0</div></div><div class="card"><div class="tag" data-i18n="due_soon">Due soon</div><div class="score" data-raci-kpi="raci_due_soon">0</div></div><div class="card"><div class="tag" data-i18n="approval_queue">Approval queue</div><div class="score" data-raci-kpi="raci_approvals">0</div></div></div><div class="card"><h2 data-i18n="approval_tracker">Approval tracker</h2><div class="table-scroll"><table class="table"><tr><th>Phase</th><th>Work item</th><th>Responsible</th><th>Accountable</th><th>Consulted</th><th>Informed</th><th>Current owner</th><th>Due date</th><th>Status</th><th>Next action</th></tr><tbody id="raciBody"></tbody></table></div></div><div class="card note"><b data-i18n="notifications">Notifications:</b> <span data-i18n="notifications_text">Static HTML can flag overdue items visually. Email/push alerts require Google Apps Script triggers later.</span></div></section>
+<section id="targets" class="section"><div class="card"><div class="tag" data-i18n="targets_tag">Eerlijk over de cijfers</div><h1 data-i18n="targets_title">Realistische klantdoelen</h1><p data-i18n="targets_intro">De 1.000 in zes maanden is ambitieus. Beter onder-beloven en over-leveren.</p></div><div class="card"><table class="table"><tr><th>Periode</th><th>Wat we doen</th><th>Klanten</th></tr><tr><td>Q1 · M1—M3</td><td>Fundering. Eerste tests vanaf maand 3.</td><td>25–80</td></tr><tr><td>Q2 · M4—M6</td><td>Opschalen wat werkt.</td><td>200–400</td></tr><tr><td>6 maanden realistisch</td><td>Bandbreedte 250 tot 500.</td><td>250–500</td></tr></table></div></section>
 </main></div>
-<div class="toast" data-toast></div>
-
 <script>
-'use strict';
-
-// ===== CONSTANTS =====
-const PROJECT_START = new Date('2026-04-29T00:00:00');
-const PASSWORD = 'zoveilig2026';
-const DEFAULT_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzJm93h6hFEyqbzFyUrr2zBePJy_HKGbxgplrABQqaM/exec';
-
-const roadmapPhases = [{id:'m1'},{id:'m2'},{id:'m3'},{id:'m4'},{id:'m5'},{id:'m6'}];
-const categoryWeights = {
-  'Tracking & Data':25,'Lifecycle & Retention':20,'Commercial & Conversion':20,
-  'Customer & Signal':15,'Google Ads & Meta Audit':10,'Research & Foundation':10,
-  'Systems & Governance':10,'Experimentation':12,'Measurement':12,'SEO':12,
-  'Optimization':15,'Automation':15,Other:5
-};
-
-const ganttM1M2 = [
-  ['Research & Foundation',[
-    'Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)',
-    'Brand voice en content-strategie',
-    'Website-fundament (positionering, hoofdpagina’s, vertrouwens-architectuur)',
-    'Business discovery & stakeholder alignment',
-    'Current performance baseline (Meta + Google Ads)',
-    'Budget allocation audit (current spend vs performance)',
-    'Agency output review (what has been done vs results)',
-    'Define growth targets vs realistic capacity',
-    'Document gaps in current marketing + sales flow'
-  ]],
-  ['Commercial & Conversion',[
-    'Buying model (monthly / once-off / lease + NL legal check)',
-    'Define conversion path: Buy Now',
-    'Define conversion path: Get Callback',
-    'Identify drop-off between offer → client',
-    'Document full funnel: Lead → Opportunity → Quote → Sale',
-    'Validate funnel reality vs theory'
-  ]],
-  ['Customer & Signal',[
-    'Segment: usage active vs inactive',
-    'Segment: WiFi issues risk signal',
-    'Segment: contract type',
-    'Define high-value / retained cluster',
-    'Define at-risk cluster',
-    'Define new / onboarding journey'
-  ]],
-  ['Systems & Governance',[
-    'Define governance model with Nick (Odoo)',
-    'Audit flow: Landing pages → Odoo → NewCon → Sales',
-    'Standardise NewCon offer creation flow',
-    'Audit quote approval process',
-    'Define budget approval process (Robert & Krista)',
-    'Define escalation paths for delays',
-    'Define automation rules'
-  ]],
-  ['Tracking & Data',[
-    'Define canonical customer ID',
-    'Define event taxonomy',
-    'Implement GA4 + GTM',
-    'Install Meta + Google pixels',
-    'Define events: brochure_download, offer_request, callback_request, sale_completed',
-    'Align tracking with funnel stages'
-  ]],
-  ['Google Ads & Meta Audit',[
-    'Extract campaign structure from agency',
-    'Extract learnings + creative history',
-    'Extract targeting logic',
-    'Extract CAC / CPL benchmarks',
-    'Full media audit (performance, waste, scaling gaps)',
-    'Identify budget inefficiencies + reallocation opportunities',
-    'Define new media strategy direction'
-  ]]
+const roadmapPhases=[{id:'m1'},{id:'m2'},{id:'m3'},{id:'m4'},{id:'m5'},{id:'m6'}];
+const categoryWeights={'Tracking & Data':25,'Lifecycle & Retention':20,'Commercial & Conversion':20,'Customer & Signal':15,'Google Ads & Meta Audit':10,'Research & Foundation':10,'Systems & Governance':10,'Experimentation':12,'Measurement':12,'SEO':12,'Optimization':15,'Automation':15,Other:5};
+const DEFAULT_SHEET_ENDPOINT='https://script.google.com/macros/s/AKfycbzJm93h6hFEyqbzFyUrr2zBePJy_HKGbxgplrABQqaM/exec';
+const ganttM1M2=[
+['Research & Foundation',[
+'Cluster-architectuur (gedragsclusters, journey-fases, boodschap-mapping)',
+'Brand voice en content-strategie',
+'Website-fundament (positionering, hoofdpagina’s, vertrouwens-architectuur)',
+'Business discovery & stakeholder alignment',
+'Current performance baseline (Meta + Google Ads)',
+'Budget allocation audit (current spend vs performance)',
+'Agency output review (what has been done vs results)',
+'Define growth targets vs realistic capacity',
+'Document gaps in current marketing + sales flow'
+]],
+['Commercial & Conversion',[
+'Buying model (monthly / once-off / lease + NL legal check)',
+'Define conversion path: Buy Now',
+'Define conversion path: Get Callback',
+'Identify drop-off between offer → client',
+'Document full funnel: Lead → Opportunity → Quote → Sale',
+'Validate funnel reality vs theory'
+]],
+['Customer & Signal',[
+'Segment: usage active vs inactive',
+'Segment: WiFi issues risk signal',
+'Segment: contract type',
+'Define high-value / retained cluster',
+'Define at-risk cluster',
+'Define new / onboarding journey'
+]],
+['Systems & Governance',[
+'Define governance model with Nick (Odoo)',
+'Audit flow: Landing pages → Odoo → NewCon → Sales',
+'Standardise NewCon offer creation flow',
+'Audit quote approval process',
+'Define budget approval process (Robert & Krista)',
+'Define escalation paths for delays',
+'Define automation rules'
+]],
+['Tracking & Data',[
+'Define canonical customer ID',
+'Define event taxonomy',
+'Implement GA4 + GTM',
+'Install Meta + Google pixels',
+'Define events: brochure_download, offer_request, callback_request, sale_completed',
+'Align tracking with funnel stages'
+]],
+['Google Ads & Meta Audit',[
+'Extract campaign structure from agency',
+'Extract learnings + creative history',
+'Extract targeting logic',
+'Extract CAC / CPL benchmarks',
+'Full media audit (performance, waste, scaling gaps)',
+'Identify budget inefficiencies + reallocation opportunities',
+'Define new media strategy direction'
+]]
 ];
-
-const ganttM3M4 = [
-  ['Experimentation',['Define hypothesis framework','Create experiment design rules','Implement experiment tracking IDs','Build learning log','Apply creative tagging','Run structured experiments']],
-  ['Measurement',['Define CAC, churn, ARPU','Set up cohort tracking','Introduce holdout groups','Start incremental measurement','Introduce retention and LTV tracking']],
-  ['SEO',['Business discovery session','Initial tech audit','Full tech audit','Dev implementation phase','Post audit implementation checks','Keyword research','Dashboard creation / reporting','Metadata optimisation','Metadata implementation','Competitor analysis','Content analysis','Gap analysis','Backlink profile analysis','Backlink detox + disavow','Strategy roadmap months 4–6','Monthly reporting & client calls']]
-];
-
-const ganttM5M6 = [
-  ['Optimization',['Implement profit-based budget allocation','Budget shifts based on LTV / retention / ROI','Run weekly growth loop','Introduce incremental measurement']],
-  ['Automation',['Deploy lifecycle automation at scale','Implement decision rules','Introduce AI-assisted execution','Controlled automation']]
-];
-
-const raciItems = [
-  ['M1','Meta + Google audit → approval','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],
-  ['M1','Tracking architecture plan (GA4 + GTM)','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M1','Tracking implementation (GTM + website scripts)','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],
-  ['M1','Website structure / conversion logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M1','Offer structure / pricing flow','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],
-  ['M1','Lead handling flow / Odoo logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M2','Website development','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],
-  ['M2','Tracking QA / data validation','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M2','Lifecycle flows: onboarding + upsell','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M2','Creative direction / brand voice','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],
-  ['M3','Campaign launch: Meta + Google','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],
-  ['M3','Experiment framework / tracking IDs','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M3','Landing page testing','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M3','SEO strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],
-  ['M4','SEO implementation','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],
-  ['M4','Campaign scaling decisions','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],
-  ['M4','Content rollout: SEO + brand','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Krista'],
-  ['M5','Automation rollout: CRM + lifecycle','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],
-  ['M5','Budget allocation logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert'],
-  ['M5','Weekly growth loop','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],
-  ['M6','Reporting & insights','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],
-  ['M6','Playbooks / documentation','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],
-  ['M6','Year 2 strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert']
-];
-
-// ===== I18N =====
-const i18n = {
-  en: {
+const ganttM3M4=[['Experimentation',['Define hypothesis framework','Create experiment design rules','Implement experiment tracking IDs','Build learning log','Apply creative tagging','Run structured experiments']],['Measurement',['Define CAC, churn, ARPU','Set up cohort tracking','Introduce holdout groups','Start incremental measurement','Introduce retention and LTV tracking']],['SEO',['Business discovery session','Initial tech audit','Full tech audit','Dev implementation phase','Post audit implementation checks','Keyword research','Dashboard creation / reporting','Metadata optimisation','Metadata implementation','Competitor analysis','Content analysis','Gap analysis','Backlink profile analysis','Backlink detox + disavow','Strategy roadmap months 4–6','Monthly reporting & client calls']]];
+const ganttM5M6=[['Optimization',['Implement profit-based budget allocation','Budget shifts based on LTV / retention / ROI','Run weekly growth loop','Introduce incremental measurement']],['Automation',['Deploy lifecycle automation at scale','Implement decision rules','Introduce AI-assisted execution','Controlled automation']]];
+const raciItems=[['M1','Meta + Google audit → approval','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M1','Tracking architecture plan (GA4 + GTM)','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Tracking implementation (GTM + website scripts)','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M1','Website structure / conversion logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M1','Offer structure / pricing flow','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M1','Lead handling flow / Odoo logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Website development','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M2','Tracking QA / data validation','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Lifecycle flows: onboarding + upsell','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M2','Creative direction / brand voice','Veronica · Growth Lead','Krista · Operations Approval','Robert · Budget Approval','Robi · Project Coordinator','Krista'],['M3','Campaign launch: Meta + Google','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M3','Experiment framework / tracking IDs','Veronica · Growth Lead','Veronica · Growth Lead','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','Landing page testing','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M3','SEO strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','Nick · Technical / Odoo','Robi · Project Coordinator','Veronica'],['M4','SEO implementation','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M4','Campaign scaling decisions','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M4','Content rollout: SEO + brand','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Krista'],['M5','Automation rollout: CRM + lifecycle','Nick · Development / Technical / Odoo','Veronica · Growth Lead','—','Robi · Project Coordinator','Nick'],['M5','Budget allocation logic','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert'],['M5','Weekly growth loop','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Reporting & insights','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Veronica'],['M6','Playbooks / documentation','Veronica · Growth Lead','Veronica · Growth Lead','—','Robi · Project Coordinator','Veronica'],['M6','Year 2 strategy','Veronica · Growth Lead','Krista · Ops / Robert · Budget','—','Robi · Project Coordinator','Robert']];
+function unlockDashboard(){const input=document.getElementById('passwordInput'),error=document.getElementById('passwordError');if(input&&input.value==='zoveilig2026'){sessionStorage.setItem('zv_unlocked','true');document.getElementById('passwordScreen')?.classList.add('hidden')}else if(error){error.textContent='Incorrect password'}}window.unlockDashboard=unlockDashboard;
+function initPasswordGate(){if(sessionStorage.getItem('zv_unlocked')==='true')document.getElementById('passwordScreen')?.classList.add('hidden')}
+const i18n={
+  en:{
     nav_journey:'01 Work Journey',nav_data:'05 Weekly Data Input',nav_dashboard:'06 Performance Dashboard',nav_weekly:'07 Weekly Tracking',nav_matrix:'08 Measurement Matrix',nav_raci:'09 RACI / Approvals',nav_targets:'10 Numbers',
     journey_tag:'Project tracker',journey_title:'The work journey',journey_intro:'A simple stakeholder view: where we are, what we are building, what is being tested, what is being scaled, and what is being handed over.',
     phase_foundation:'Foundation',phase_foundation_desc:'Audit, research, positioning, tracking and basic content.',phase_test:'Test & Learn',phase_test_desc:'Small tests, first paid learnings, first CAC readout.',phase_scale:'Scale',phase_scale_desc:'Winners get budget. Losers stop without debate.',phase_consolidate:'Consolidate',phase_consolidate_desc:'Reporting, SOPs, playbooks and handover.',
     milestone_tag:'Mijlpalen & Ritme',milestone_title:'Belangrijke beslismomenten & ritme',operating_rhythm:'Werkritme',daily:'Dagelijks: Veronica ↔ Krista (operationele afstemming)',biweekly:'Tweewekelijks: Krista + Robert + Veronica (status & beslissingen)',monthly:'Maandelijks: strategisch checkpoint',timeline_title:'Belangrijke planning (vanaf 29 april 2026)',timeline_1:'Nu → midden mei: audit, trackingplan, brand voice richting',timeline_2:'Week van 13–17 mei (ochtend): strategie + brand voice presentatie',timeline_3:'Midden mei → juni: websitebouw, tracking, lifecycle flows',timeline_4:'Eind juni: website live + tracking actief',timeline_5:'Juli: test & learn fase start',media_guideline:'Richtlijn mediabudget:',media_1:'M1–M2: verspilling verminderen, leerbudget behouden.',media_2:'Na strategie: gecontroleerde herverdeling.',media_3:'Na website launch: opschalen op basis van bewezen performance.',
     dashboard_tag:'Executive Dashboard',dashboard_title:'Are we growing profitably?',dashboard_intro:'Top layer answers performance. Lower layers explain why and what to do next.',progress_tag:'Growth Journey Progress',progress_title:'From basecamp to scalable growth system',progress_intro:'Connected to Gantt task status and weekly tracking status.',weighted_progress:'Weighted progress',scale_readiness:'Scale readiness',manual_title:'Manual weekly progress override',manual_desc:'use this during stakeholder check-ins if you want to show a practical progress read beyond task status.',manual_view:'Manual view:',use_gantt:'Use Gantt progress',weekly_chart:'Weekly Growth Chart',performance_trend:'Performance trend per week',executive_scorecard:'Executive Scorecard',what_next:'What should we do next?',weekly_change:'Weekly change:',recommended_action:'Recommended action:',
-    matrix_tag:'Attribution wins',matrix_title:'Communications Measurement Matrix',matrix_intro:'A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.',weekly_overview:'Weekly Tracking Overview',
+    spend:'Spend',leads:'Leads',offers:'Offers',sales:'Sales',upsell:'Upsell',offer_requests:'Offer requests',cac:'CAC',cpl:'CPL',upsell_revenue:'Upsell revenue',offer_rate:'Offer rate',
+    matrix_tag:'Attribution wins',matrix_title:'Communications Measurement Matrix',matrix_intro:'A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.',weekly_overview:'Weekly Tracking Overview',callbacks:'Callbacks',sale_rate:'Sale Rate',what_changed:'What changed',decision:'Decision',
     raci_tag:'RACI · Approval & Development Flow',raci_title:'Approval & Development Flow',raci_intro:'Veronica = Growth Lead. Krista = Operations Approval. Robert = Budget / Finance / Business Approval. Nick = Development / Technical / Odoo. Robi = Project Coordinator.',with_nick:'With Nick',with_krista:'With Krista',with_robert:'With Robert',with_robi:'With Robi',with_veronica:'With Veronica',overdue:'Overdue',due_soon:'Due soon',approval_queue:'Approval queue',approval_tracker:'Approval tracker',notifications:'Notifications:',notifications_text:'Static HTML can flag overdue items visually. Email/push alerts require Google Apps Script triggers later.',
-    targets_tag:'Honest about the numbers',targets_title:'Realistic customer targets',targets_intro:'1,000 customers in six months is ambitious. Better to under-promise and over-deliver.'
+    targets_tag:'Honest about the numbers',targets_title:'Realistic customer targets',targets_intro:'1,000 customers in six months is ambitious. Better to under-promise and over-deliver.',period:'Period',what_we_do:'What we do',customers:'Customers'
   },
-  nl: {
+  nl:{
     nav_journey:'01 Werkreis',nav_data:'05 Wekelijkse Data Input',nav_dashboard:'06 Performance Dashboard',nav_weekly:'07 Weekly Tracking',nav_matrix:'08 Measurement Matrix',nav_raci:'09 RACI / Approvals',nav_targets:'10 Cijfers',
     journey_tag:'Project tracker',journey_title:'De reis van het werk',journey_intro:'Een simpele stakeholder-view: waar staan we, wat bouwen we, wat wordt getest, wat wordt opgeschaald en wat wordt overgedragen.',
     phase_foundation:'Fundering',phase_foundation_desc:'Audit, onderzoek, positionering, tracking en basiscontent.',phase_test:'Test & Leer',phase_test_desc:'Klein testen, eerste paid learnings, eerste CAC-uitlezing.',phase_scale:'Opschalen',phase_scale_desc:'Winnaars krijgen budget. Verliezers stoppen zonder discussie.',phase_consolidate:'Consolideren',phase_consolidate_desc:'Rapportage, SOPs, playbooks en overdracht.',
     milestone_tag:'Milestones & Rhythm',milestone_title:'Key decision moments & cadence',operating_rhythm:'Operating rhythm',daily:'Daily: Veronica ↔ Krista (execution sync)',biweekly:'Bi-weekly: Krista + Robert + Veronica (status & decisions)',monthly:'Monthly: Strategic checkpoint',timeline_title:'Key timeline (starting 29 April 2026)',timeline_1:'Now → mid May: Audit, tracking plan, brand voice direction',timeline_2:'Week of 13–17 May (morning): Strategy + Brand Voice presentation',timeline_3:'Mid May → June: Website build, tracking, lifecycle flows',timeline_4:'End June: Website launch + tracking live',timeline_5:'July: Test & learn phase begins',media_guideline:'Media spend guideline:',media_1:'M1–M2: Reduce waste, maintain learning budget.',media_2:'Post strategy: Controlled reallocation.',media_3:'Post website launch: Scale based on validated performance.',
     dashboard_tag:'Executive Dashboard',dashboard_title:'Are we growing profitably?',dashboard_intro:'Top layer answers performance. Lower layers explain why and what to do next.',progress_tag:'Growth Journey Progress',progress_title:'Van basecamp naar schaalbaar groeisysteem',progress_intro:'Connected to Gantt task status and weekly tracking status.',weighted_progress:'Weighted progress',scale_readiness:'Scale readiness',manual_title:'Manual weekly progress override',manual_desc:'use this during stakeholder check-ins if you want to show a practical progress read beyond task status.',manual_view:'Manual view:',use_gantt:'Use Gantt progress',weekly_chart:'Weekly Growth Chart',performance_trend:'Performance trend per week',executive_scorecard:'Executive Scorecard',what_next:'What should we do next?',weekly_change:'Weekly change:',recommended_action:'Recommended action:',
-    matrix_tag:'Attribution wins',matrix_title:'Communications Measurement Matrix',matrix_intro:'A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.',weekly_overview:'Weekly Tracking Overview',
+    spend:'Spend',leads:'Leads',offers:'Offers',sales:'Sales',upsell:'Upsell',offer_requests:'Offer requests',cac:'CAC',cpl:'CPL',upsell_revenue:'Upsell revenue',offer_rate:'Offer rate',
+    matrix_tag:'Attribution wins',matrix_title:'Communications Measurement Matrix',matrix_intro:'A simple spreadsheet-style weekly view pulled from manual input or Google Sheets.',weekly_overview:'Weekly Tracking Overview',callbacks:'Callbacks',sale_rate:'Sale Rate',what_changed:'What changed',decision:'Decision',
     raci_tag:'RACI · Approval & Development Flow',raci_title:'Approval & Development Flow',raci_intro:'Veronica = Growth Lead. Krista = Operations Approval. Robert = Budget / Finance / Business Approval. Nick = Development / Technical / Odoo. Robi = Project Coordinator.',with_nick:'With Nick',with_krista:'With Krista',with_robert:'With Robert',with_robi:'With Robi',with_veronica:'With Veronica',overdue:'Overdue',due_soon:'Due soon',approval_queue:'Approval queue',approval_tracker:'Approval tracker',notifications:'Notifications:',notifications_text:'Static HTML can flag overdue items visually. Email/push alerts require Google Apps Script triggers later.',
-    targets_tag:'Eerlijk over de cijfers',targets_title:'Realistische klantdoelen',targets_intro:'De 1.000 in zes maanden is ambitieus. Beter onder-beloven en over-leveren.'
+    targets_tag:'Eerlijk over de cijfers',targets_title:'Realistische klantdoelen',targets_intro:'De 1.000 in zes maanden is ambitieus. Beter onder-beloven en over-leveren.',period:'Periode',what_we_do:'Wat we doen',customers:'Klanten'
   }
 };
-
 function setLang(lang){
-  localStorage.setItem('zv_lang', lang);
-  document.documentElement.lang = lang;
+  localStorage.setItem('zv_lang',lang);
+  document.documentElement.lang=lang;
   applyClientTranslations();
 }
-window.setLang = setLang;
-
+window.setLang=setLang;
 function applyClientTranslations(){
-  const lang = localStorage.getItem('zv_lang') || 'nl';
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (i18n[lang] && i18n[lang][key]) el.textContent = i18n[lang][key];
+  const lang=localStorage.getItem('zv_lang')||'nl';
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(i18n[lang]&&i18n[lang][key]) el.textContent=i18n[lang][key];
   });
 }
-
-// ===== HELPERS =====
-function numberValue(v){
-  const n = Number(String(v||'').replace(',','.'));
-  return Number.isFinite(n) ? n : 0;
-}
-function fmtNumber(n){ return Number(n||0).toLocaleString('en-US'); }
-function fmtCurrency(n){ return '€' + fmtNumber(Math.round(Number(n||0))); }
-function debounce(fn, delay=700){
-  let timer;
-  return function(...args){
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-// ===== TOAST =====
-let toastTimer;
-function showToast(message, type=''){
-  const el = document.querySelector('[data-toast]');
-  if (!el) return;
-  el.textContent = message;
-  el.className = 'toast show' + (type ? ' ' + type : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
-}
-
-// ===== PASSWORD =====
-function unlockDashboard(){
-  const input = document.getElementById('passwordInput');
-  const error = document.getElementById('passwordError');
-  if (input && input.value === PASSWORD){
-    sessionStorage.setItem('zv_unlocked', 'true');
-    document.getElementById('passwordScreen')?.classList.add('hidden');
-  } else if (error){
-    error.textContent = 'Incorrect password';
-  }
-}
-window.unlockDashboard = unlockDashboard;
-
-function initPasswordGate(){
-  if (sessionStorage.getItem('zv_unlocked') === 'true'){
-    document.getElementById('passwordScreen')?.classList.add('hidden');
-  }
-}
-
-// ===== WEEK DATA =====
-function buildDefaultWeeks(){
-  const weeks = {};
-  for (let i = 1; i <= 26; i++){
-    weeks['W'+i] = {spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0,retention_signal:'',what_changed:'',decision:''};
-  }
-  return weeks;
-}
-const defaultWeeks = buildDefaultWeeks();
-
-function getGrowthData(){
-  try {
-    return {...defaultWeeks, ...(JSON.parse(localStorage.getItem('zv_growth_data')) || {})};
-  } catch(e){
-    return {...defaultWeeks};
-  }
-}
-function saveGrowthData(data){
-  localStorage.setItem('zv_growth_data', JSON.stringify(data));
-}
-
-function currentProjectWeek(){
-  const now = new Date();
-  const days = Math.floor((now - PROJECT_START) / (1000*60*60*24));
-  const week = Math.floor(days / 7) + 1;
-  if (week < 1) return 1;
-  if (week > 26) return 26;
-  return week;
-}
-
-function jumpToCurrentWeek(){
-  const sel = document.querySelector('[data-week-select]');
-  if (!sel) return;
-  sel.value = 'W' + currentProjectWeek();
-  loadWeekForm();
-  renderPerformanceDashboard();
-  showToast('Jumped to W' + currentProjectWeek());
-}
-window.jumpToCurrentWeek = jumpToCurrentWeek;
-
-// ===== SHEET ENDPOINT =====
-function getSheetEndpoint(){
-  return document.querySelector('[data-sheet-endpoint]')?.value.trim()
-    || localStorage.getItem('zv_sheet_endpoint')
-    || DEFAULT_SHEET_ENDPOINT;
-}
-
-async function postToSheet(type, payload){
-  const endpoint = getSheetEndpoint();
-  if (!endpoint) return {ok:false, error:'No Sheet endpoint configured'};
-  try {
-    await fetch(endpoint, {
+function buildDefaultWeeks(){const weeks={};for(let i=1;i<=26;i++)weeks['W'+i]={spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0,retention_signal:'',what_changed:'',decision:''};return weeks}const defaultWeeks=buildDefaultWeeks();
+function getGrowthData(){try{return {...defaultWeeks,...(JSON.parse(localStorage.getItem('zv_growth_data'))||{})}}catch(e){return defaultWeeks}}
+function saveGrowthData(data){localStorage.setItem('zv_growth_data',JSON.stringify(data))}
+function getSheetEndpoint(){return document.querySelector('[data-sheet-endpoint]')?.value.trim()||localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT}
+async function postToSheet(type,payload){
+  const endpoint=getSheetEndpoint();
+  if(!endpoint) return {ok:false,error:'No Sheet endpoint configured'};
+  try{
+    await fetch(endpoint,{
       method:'POST',
       mode:'no-cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({type, payload})
+      body:JSON.stringify({type,payload})
     });
-    setSyncStatus('Saved to Google Sheet. Reload from sheet to confirm shared state.', 'ok');
+    setSyncStatus('Saved to Google Sheet. Refresh or load from sheet to confirm shared state.','ok');
     return {ok:true};
-  } catch(error){
-    console.warn('Sheet save failed', error);
-    setSyncStatus('Local save only. Google Sheet save failed.', 'error');
-    return {ok:false, error:error.message};
+  }catch(error){
+    console.warn('Sheet save failed',error);
+    setSyncStatus('Local save only. Google Sheet save failed.','error');
+    return {ok:false,error:error.message};
   }
 }
-
-// ===== STATUS HELPERS =====
-function statusWeight(value){
-  const v = String(value||'').toLowerCase();
-  if (v.includes('done') || v.includes('klaar')) return 1;
-  if (v.includes('waiting') || v.includes('feedback')) return 0.4;
-  if (v.includes('progress')) return 0.6;
-  return 0;
+function debounce(fn,delay=700){let timer;return function(...args){clearTimeout(timer);timer=setTimeout(()=>fn.apply(this,args),delay)}}
+function numberValue(v){const n=Number(String(v||'').replace(',','.'));return Number.isFinite(n)?n:0}
+function selectedWeek(){return document.querySelector('[data-week-select]')?.value||'W1'}
+function statusWeight(value){const v=String(value||'').toLowerCase();if(v.includes('done')||v.includes('klaar'))return 1;if(v.includes('waiting')||v.includes('feedback'))return .4;if(v.includes('progress'))return .6;return 0}
+function statusClass(value){const v=String(value||'').toLowerCase();if(v.includes('done'))return 'status-done';if(v.includes('waiting')||v.includes('feedback'))return 'status-waiting-feedback';if(v.includes('progress'))return 'status-in-progress';return 'status-not-started'}
+function applyStatusColor(select){if(!select)return;select.classList.remove('status-not-started','status-in-progress','status-waiting-feedback','status-done');select.classList.add('status-cell',statusClass(select.value))}
+function statusSelect(){return '<select><option selected>Not started</option><option>In progress</option><option>Waiting feedback</option><option>Done</option></select>'}
+function renderGanttTable(targetId,groups,a,b){
+  const body=document.getElementById(targetId);
+  if(!body)return;
+  body.innerHTML=groups.map(([layer,tasks])=>tasks.map((task,i)=>{
+    const noteField='<td><input data-gantt-note placeholder="Progress note / dependency"></td>';
+    const phaseA=targetId==='ganttM1M2'?'M1':targetId==='ganttM3M4'?'M3':'M5';
+    const phaseB=targetId==='ganttM1M2'?'M2':targetId==='ganttM3M4'?'M4':'M6';
+    const phase=i%2?phaseB:phaseA;
+    return `<tr data-persist-row data-gantt-row data-gantt-phase="${phase}" data-gantt-layer="${layer}" data-gantt-task="${task}">${i===0?`<td rowspan="${tasks.length}"><b>${layer}</b></td>`:''}<td>${task}</td><td>■</td><td>${i%2?'■':''}</td><td>${statusSelect()}</td>${noteField}</tr>`;
+  }).join('')).join('')
 }
-function statusClass(value){
-  const v = String(value||'').toLowerCase();
-  if (v.includes('done')) return 'status-done';
-  if (v.includes('waiting') || v.includes('feedback')) return 'status-waiting-feedback';
-  if (v.includes('progress')) return 'status-in-progress';
-  return 'status-not-started';
-}
-function applyStatusColor(select){
-  if (!select) return;
-  select.classList.remove('status-not-started','status-in-progress','status-waiting-feedback','status-done');
-  select.classList.add('status-cell', statusClass(select.value));
-}
-function statusSelect(){
-  return '<select><option selected>Not started</option><option>In progress</option><option>Waiting feedback</option><option>Done</option></select>';
-}
-
-// ===== GANTT RENDERING =====
-function renderGanttTable(targetId, groups){
-  const body = document.getElementById(targetId);
-  if (!body) return;
-  body.innerHTML = groups.map(([layer, tasks]) =>
-    tasks.map((task, i) => {
-      const noteField = '<td><input data-gantt-note placeholder="Progress note / dependency"></td>';
-      const phaseA = targetId === 'ganttM1M2' ? 'M1' : targetId === 'ganttM3M4' ? 'M3' : 'M5';
-      const phaseB = targetId === 'ganttM1M2' ? 'M2' : targetId === 'ganttM3M4' ? 'M4' : 'M6';
-      const phase = i % 2 ? phaseB : phaseA;
-      const layerCell = i === 0 ? '<td rowspan="' + tasks.length + '"><b>' + layer + '</b></td>' : '';
-      return '<tr data-persist-row data-gantt-row data-gantt-phase="' + phase + '" data-gantt-layer="' + layer + '" data-gantt-task="' + task.replace(/"/g,'&quot;') + '">'
-        + layerCell
-        + '<td>' + task + '</td>'
-        + '<td>■</td>'
-        + '<td>' + (i % 2 ? '■' : '') + '</td>'
-        + '<td>' + statusSelect() + '</td>'
-        + noteField
-        + '</tr>';
-    }).join('')
-  ).join('');
-}
-
-function inferPhase(row){
-  if (row.dataset.ganttPhase) return row.dataset.ganttPhase.toLowerCase();
-  if (row.dataset.phase) return row.dataset.phase;
-  if (row.closest('#gantt_m3m4')) return row.children[2]?.textContent.trim() ? 'm3' : 'm4';
-  if (row.closest('#gantt_m5m6')) return row.children[2]?.textContent.trim() ? 'm5' : 'm6';
-  if (row.closest('#gantt')) return row.children[2]?.textContent.trim() ? 'm1' : 'm2';
-  return 'm1';
-}
-function inferCategory(row){
-  if (row.dataset.ganttLayer) return row.dataset.ganttLayer;
-  if (row.dataset.category) return row.dataset.category;
-  const first = row.querySelector('td');
-  if (first && first.rowSpan > 1) return first.textContent.trim();
-  let prev = row.previousElementSibling;
-  while (prev){
-    const cell = prev.querySelector('td');
-    if (cell && cell.rowSpan > 1) return cell.textContent.trim();
-    prev = prev.previousElementSibling;
-  }
-  return 'Other';
-}
-function getTrackedRows(){
-  return [
-    ...document.querySelectorAll('[data-track-row]'),
-    ...document.querySelectorAll('#gantt tr,#gantt_m3m4 tr,#gantt_m5m6 tr')
-  ].filter(r => r.querySelector('select'));
-}
-
-function calculateProgress(){
-  const rows = getTrackedRows();
-  let score = 0, total = 0;
-  const phaseTotals = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
-  const phaseScores = {m1:0,m2:0,m3:0,m4:0,m5:0,m6:0};
-  const catTotals = {}, catScores = {};
-  rows.forEach(row => {
-    const status = row.querySelector('select')?.value || '';
-    const s = statusWeight(status);
-    const phase = inferPhase(row);
-    const cat = inferCategory(row);
-    const w = categoryWeights[cat] || categoryWeights.Other;
-    score += s * w;
-    total += w;
-    phaseTotals[phase] = (phaseTotals[phase]||0) + w;
-    phaseScores[phase] = (phaseScores[phase]||0) + s * w;
-    catTotals[cat] = (catTotals[cat]||0) + w;
-    catScores[cat] = (catScores[cat]||0) + s * w;
+function inferPhase(row){if(row.dataset.phase)return row.dataset.phase;if(row.closest('#gantt_m3m4'))return row.children[2]?.textContent.trim()?'m3':'m4';if(row.closest('#gantt_m5m6'))return row.children[2]?.textContent.trim()?'m5':'m6';if(row.closest('#gantt'))return row.children[2]?.textContent.trim()?'m1':'m2';return'm1'}
+function inferCategory(row){if(row.dataset.category)return row.dataset.category;const first=row.querySelector('td');if(first&&first.rowSpan>1)return first.textContent.trim();let prev=row.previousElementSibling;while(prev){const cell=prev.querySelector('td');if(cell&&cell.rowSpan>1)return cell.textContent.trim();prev=prev.previousElementSibling}return'Other'}
+function getTrackedRows(){return [...document.querySelectorAll('[data-track-row]'),...document.querySelectorAll('#gantt tr,#gantt_m3m4 tr,#gantt_m5m6 tr')].filter(r=>r.querySelector('select'))}
+function calculateProgress(){const rows=getTrackedRows();let score=0,total=0;const phaseTotals={m1:0,m2:0,m3:0,m4:0,m5:0,m6:0},phaseScores={m1:0,m2:0,m3:0,m4:0,m5:0,m6:0},catTotals={},catScores={};rows.forEach(row=>{const status=row.querySelector('select')?.value||'',s=statusWeight(status),phase=inferPhase(row),cat=inferCategory(row),w=categoryWeights[cat]||categoryWeights.Other;score+=s*w;total+=w;phaseTotals[phase]+=w;phaseScores[phase]+=s*w;catTotals[cat]=(catTotals[cat]||0)+w;catScores[cat]=(catScores[cat]||0)+s*w});const overall=total?Math.round(score/total*100):0,phasePct={},catPct={};Object.keys(phaseTotals).forEach(k=>phasePct[k]=phaseTotals[k]?Math.round(phaseScores[k]/phaseTotals[k]*100):0);Object.keys(catTotals).forEach(k=>catPct[k]=Math.round(catScores[k]/catTotals[k]*100));return{overall,phasePct,catPct}}
+function readinessState(score){if(score<35)return{label:'Foundation risk',cls:'readiness-risk'};if(score<70)return{label:'System forming',cls:'readiness-forming'};return{label:'Ready to scale',cls:'readiness-ready'}}
+function effectiveProgress(autoProgress){const manual=localStorage.getItem('zv_manual_progress');if(manual===null||manual==='')return autoProgress;const n=Number(manual);return Number.isFinite(n)?n:autoProgress}
+function setManualProgress(value){localStorage.setItem('zv_manual_progress',value);renderJourneyProgress()}window.setManualProgress=setManualProgress;
+function clearManualProgress(){localStorage.removeItem('zv_manual_progress');const slider=document.querySelector('[data-manual-progress]');if(slider)slider.value=0;renderJourneyProgress()}window.clearManualProgress=clearManualProgress;
+function renderJourneyProgress(){const data=calculateProgress(),displayProgress=effectiveProgress(data.overall),state=readinessState(displayProgress);document.querySelectorAll('[data-progress-overall]').forEach(el=>el.textContent=displayProgress+'%');document.querySelectorAll('[data-progress-fill]').forEach(el=>el.style.width=displayProgress+'%');document.querySelectorAll('[data-manual-progress-label]').forEach(el=>el.textContent=localStorage.getItem('zv_manual_progress')===null?'Auto from Gantt':displayProgress+'% manual view');const manualSlider=document.querySelector('[data-manual-progress]');if(manualSlider&&localStorage.getItem('zv_manual_progress')!==null)manualSlider.value=displayProgress;document.querySelectorAll('[data-readiness-label]').forEach(el=>{el.textContent=state.label;el.className='readiness-label '+state.cls});const climber=document.querySelector('[data-climber]');if(climber)climber.style.left=`calc(${displayProgress}% - 23px)`;roadmapPhases.forEach(p=>{const pct=data.phasePct[p.id]||0;document.querySelectorAll(`[data-phase-pct="${p.id}"]`).forEach(el=>el.textContent=pct+'%');const cp=document.querySelector(`[data-checkpoint="${p.id}"]`);if(cp){cp.classList.toggle('done',pct>=90);cp.classList.toggle('active',pct>0&&pct<90)}});const catWrap=document.querySelector('[data-category-progress]');if(catWrap)catWrap.innerHTML=Object.entries(data.catPct).sort(([x],[y])=>(categoryWeights[y]||0)-(categoryWeights[x]||0)).map(([cat,pct])=>`<div class="cat-progress"><div><b>${cat}</b><div class="cat-meta"><span>Weight ${categoryWeights[cat]||categoryWeights.Other}</span><span>${pct}% complete</span></div><div class="cat-bar"><div class="cat-fill" style="width:${pct}%"></div></div></div><strong>${pct}%</strong></div>`).join('')}
+function calcWeeklySummary(){return Object.values(getGrowthData()).reduce((a,r)=>{a.spend+=numberValue(r.spend);a.leads+=numberValue(r.leads);a.offer_requests+=numberValue(r.offer_requests);a.callbacks+=numberValue(r.callbacks);a.sales+=numberValue(r.sales);a.upsell_revenue+=numberValue(r.upsell_revenue);return a},{spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0})}
+function renderPerformanceDashboard(){const data=getGrowthData(),row=data[selectedWeek()]||{},t=calcWeeklySummary(),cac=t.sales?Math.round(t.spend/t.sales):0,cpl=t.leads?Math.round(t.spend/t.leads):0,offerRate=t.leads?Math.round(t.offer_requests/t.leads*100):0;const values={dash_spend:'€'+t.spend,dash_leads:t.leads,dash_offer_requests:t.offer_requests,dash_sales:t.sales,dash_cac:cac?'€'+cac:'—',dash_cpl:cpl?'€'+cpl:'—',dash_upsell:'€'+t.upsell_revenue,dash_offer_rate:offerRate+'%',dash_week_summary:row.what_changed||'No weekly summary added yet.',dash_next_action:row.decision||'Add weekly data to generate next action.'};Object.entries(values).forEach(([k,v])=>document.querySelectorAll(`[data-kpi="${k}"]`).forEach(el=>el.textContent=v));renderWeeklyOverviewTable()}
+function renderWeeklyOverviewTable(){const body=document.querySelector('[data-weekly-overview]');if(!body)return;body.innerHTML=Object.entries(getGrowthData()).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W',''))).map(([week,r])=>{const spend=numberValue(r.spend),leads=numberValue(r.leads),offers=numberValue(r.offer_requests),sales=numberValue(r.sales),cac=sales?Math.round(spend/sales):0,cpl=leads?Math.round(spend/leads):0,or=leads?Math.round(offers/leads*100):0,sr=offers?Math.round(sales/offers*100):0;return`<tr><td>${week}</td><td>€${spend}</td><td>${leads}</td><td>${offers}</td><td>${r.callbacks||0}</td><td>${sales}</td><td>€${r.upsell_revenue||0}</td><td>${cac?'€'+cac:'—'}</td><td>${cpl?'€'+cpl:'—'}</td><td>${or}%</td><td>${sr}%</td><td>${r.what_changed||''}</td><td>${r.decision||''}</td></tr>`}).join('');renderGrowthChart()}
+function renderSpendSpark(rows){const spark=document.querySelector('[data-spend-spark]');if(!spark)return;const max=Math.max(1,...rows.map(([_,r])=>numberValue(r.spend)));spark.innerHTML=rows.map(([week,r])=>`<span title="${week}: €${numberValue(r.spend)}" style="height:${Math.max(4,Math.round(numberValue(r.spend)/max*95))}px"></span>`).join('')}
+function renderGrowthChart(){const chart=document.querySelector('[data-growth-chart]');if(!chart)return;const rows=Object.entries(getGrowthData()).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W','')));renderSpendSpark(rows);const max=Math.max(1,...rows.flatMap(([_,r])=>[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)]));chart.innerHTML=rows.map(([week,r])=>{const vals=[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)],h=v=>Math.max(2,Math.round(v/max*220));return`<div class="chart-week" title="${week}"><div class="bar bar-spend" style="height:${h(vals[0])}px"></div><div class="bar bar-leads" style="height:${h(vals[1])}px"></div><div class="bar bar-offers" style="height:${h(vals[2])}px"></div><div class="bar bar-sales" style="height:${h(vals[3])}px"></div><div class="bar bar-upsell" style="height:${h(vals[4])}px"></div><div class="week-label">${week}</div></div>`}).join('');const total=calcWeeklySummary();const summary={chart_total_spend:'€'+total.spend,chart_total_leads:total.leads,chart_total_offers:total.offer_requests,chart_total_sales:total.sales,chart_total_upsell:'€'+total.upsell_revenue};Object.entries(summary).forEach(([k,v])=>document.querySelectorAll(`[data-chart-summary="${k}"]`).forEach(el=>el.textContent=v))}
+function initWeekSelect(){const sel=document.querySelector('[data-week-select]');if(!sel)return;sel.innerHTML=Array.from({length:26},(_,i)=>`<option value="W${i+1}">W${i+1}</option>`).join('')}
+function loadWeekForm(){const row=getGrowthData()[selectedWeek()]||{};document.querySelectorAll('[data-week-field]').forEach(input=>input.value=row[input.dataset.weekField]??'')}
+const saveWeeklyToSheetDebounced=debounce(()=>{
+  const week=selectedWeek();
+  const row=getGrowthData()[week]||{};
+  postToSheet('weekly',{
+    Week:week,
+    Spend:row.spend||0,
+    Leads:row.leads||0,
+    Offer_Requests:row.offer_requests||0,
+    Callbacks:row.callbacks||0,
+    Sales:row.sales||0,
+    Upsell_Revenue:row.upsell_revenue||0,
+    Churn_Risk:row.churn_risk||0,
+    Retention_Signal:row.retention_signal||'',
+    What_Changed:row.what_changed||'',
+    Decision:row.decision||''
   });
-  const overall = total ? Math.round(score/total*100) : 0;
-  const phasePct = {}, catPct = {};
-  Object.keys(phaseTotals).forEach(k => phasePct[k] = phaseTotals[k] ? Math.round(phaseScores[k]/phaseTotals[k]*100) : 0);
-  Object.keys(catTotals).forEach(k => catPct[k] = Math.round(catScores[k]/catTotals[k]*100));
-  return {overall, phasePct, catPct};
-}
-
-function readinessState(score){
-  if (score < 35) return {label:'Foundation risk', cls:'readiness-risk'};
-  if (score < 70) return {label:'System forming', cls:'readiness-forming'};
-  return {label:'Ready to scale', cls:'readiness-ready'};
-}
-
-function effectiveProgress(autoProgress){
-  const manual = localStorage.getItem('zv_manual_progress');
-  if (manual === null || manual === '') return autoProgress;
-  const n = Number(manual);
-  return Number.isFinite(n) ? n : autoProgress;
-}
-
-function setManualProgress(value){
-  localStorage.setItem('zv_manual_progress', value);
-  renderJourneyProgress();
-}
-window.setManualProgress = setManualProgress;
-
-function clearManualProgress(){
-  localStorage.removeItem('zv_manual_progress');
-  const slider = document.querySelector('[data-manual-progress]');
-  if (slider) slider.value = 0;
-  renderJourneyProgress();
-}
-window.clearManualProgress = clearManualProgress;
-
-function renderJourneyProgress(){
-  const data = calculateProgress();
-  const displayProgress = effectiveProgress(data.overall);
-  const state = readinessState(displayProgress);
-  document.querySelectorAll('[data-progress-overall]').forEach(el => el.textContent = displayProgress + '%');
-  document.querySelectorAll('[data-progress-fill]').forEach(el => { el.style.width = displayProgress + '%'; });
-  document.querySelectorAll('[data-manual-progress-label]').forEach(el => {
-    el.textContent = localStorage.getItem('zv_manual_progress') === null ? 'Auto from Gantt' : (displayProgress + '% manual view');
-  });
-  const manualSlider = document.querySelector('[data-manual-progress]');
-  if (manualSlider && localStorage.getItem('zv_manual_progress') !== null) manualSlider.value = displayProgress;
-  document.querySelectorAll('[data-readiness-label]').forEach(el => {
-    el.textContent = state.label;
-    el.className = 'readiness-label ' + state.cls;
-  });
-  const climber = document.querySelector('[data-climber]');
-  if (climber) climber.style.left = 'calc(' + displayProgress + '% - 23px)';
-  roadmapPhases.forEach(p => {
-    const pct = data.phasePct[p.id] || 0;
-    document.querySelectorAll('[data-phase-pct="' + p.id + '"]').forEach(el => el.textContent = pct + '%');
-    const cp = document.querySelector('[data-checkpoint="' + p.id + '"]');
-    if (cp){
-      cp.classList.toggle('done', pct >= 90);
-      cp.classList.toggle('active', pct > 0 && pct < 90);
-    }
-  });
-  const catWrap = document.querySelector('[data-category-progress]');
-  if (catWrap){
-    const entries = Object.entries(data.catPct).sort(([x],[y]) => (categoryWeights[y]||0) - (categoryWeights[x]||0));
-    if (entries.length === 0){
-      catWrap.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✨</div>No tracked tasks yet. Add status updates in the Gantt tabs to see progress here.</div>';
-    } else {
-      catWrap.innerHTML = entries.map(([cat, pct]) =>
-        '<div class="cat-progress"><div><b>' + cat + '</b><div class="cat-meta"><span>Weight ' + (categoryWeights[cat] || categoryWeights.Other) + '</span><span>' + pct + '% complete</span></div><div class="cat-bar"><div class="cat-fill" style="width:' + pct + '%"></div></div></div><strong>' + pct + '%</strong></div>'
-      ).join('');
-    }
-  }
-}
-
-// ===== WEEKLY DASHBOARD =====
-function calcWeeklySummary(){
-  return Object.values(getGrowthData()).reduce((a, r) => {
-    a.spend += numberValue(r.spend);
-    a.leads += numberValue(r.leads);
-    a.offer_requests += numberValue(r.offer_requests);
-    a.callbacks += numberValue(r.callbacks);
-    a.sales += numberValue(r.sales);
-    a.upsell_revenue += numberValue(r.upsell_revenue);
-    return a;
-  }, {spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0});
-}
-
-function selectedWeek(){
-  return document.querySelector('[data-week-select]')?.value || 'W1';
-}
-
-function previousWeekKey(weekKey){
-  const n = Number(String(weekKey).replace('W',''));
-  if (!Number.isFinite(n) || n <= 1) return null;
-  return 'W' + (n - 1);
-}
-
-function trendChip(current, prev, format){
-  if (prev === null || prev === undefined) return '<span class="score-trend trend-flat">— first week</span>';
-  const cur = numberValue(current);
-  const pre = numberValue(prev);
-  if (cur === 0 && pre === 0) return '<span class="score-trend trend-flat">— no change</span>';
-  if (pre === 0) return '<span class="score-trend trend-up">↑ new</span>';
-  const delta = cur - pre;
-  const pct = Math.round((delta / pre) * 100);
-  if (delta === 0) return '<span class="score-trend trend-flat">— 0%</span>';
-  const cls = delta > 0 ? 'trend-up' : 'trend-down';
-  const arrow = delta > 0 ? '↑' : '↓';
-  return '<span class="score-trend ' + cls + '" title="prev: ' + (format ? format(pre) : pre) + '">' + arrow + ' ' + Math.abs(pct) + '%</span>';
-}
-
-function renderPerformanceDashboard(){
-  const data = getGrowthData();
-  const week = selectedWeek();
-  const row = data[week] || {};
-  const prevKey = previousWeekKey(week);
-  const prev = prevKey ? (data[prevKey] || {}) : null;
-  const t = calcWeeklySummary();
-  const cac = t.sales ? Math.round(t.spend / t.sales) : 0;
-  const cpl = t.leads ? Math.round(t.spend / t.leads) : 0;
-  const offerRate = t.leads ? Math.round(t.offer_requests / t.leads * 100) : 0;
-  const values = {
-    dash_spend: fmtCurrency(t.spend),
-    dash_leads: fmtNumber(t.leads),
-    dash_offer_requests: fmtNumber(t.offer_requests),
-    dash_sales: fmtNumber(t.sales),
-    dash_cac: cac ? fmtCurrency(cac) : '—',
-    dash_cpl: cpl ? fmtCurrency(cpl) : '—',
-    dash_upsell: fmtCurrency(t.upsell_revenue),
-    dash_offer_rate: offerRate + '%',
-    dash_week_summary: row.what_changed || 'No weekly summary added yet.',
-    dash_next_action: row.decision || 'Add weekly data to generate next action.'
-  };
-  Object.entries(values).forEach(([k, v]) => document.querySelectorAll('[data-kpi="' + k + '"]').forEach(el => el.textContent = v));
-  // Trend chips for the *selected week*
-  const trendFields = ['spend','leads','offer_requests','sales','upsell_revenue'];
-  trendFields.forEach(f => {
-    const slot = document.querySelector('[data-trend="' + f + '"]');
-    if (!slot) return;
-    const fmt = (f === 'spend' || f === 'upsell_revenue') ? fmtCurrency : fmtNumber;
-    slot.innerHTML = trendChip(row[f], prev ? prev[f] : null, fmt);
-  });
-  renderWeeklyOverviewTable();
-}
-
-function renderWeeklyOverviewTable(){
-  const body = document.querySelector('[data-weekly-overview]');
-  if (!body) return;
-  const entries = Object.entries(getGrowthData()).sort(([a],[b]) => Number(a.replace('W','')) - Number(b.replace('W','')));
-  body.innerHTML = entries.map(([week, r]) => {
-    const spend = numberValue(r.spend);
-    const leads = numberValue(r.leads);
-    const offers = numberValue(r.offer_requests);
-    const sales = numberValue(r.sales);
-    const cac = sales ? Math.round(spend/sales) : 0;
-    const cpl = leads ? Math.round(spend/leads) : 0;
-    const or = leads ? Math.round(offers/leads*100) : 0;
-    const sr = offers ? Math.round(sales/offers*100) : 0;
-    return '<tr><td><b>' + week + '</b></td><td>' + fmtCurrency(spend) + '</td><td>' + fmtNumber(leads) + '</td><td>' + fmtNumber(offers) + '</td><td>' + fmtNumber(r.callbacks||0) + '</td><td>' + fmtNumber(sales) + '</td><td>' + fmtCurrency(r.upsell_revenue||0) + '</td><td>' + (cac ? fmtCurrency(cac) : '—') + '</td><td>' + (cpl ? fmtCurrency(cpl) : '—') + '</td><td>' + or + '%</td><td>' + sr + '%</td><td>' + (r.what_changed||'') + '</td><td>' + (r.decision||'') + '</td></tr>';
-  }).join('');
-  renderGrowthChart();
-}
-
-function renderSpendSpark(rows){
-  const spark = document.querySelector('[data-spend-spark]');
-  if (!spark) return;
-  const max = Math.max(1, ...rows.map(([_, r]) => numberValue(r.spend)));
-  spark.innerHTML = rows.map(([week, r]) => {
-    const v = numberValue(r.spend);
-    const height = Math.max(4, Math.round(v/max*95));
-    return '<span title="' + week + ': ' + fmtCurrency(v) + '" style="height:' + height + 'px"></span>';
-  }).join('');
-}
-
-function renderGrowthChart(){
-  const chart = document.querySelector('[data-growth-chart]');
-  if (!chart) return;
-  const rows = Object.entries(getGrowthData()).sort(([a],[b]) => Number(a.replace('W','')) - Number(b.replace('W','')));
-  renderSpendSpark(rows);
-  const allValues = rows.flatMap(([_, r]) => [
-    numberValue(r.spend), numberValue(r.leads), numberValue(r.offer_requests),
-    numberValue(r.sales), numberValue(r.upsell_revenue)
-  ]);
-  const max = Math.max(1, ...allValues);
-  chart.innerHTML = rows.map(([week, r]) => {
-    const vals = [numberValue(r.spend), numberValue(r.leads), numberValue(r.offer_requests), numberValue(r.sales), numberValue(r.upsell_revenue)];
-    const h = v => Math.max(2, Math.round(v/max*220));
-    const tooltip = week + ' · Spend ' + fmtCurrency(vals[0]) + ' · Leads ' + fmtNumber(vals[1]) + ' · Offers ' + fmtNumber(vals[2]) + ' · Sales ' + fmtNumber(vals[3]) + ' · Upsell ' + fmtCurrency(vals[4]);
-    return '<div class="chart-week" title="' + tooltip + '">'
-      + '<div class="bar bar-spend" style="height:' + h(vals[0]) + 'px"></div>'
-      + '<div class="bar bar-leads" style="height:' + h(vals[1]) + 'px"></div>'
-      + '<div class="bar bar-offers" style="height:' + h(vals[2]) + 'px"></div>'
-      + '<div class="bar bar-sales" style="height:' + h(vals[3]) + 'px"></div>'
-      + '<div class="bar bar-upsell" style="height:' + h(vals[4]) + 'px"></div>'
-      + '<div class="week-label">' + week + '</div>'
-      + '</div>';
-  }).join('');
-  const total = calcWeeklySummary();
-  const summary = {
-    chart_total_spend: fmtCurrency(total.spend),
-    chart_total_leads: fmtNumber(total.leads),
-    chart_total_offers: fmtNumber(total.offer_requests),
-    chart_total_sales: fmtNumber(total.sales),
-    chart_total_upsell: fmtCurrency(total.upsell_revenue)
-  };
-  Object.entries(summary).forEach(([k, v]) => document.querySelectorAll('[data-chart-summary="' + k + '"]').forEach(el => el.textContent = v));
-}
-
-function initWeekSelect(){
-  const sel = document.querySelector('[data-week-select]');
-  if (!sel) return;
-  sel.innerHTML = Array.from({length:26}, (_, i) => '<option value="W' + (i+1) + '">W' + (i+1) + '</option>').join('');
-  // Default to current project week
-  const cw = currentProjectWeek();
-  sel.value = 'W' + cw;
-}
-
-function loadWeekForm(){
-  const row = getGrowthData()[selectedWeek()] || {};
-  document.querySelectorAll('[data-week-field]').forEach(input => {
-    input.value = row[input.dataset.weekField] ?? '';
-  });
-}
-
-const saveWeeklyToSheetDebounced = debounce(() => {
-  const week = selectedWeek();
-  const row = getGrowthData()[week] || {};
-  postToSheet('weekly', {
-    Week: week,
-    Spend: row.spend || 0,
-    Leads: row.leads || 0,
-    Offer_Requests: row.offer_requests || 0,
-    Callbacks: row.callbacks || 0,
-    Sales: row.sales || 0,
-    Upsell_Revenue: row.upsell_revenue || 0,
-    Churn_Risk: row.churn_risk || 0,
-    Retention_Signal: row.retention_signal || '',
-    What_Changed: row.what_changed || '',
-    Decision: row.decision || ''
-  });
-}, 900);
-
-function saveWeekForm(){
-  const data = getGrowthData();
-  const week = selectedWeek();
-  data[week] = data[week] || {};
-  document.querySelectorAll('[data-week-field]').forEach(input => {
-    data[week][input.dataset.weekField] = input.value;
-  });
-  saveGrowthData(data);
-  renderPerformanceDashboard();
-  saveWeeklyToSheetDebounced();
-}
-
-function initWeeklyDataInput(){
-  initWeekSelect();
-  document.querySelector('[data-week-select]')?.addEventListener('change', () => {
-    loadWeekForm();
-    renderPerformanceDashboard();
-  });
-  document.querySelectorAll('[data-week-field]').forEach(input => input.addEventListener('input', saveWeekForm));
-  loadWeekForm();
-}
-
-// ===== CSV EXPORT =====
-function csvEscape(v){
-  const s = String(v ?? '');
-  if (/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
-  return s;
-}
-function downloadCSV(filename, rows){
-  const csv = rows.map(r => r.map(csvEscape).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  showToast('Downloaded ' + filename, 'success');
-}
-
-function exportWeeklyCSV(){
-  const data = getGrowthData();
-  const headers = ['Week','Spend','Leads','Offer_Requests','Callbacks','Sales','Upsell_Revenue','Churn_Risk','Retention_Signal','CAC','CPL','Offer_Rate','Sale_Rate','What_Changed','Decision'];
-  const rows = [headers];
-  Object.entries(data).sort(([a],[b]) => Number(a.replace('W','')) - Number(b.replace('W','')))
-    .forEach(([week, r]) => {
-      const spend = numberValue(r.spend), leads = numberValue(r.leads);
-      const offers = numberValue(r.offer_requests), sales = numberValue(r.sales);
-      const cac = sales ? Math.round(spend/sales) : '';
-      const cpl = leads ? Math.round(spend/leads) : '';
-      const or = leads ? Math.round(offers/leads*100) + '%' : '';
-      const sr = offers ? Math.round(sales/offers*100) + '%' : '';
-      rows.push([week, spend, leads, offers, r.callbacks||0, sales, r.upsell_revenue||0, r.churn_risk||0, r.retention_signal||'', cac, cpl, or, sr, r.what_changed||'', r.decision||'']);
-    });
-  const stamp = new Date().toISOString().slice(0,10);
-  downloadCSV('zo-veilig-weekly-' + stamp + '.csv', rows);
-}
-window.exportWeeklyCSV = exportWeeklyCSV;
-
-function exportRaciCSV(){
-  const headers = ['Phase','Work_Item','Responsible','Accountable','Consulted','Informed','Current_Owner','Due_Date','Status','Next_Action'];
-  const rows = [headers];
-  document.querySelectorAll('[data-raci-row]').forEach(row => {
-    const cells = row.children;
-    const owner = row.querySelector('[data-raci-owner]')?.value || '';
-    const due = row.querySelector('[data-raci-due]')?.value || '';
-    const status = row.querySelector('[data-raci-status]')?.value || '';
-    const next = row.querySelector('td:last-child input')?.value || '';
-    rows.push([
-      cells[0]?.textContent.trim() || '',
-      cells[1]?.textContent.trim() || '',
-      cells[2]?.textContent.trim() || '',
-      cells[3]?.textContent.trim() || '',
-      cells[4]?.textContent.trim() || '',
-      cells[5]?.textContent.trim() || '',
-      owner, due, status, next
-    ]);
-  });
-  const stamp = new Date().toISOString().slice(0,10);
-  downloadCSV('zo-veilig-raci-' + stamp + '.csv', rows);
-}
-window.exportRaciCSV = exportRaciCSV;
-
-// ===== RACI =====
-function daysUntil(dateString){
-  if (!dateString) return null;
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const due = new Date(dateString + 'T00:00:00');
-  if (Number.isNaN(due.getTime())) return null;
-  return Math.ceil((due - today) / (1000*60*60*24));
-}
-
-function renderRaciTable(){
-  const body = document.getElementById('raciBody');
-  if (!body) return;
-  body.innerHTML = raciItems.map(([phase, item, r, a, c, i, owner]) =>
-    '<tr data-raci-row data-persist-row>'
-    + '<td>' + phase + '</td>'
-    + '<td>' + item + '</td>'
-    + '<td>' + r + '</td>'
-    + '<td>' + a + '</td>'
-    + '<td>' + c + '</td>'
-    + '<td>' + i + '</td>'
-    + '<td><select data-raci-owner>'
-      + '<option' + (owner === 'Veronica' ? ' selected' : '') + '>Veronica</option>'
-      + '<option' + (owner === 'Krista' ? ' selected' : '') + '>Krista</option>'
-      + '<option' + (owner === 'Robert' ? ' selected' : '') + '>Robert</option>'
-      + '<option' + (owner === 'Nick' ? ' selected' : '') + '>Nick</option>'
-      + '<option' + (owner === 'Robi' ? ' selected' : '') + '>Robi</option>'
-      + '<option>Robert & Krista</option>'
-      + '</select></td>'
-    + '<td><input data-raci-due type="date"></td>'
-    + '<td><select data-raci-status><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td>'
-    + '<td><input placeholder="Next action"></td>'
-    + '</tr>'
-  ).join('');
-}
-
-function getRaciRows(){ return [...document.querySelectorAll('[data-raci-row]')]; }
-
+},900);
+function saveWeekForm(){const data=getGrowthData(),week=selectedWeek();data[week]=data[week]||{};document.querySelectorAll('[data-week-field]').forEach(input=>data[week][input.dataset.weekField]=input.value);saveGrowthData(data);renderPerformanceDashboard();saveWeeklyToSheetDebounced()}
+        
+function initWeeklyDataInput(){initWeekSelect();document.querySelector('[data-week-select]')?.addEventListener('change',()=>{loadWeekForm();renderPerformanceDashboard()});document.querySelectorAll('[data-week-field]').forEach(input=>input.addEventListener('input',saveWeekForm));loadWeekForm()}
+function daysUntil(dateString){if(!dateString)return null;const today=new Date();today.setHours(0,0,0,0);const due=new Date(dateString+'T00:00:00');if(Number.isNaN(due.getTime()))return null;return Math.ceil((due-today)/(1000*60*60*24))}
+function renderRaciTable(){const body=document.getElementById('raciBody');if(!body)return;body.innerHTML=raciItems.map(([phase,item,r,a,c,i,owner])=>`<tr data-raci-row data-persist-row><td>${phase}</td><td>${item}</td><td>${r}</td><td>${a}</td><td>${c}</td><td>${i}</td><td><select data-raci-owner><option${owner==='Veronica'?' selected':''}>Veronica</option><option${owner==='Krista'?' selected':''}>Krista</option><option${owner==='Robert'?' selected':''}>Robert</option><option${owner==='Nick'?' selected':''}>Nick</option><option${owner==='Robi'?' selected':''}>Robi</option><option>Robert & Krista</option></select></td><td><input data-raci-due type="date"></td><td><select data-raci-status><option>Not started</option><option selected>In progress</option><option>Waiting feedback</option><option>Done</option></select></td><td><input placeholder="Next action"></td></tr>`).join('')}
+function getRaciRows(){return [...document.querySelectorAll('[data-raci-row]')]}
 function renderRaciOverview(){
-  let nick=0, krista=0, robert=0, veronica=0, robi=0, approvals=0, overdue=0, dueSoon=0;
-  getRaciRows().forEach(row => {
-    const owner = row.querySelector('[data-raci-owner]')?.value || '';
-    const status = row.querySelector('[data-raci-status]')?.value || '';
-    const due = row.querySelector('[data-raci-due]')?.value || '';
-    const accountable = row.children[3]?.textContent || '';
-    const days = daysUntil(due);
+  let nick=0,krista=0,robert=0,veronica=0,robi=0,approvals=0,overdue=0,dueSoon=0;
+  getRaciRows().forEach(row=>{
+    const owner=row.querySelector('[data-raci-owner]')?.value||'';
+    const status=row.querySelector('[data-raci-status]')?.value||'';
+    const due=row.querySelector('[data-raci-due]')?.value||'';
+    const accountable=row.children[3]?.textContent||''; // Accountable column
+    const days=daysUntil(due);
+
     row.classList.remove('overdue-row','due-soon-row');
-    if (owner.includes('Nick')) nick++;
-    if (owner.includes('Veronica')) veronica++;
-    if (owner.includes('Robi')) robi++;
-    if (owner.includes('Krista') || accountable.includes('Krista')){ krista++; approvals++; }
-    if (owner.includes('Robert') || accountable.includes('Robert')){ robert++; approvals++; }
-    if (status !== 'Done' && days !== null && days < 0){
-      overdue++; row.classList.add('overdue-row');
-    } else if (status !== 'Done' && days !== null && days <= 3){
-      dueSoon++; row.classList.add('due-soon-row');
+
+    // ownership counts
+    if(owner.includes('Nick'))nick++;
+    if(owner.includes('Veronica'))veronica++;
+    if(owner.includes('Robi'))robi++;
+
+    // 👇 Krista logic FIX
+    // count if:
+    // 1. currently with Krista
+    // 2. OR requires Krista approval (Accountable includes Krista)
+    if(owner.includes('Krista') || accountable.includes('Krista')){
+      krista++;
+      approvals++;
+    }
+
+    // 👇 Robert approval logic
+    if(owner.includes('Robert') || accountable.includes('Robert')){
+      robert++;
+      approvals++;
+    }
+
+    // deadlines
+    if(status!=='Done'&&days!==null&&days<0){
+      overdue++;
+      row.classList.add('overdue-row');
+    }else if(status!=='Done'&&days!==null&&days<=3){
+      dueSoon++;
+      row.classList.add('due-soon-row');
     }
   });
-  const vals = {raci_nick:nick, raci_krista:krista, raci_robert:robert, raci_veronica:veronica, raci_robi:robi, raci_approvals:approvals, raci_overdue:overdue, raci_due_soon:dueSoon};
-  Object.entries(vals).forEach(([k, v]) => document.querySelectorAll('[data-raci-kpi="' + k + '"]').forEach(el => el.textContent = v));
-}
 
-function initRaci(){
-  renderRaciTable();
-  restorePersistedControls();
-  document.querySelectorAll('[data-raci-row] input,[data-raci-row] select').forEach(el => {
-    el.addEventListener('input', () => { savePersistedControls(); renderRaciOverview(); });
-    el.addEventListener('change', () => { savePersistedControls(); renderRaciOverview(); renderJourneyProgress(); });
-  });
-  renderRaciOverview();
-}
+  const vals={
+    raci_nick:nick,
+    raci_krista:krista,
+    raci_robert:robert,
+    raci_veronica:veronica,
+    raci_robi:robi,
+    raci_approvals:approvals,
+    raci_overdue:overdue,
+    raci_due_soon:dueSoon
+  };
 
-// ===== SHEET SYNC =====
-function setSyncStatus(message, type=''){
-  const el = document.querySelector('[data-sync-status]');
-  if (el){
-    const isLoading = type === 'loading';
-    el.innerHTML = (isLoading ? '<span class="spinner"></span>' : '') + '<span>' + message + '</span>';
-    el.className = 'sync-status ' + (type ? 'sync-' + type : '');
-  }
-  // Sidebar dot mirrors the sync state so the user sees it from any tab
-  const dot = document.querySelector('[data-side-sync-dot]');
-  if (dot){
-    dot.classList.remove('is-ok','is-loading','is-error');
-    if (type === 'ok') dot.classList.add('is-ok');
-    else if (type === 'loading') dot.classList.add('is-loading');
-    else if (type === 'error') dot.classList.add('is-error');
-    dot.title = message;
-  }
+  Object.entries(vals).forEach(([k,v])=>
+    document.querySelectorAll(`[data-raci-kpi="${k}"]`).forEach(el=>el.textContent=v)
+  );
 }
-
-function saveSheetEndpoint(){
-  const input = document.querySelector('[data-sheet-endpoint]');
-  if (input){
-    localStorage.setItem('zv_sheet_endpoint', input.value.trim());
-    setSyncStatus('Sheet URL saved locally. Click Load from Sheet to sync.', 'ok');
-    showToast('Sheet URL saved', 'success');
-  }
-}
-window.saveSheetEndpoint = saveSheetEndpoint;
-
-function initSheetSync(){
-  const input = document.querySelector('[data-sheet-endpoint]');
-  if (input) input.value = localStorage.getItem('zv_sheet_endpoint') || DEFAULT_SHEET_ENDPOINT;
-}
-
-function normalizeSheetKey(value){
-  return String(value||'').trim().toLowerCase().replace(/ /g, '_');
-}
-
+function initRaci(){renderRaciTable();restorePersistedControls();document.querySelectorAll('[data-raci-row] input,[data-raci-row] select').forEach(el=>{el.addEventListener('input',()=>{savePersistedControls();renderRaciOverview()});el.addEventListener('change',()=>{savePersistedControls();renderRaciOverview();renderJourneyProgress()})});renderRaciOverview()}
+function setSyncStatus(message,type=''){const el=document.querySelector('[data-sync-status]');if(!el)return;el.textContent=message;el.className='sync-status '+(type?'sync-'+type:'')}
+function saveSheetEndpoint(){const input=document.querySelector('[data-sheet-endpoint]');if(input){localStorage.setItem('zv_sheet_endpoint',input.value.trim());setSyncStatus('Sheet URL saved locally. Click Load from Sheet to sync.','ok')}}window.saveSheetEndpoint=saveSheetEndpoint;
+function initSheetSync(){const input=document.querySelector('[data-sheet-endpoint]');if(input)input.value=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT}
+function normalizeSheetKey(value){return String(value||'').trim().toLowerCase().replaceAll(' ','_')}
 function applyWeeklySheetRows(rows){
-  const data = getGrowthData();
-  rows.forEach(item => {
-    const week = item.Week || item.week;
-    if (!week) return;
-    data[week] = data[week] || {};
-    data[week].spend = item.Spend || item.spend || 0;
-    data[week].leads = item.Leads || item.leads || item['Leads (MQL)'] || 0;
-    data[week].offer_requests = item.Offer_Requests || item.offer_requests || item.Offers || 0;
-    data[week].callbacks = item.Callbacks || 0;
-    data[week].sales = item.Sales || item.sales || item['Sales (SQL)'] || 0;
-    data[week].upsell_revenue = item.Upsell_Revenue || item.Upsell || 0;
-    data[week].churn_risk = item.Churn_Risk || 0;
-    data[week].retention_signal = item.Retention_Signal || '';
-    data[week].what_changed = item.What_Changed || '';
-    data[week].decision = item.Decision || '';
+  const data=getGrowthData();
+  rows.forEach(item=>{
+    const week=item.Week||item.week;
+    if(!week)return;
+    data[week]=data[week]||{};
+    data[week].spend=item.Spend||item.spend||0;
+    data[week].leads=item.Leads||item.leads||item['Leads (MQL)']||0;
+    data[week].offer_requests=item.Offer_Requests||item.offer_requests||item.Offers||0;
+    data[week].callbacks=item.Callbacks||0;
+    data[week].sales=item.Sales||item.sales||item['Sales (SQL)']||0;
+    data[week].upsell_revenue=item.Upsell_Revenue||item.Upsell||0;
+    data[week].churn_risk=item.Churn_Risk||0;
+    data[week].retention_signal=item.Retention_Signal||'';
+    data[week].what_changed=item.What_Changed||'';
+    data[week].decision=item.Decision||'';
   });
   saveGrowthData(data);
 }
-
 function applyRaciSheetRows(rows){
-  const dash = getRaciRows();
-  rows.forEach(item => {
-    const workItem = item.Work_Item || item.work_item || item['Work item'] || item['Work Item'];
-    if (!workItem) return;
-    const target = dash.find(row => normalizeSheetKey(row.children[1]?.textContent) === normalizeSheetKey(workItem));
-    if (!target) return;
-    const owner = item.Current_Owner || item.Owner || item['Current Owner'];
-    const status = item.Status;
-    const due = item.Due_Date || item.Due || item['Due Date'];
-    const next = item.Next_Action || item.Next || item['Next Action'];
-    const ownerField = target.querySelector('[data-raci-owner]');
-    const statusField = target.querySelector('[data-raci-status]');
-    const dueField = target.querySelector('[data-raci-due]');
-    const nextField = target.querySelector('td:last-child input');
-    if (owner && ownerField) ownerField.value = owner;
-    if (status && statusField){ statusField.value = status; applyStatusColor(statusField); }
-    if (due && dueField) dueField.value = String(due).slice(0,10);
-    if (next && nextField) nextField.value = next;
+  const dash=getRaciRows();
+  rows.forEach(item=>{
+    const workItem=item.Work_Item||item.work_item||item['Work item']||item['Work Item'];
+    if(!workItem)return;
+    const target=dash.find(row=>normalizeSheetKey(row.children[1]?.textContent)===normalizeSheetKey(workItem));
+    if(!target)return;
+    const owner=item.Current_Owner||item.Owner||item['Current Owner'];
+    const status=item.Status;
+    const due=item.Due_Date||item.Due||item['Due Date'];
+    const next=item.Next_Action||item.Next||item['Next Action'];
+    const ownerField=target.querySelector('[data-raci-owner]'),statusField=target.querySelector('[data-raci-status]'),dueField=target.querySelector('[data-raci-due]'),nextField=target.querySelector('td:last-child input');
+    if(owner&&ownerField)ownerField.value=owner;
+    if(status&&statusField){statusField.value=status;applyStatusColor(statusField)}
+    if(due&&dueField)dueField.value=String(due).slice(0,10);
+    if(next&&nextField)nextField.value=next;
   });
   renderRaciOverview();
 }
-
+function getAny(item, keys){
+  for(const key of keys){
+    if(item[key] !== undefined && item[key] !== null && item[key] !== '') return item[key];
+  }
+  return '';
+}
 function applyGanttSheetRows(rows){
-  rows.forEach(item => {
-    const id = item.Task_ID || normalizeSheetKey(item.Task||'');
-    const target = Array.from(document.querySelectorAll('[data-gantt-row]')).find(row =>
-      normalizeSheetKey(row.dataset.ganttTask||'') === normalizeSheetKey(id)
-    );
-    if (!target) return;
-    const status = item.Status;
-    const note = item.Progress_Note || item['Progress Note'] || '';
-    const statusField = target.querySelector('select');
-    const noteField = target.querySelector('[data-gantt-note]');
-    if (status && statusField){ statusField.value = status; applyStatusColor(statusField); }
-    if (noteField) noteField.value = note;
+  rows.forEach(item=>{
+    const id=getAny(item,['Task_ID','Task ID','task_id'])||normalizeSheetKey(getAny(item,['Task','task']));
+    const target=Array.from(document.querySelectorAll('[data-gantt-row]')).find(row=>{
+      const taskKey=normalizeSheetKey(row.dataset.ganttTask||'');
+      return taskKey===normalizeSheetKey(id)||taskKey===id;
+    });
+    if(!target)return;
+    const status=getAny(item,['Status','status']);
+    const note=getAny(item,['Progress_Note','Progress Note','Note','Progress note']);
+    const statusField=target.querySelector('select');
+    const noteField=target.querySelector('[data-gantt-note]');
+    if(status&&statusField){statusField.value=status;applyStatusColor(statusField)}
+    if(noteField)noteField.value=note||'';
   });
   savePersistedControls();
 }
-
 function fetchSheetJsonp(endpoint){
-  return new Promise(resolve => {
+  return new Promise((resolve)=>{
     const callbackName = 'zvSheetCallback_' + Date.now();
     const separator = endpoint.includes('?') ? '&' : '?';
     const script = document.createElement('script');
     let finished = false;
+
     window[callbackName] = function(data){
-      finished = true; cleanup(); resolve({ok:true, data});
-    };
-    function cleanup(){ delete window[callbackName]; script.remove(); }
-    script.onerror = function(){
-      if (finished) return;
+      finished = true;
       cleanup();
-      resolve({ok:false, error:'JSONP fallback failed. Make sure Apps Script supports ?callback=... and is deployed as Anyone with the link.'});
+      resolve({ok:true,data});
     };
+
+    function cleanup(){
+      delete window[callbackName];
+      script.remove();
+    }
+
+    script.onerror = function(){
+      if(finished) return;
+      cleanup();
+      resolve({ok:false,error:'JSONP fallback failed. Make sure Apps Script supports ?callback=... and is deployed as Anyone with the link.'});
+    };
+
     script.src = endpoint + separator + 'callback=' + callbackName + '&t=' + Date.now();
     document.body.appendChild(script);
-    setTimeout(() => {
-      if (finished) return;
+
+    setTimeout(()=>{
+      if(finished) return;
       cleanup();
-      resolve({ok:false, error:'JSONP fallback timed out. Check Apps Script deployment and callback support.'});
-    }, 8000);
+      resolve({ok:false,error:'JSONP fallback timed out. Check Apps Script deployment and callback support.'});
+    },8000);
   });
 }
 
 async function fetchSheetPayload(endpoint){
-  if (!endpoint) return {ok:false, error:'No Apps Script URL provided.'};
+  if(!endpoint) return {ok:false,error:'No Apps Script URL provided.'};
   const url = endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now();
-  try {
-    const response = await fetch(url, {method:'GET', cache:'no-store', redirect:'follow'});
-    if (!response.ok) return fetchSheetJsonp(endpoint);
+  try{
+    const response = await fetch(url,{method:'GET',cache:'no-store',redirect:'follow'});
+    if(!response.ok) return fetchSheetJsonp(endpoint);
     const json = await response.json();
-    return {ok:true, data:json};
-  } catch(error){
+    return {ok:true,data:json};
+  }catch(error){
     return fetchSheetJsonp(endpoint);
   }
 }
-
 function applySheetPayload(payload){
-  if (payload.weekly) applyWeeklySheetRows(payload.weekly);
-  if (payload.raci) applyRaciSheetRows(payload.raci);
-  if (payload.gantt) applyGanttSheetRows(payload.gantt);
+  if(payload.weekly) applyWeeklySheetRows(payload.weekly);
+  if(payload.raci) applyRaciSheetRows(payload.raci);
+  if(payload.gantt && payload.gantt.length){
+    applyGanttSheetRows(payload.gantt);
+  }else{
+    setSyncStatus('Sheet loaded, but Gantt_Status is empty. Click Push Gantt to Sheet once from this device, then reload on the other device.','error');
+  }
   loadWeekForm();
   renderPerformanceDashboard();
   renderJourneyProgress();
-  setSyncStatus('Data applied. Dashboard updated.', 'ok');
-  showToast('Sheet data loaded', 'success');
+  if(payload.gantt && payload.gantt.length){
+    setSyncStatus('Data applied. Dashboard updated, including Gantt.', 'ok');
+  }
 }
 
 async function loadFromGoogleSheet(){
-  const endpoint = getSheetEndpoint();
-  setSyncStatus('Loading sheet data…', 'loading');
-  const result = await fetchSheetPayload(endpoint);
-  if (!result.ok){
-    setSyncStatus(result.error + ' Use the Paste JSON fallback below for now.', 'error');
+  const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;
+  setSyncStatus('Loading sheet data...');
+  const result=await fetchSheetPayload(endpoint);
+  if(!result.ok){
+    setSyncStatus(result.error+' Use the Paste JSON fallback below for now.','error');
     return;
   }
-  applySheetPayload(result.data || {});
+  applySheetPayload(result.data||{});
 }
-window.loadFromGoogleSheet = loadFromGoogleSheet;
+window.loadFromGoogleSheet=loadFromGoogleSheet;
 
 function applyPastedJson(){
-  const box = document.querySelector('[data-json-import]');
-  if (!box || !box.value.trim()){
-    setSyncStatus('Paste JSON first.', 'error');
+  const box=document.querySelector('[data-json-import]');
+  if(!box || !box.value.trim()){
+    setSyncStatus('Paste JSON first.','error');
     return;
   }
-  try {
-    const payload = JSON.parse(box.value.trim());
+  try{
+    const payload=JSON.parse(box.value.trim());
     applySheetPayload(payload);
-  } catch(error){
-    setSyncStatus('Invalid JSON. Check commas, quotes, and brackets.', 'error');
+  }catch(error){
+    setSyncStatus('Invalid JSON. Check commas, quotes, and brackets.','error');
   }
 }
-window.applyPastedJson = applyPastedJson;
-
-async function testSheetConnection(){
-  const endpoint = getSheetEndpoint();
-  setSyncStatus('Testing connection…', 'loading');
-  const result = await fetchSheetPayload(endpoint);
-  if (!result.ok){
-    setSyncStatus('Connection test failed: ' + result.error + ' Click Open JSONP test URL. It must show testCallback({...}).', 'error');
-    return;
-  }
-  const payload = result.data || {};
-  setSyncStatus('Connection ok. weekly=' + Array.isArray(payload.weekly) + ', raci=' + Array.isArray(payload.raci) + ', gantt=' + Array.isArray(payload.gantt) + '.', 'ok');
-}
-window.testSheetConnection = testSheetConnection;
-
-function openJsonpTestUrl(){
-  const endpoint = getSheetEndpoint();
-  if (!endpoint){ setSyncStatus('Paste your Apps Script URL first.', 'error'); return; }
-  const sep = endpoint.includes('?') ? '&' : '?';
-  window.open(endpoint + sep + 'callback=testCallback&t=' + Date.now(), '_blank');
-}
-window.openJsonpTestUrl = openJsonpTestUrl;
-
-// ===== NAV =====
-function activateTab(tabId){
-  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelector('.nav button[data-tab="' + tabId + '"]')?.classList.add('active');
-  document.getElementById(tabId)?.classList.add('active');
-  renderJourneyProgress();
-  renderPerformanceDashboard();
-  renderRaciOverview();
-}
-function initNav(){
-  document.querySelectorAll('.nav button').forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
-}
-
-// ===== KEYBOARD SHORTCUTS =====
-function initKeyboardShortcuts(){
-  const tabOrder = ['sheet_sync','journey','gantt','gantt_m3m4','gantt_m5m6','data_input','dashboard','weekly','matrix','raci'];
-  document.addEventListener('keydown', e => {
-    if (e.target.matches('input, textarea, select')) return;
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
-    const n = Number(e.key);
-    if (Number.isFinite(n) && n >= 0 && n <= 9 && tabOrder[n]){
-      activateTab(tabOrder[n]);
-      e.preventDefault();
-    }
-  });
-}
-
-// ===== PERSISTENCE =====
-function persistKeyForControl(el, index){
-  const row = el.closest('tr');
-  const section = el.closest('section')?.id || 'global';
-  const rowText = row ? Array.from(row.children).slice(0,2).map(td => td.textContent.trim()).join('|') : 'no-row';
-  const type = el.tagName.toLowerCase();
-  const field = el.dataset.raciOwner ? 'raci_owner' :
-                el.dataset.raciStatus ? 'raci_status' :
-                el.dataset.raciDue ? 'raci_due' :
-                el.dataset.weekField || el.placeholder || el.name || index;
-  return 'zv_field_' + section + '_' + rowText + '_' + type + '_' + field;
+window.applyPastedJson=applyPastedJson;
+async function testSheetConnection(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;setSyncStatus('Testing connection...');const result=await fetchSheetPayload(endpoint);if(!result.ok){setSyncStatus('Connection test failed: '+result.error+' Click Open JSONP test URL. It must show testCallback({...}).','error');return}const payload=result.data||{};setSyncStatus(`Connection ok. weekly=${Array.isArray(payload.weekly)}, raci=${Array.isArray(payload.raci)}, gantt=${Array.isArray(payload.gantt)}.`,'ok')}window.testSheetConnection=testSheetConnection;
+function openJsonpTestUrl(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;if(!endpoint){setSyncStatus('Paste your Apps Script URL first.','error');return}const sep=endpoint.includes('?')?'&':'?';window.open(endpoint+sep+'callback=testCallback&t='+Date.now(),'_blank')}window.openJsonpTestUrl=openJsonpTestUrl;
+function initNav(){document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab)?.classList.add('active');renderJourneyProgress();renderPerformanceDashboard();renderRaciOverview()}))}
+function persistKeyForControl(el,index){
+  const row=el.closest('tr');
+  const section=el.closest('section')?.id||'global';
+  const rowText=row?Array.from(row.children).slice(0,2).map(td=>td.textContent.trim()).join('|'):'no-row';
+  const type=el.tagName.toLowerCase();
+  const field=el.dataset.raciOwner?'raci_owner':el.dataset.raciStatus?'raci_status':el.dataset.raciDue?'raci_due':el.dataset.weekField||el.placeholder||el.name||index;
+  return 'zv_field_'+section+'_'+rowText+'_'+type+'_'+field;
 }
 function savePersistedControls(){
-  document.querySelectorAll('#gantt input,#gantt select,#gantt_m3m4 input,#gantt_m3m4 select,#gantt_m5m6 input,#gantt_m5m6 select,#raci input,#raci select').forEach((el, index) => {
-    localStorage.setItem(persistKeyForControl(el, index), el.value);
+  document.querySelectorAll('#gantt input,#gantt select,#gantt_m3m4 input,#gantt_m3m4 select,#gantt_m5m6 input,#gantt_m5m6 select,#raci input,#raci select').forEach((el,index)=>{
+    localStorage.setItem(persistKeyForControl(el,index),el.value);
   });
 }
+function buildGanttPayload(row){
+  const taskId=normalizeSheetKey(row.dataset.ganttTask||'');
+  const note=row.querySelector('[data-gantt-note]')?.value||'';
+  return {
+    Task_ID:taskId,
+    'Task ID':taskId,
+    Phase:row.dataset.ganttPhase||'',
+    Layer:row.dataset.ganttLayer||'',
+    Task:row.dataset.ganttTask||'',
+    Status:row.querySelector('select')?.value||'Not started',
+    Progress_Note:note,
+    'Progress Note':note
+  };
+}
+const saveGanttRowToSheetDebounced=debounce((row)=>{
+  if(!row || !row.dataset.ganttRow) return;
+  postToSheet('gantt',buildGanttPayload(row));
+},900);
+async function pushAllGanttToSheet(){
+  const rows=Array.from(document.querySelectorAll('[data-gantt-row]'));
+  setSyncStatus('Pushing full Gantt to Google Sheet...');
+  for(const row of rows){
+    await postToSheet('gantt',buildGanttPayload(row));
+  }
+  setSyncStatus('Full Gantt pushed to Google Sheet. Check the Gantt_Status tab now; it should have many rows. Then reload the other device.', 'ok');
+}
+window.pushAllGanttToSheet=pushAllGanttToSheet;
+const saveRaciRowToSheetDebounced=debounce((row)=>{
+  if(!row || !row.dataset.raciRow) return;
+  postToSheet('raci',{
+    Work_Item:row.children[1]?.textContent.trim()||'',
+    Current_Owner:row.querySelector('[data-raci-owner]')?.value||'',
+    Due_Date:row.querySelector('[data-raci-due]')?.value||'',
+    Status:row.querySelector('[data-raci-status]')?.value||'',
+    Next_Action:row.querySelector('td:last-child input')?.value||''
+  });
+},900);
 function restorePersistedControls(){
-  document.querySelectorAll('#gantt input,#gantt select,#gantt_m3m4 input,#gantt_m3m4 select,#gantt_m5m6 input,#gantt_m5m6 select,#raci input,#raci select').forEach((el, index) => {
-    const saved = localStorage.getItem(persistKeyForControl(el, index));
-    if (saved !== null) el.value = saved;
-    if (el.tagName === 'SELECT') applyStatusColor(el);
+  document.querySelectorAll('#gantt input,#gantt select,#gantt_m3m4 input,#gantt_m3m4 select,#gantt_m5m6 input,#gantt_m5m6 select,#raci input,#raci select').forEach((el,index)=>{
+    const saved=localStorage.getItem(persistKeyForControl(el,index));
+    if(saved!==null) el.value=saved;
+    if(el.tagName==='SELECT') applyStatusColor(el);
   });
 }
-
-const saveGanttRowToSheetDebounced = debounce(row => {
-  if (!row || !row.dataset.ganttRow) return;
-  postToSheet('gantt', {
-    Task_ID: normalizeSheetKey(row.dataset.ganttTask||''),
-    Phase: row.dataset.ganttPhase || '',
-    Layer: row.dataset.ganttLayer || '',
-    Task: row.dataset.ganttTask || '',
-    Status: row.querySelector('select')?.value || 'Not started',
-    Progress_Note: row.querySelector('[data-gantt-note]')?.value || ''
-  });
-}, 900);
-
-const saveRaciRowToSheetDebounced = debounce(row => {
-  if (!row || !row.dataset.raciRow) return;
-  postToSheet('raci', {
-    Work_Item: row.children[1]?.textContent.trim() || '',
-    Current_Owner: row.querySelector('[data-raci-owner]')?.value || '',
-    Due_Date: row.querySelector('[data-raci-due]')?.value || '',
-    Status: row.querySelector('[data-raci-status]')?.value || '',
-    Next_Action: row.querySelector('td:last-child input')?.value || ''
-  });
-}, 900);
-
 function initProgressInputs(){
-  document.querySelectorAll('select').forEach(sel => {
+  document.querySelectorAll('select').forEach(sel=>{
     applyStatusColor(sel);
-    sel.addEventListener('change', () => {
+    sel.addEventListener('change',()=>{
       applyStatusColor(sel);
       savePersistedControls();
-      const row = sel.closest('tr');
-      if (row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
-      if (row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
+      const row=sel.closest('tr');
+      if(row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
+      if(row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
       renderJourneyProgress();
       renderRaciOverview();
-    });
+    })
   });
-  document.querySelectorAll('#gantt input,#gantt_m3m4 input,#gantt_m5m6 input,#raci input').forEach(input => input.addEventListener('input', () => {
+  document.querySelectorAll('#gantt input,#gantt_m3m4 input,#gantt_m5m6 input,#raci input').forEach(input=>input.addEventListener('input',()=>{
     savePersistedControls();
-    const row = input.closest('tr');
-    if (row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
-    if (row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
-  }));
+    const row=input.closest('tr');
+    if(row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
+    if(row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
+  }))
 }
-
-// ===== SELF-TESTS =====
-function initTests(){
-  console.assert(statusWeight('Done') === 1, 'Done should be 1');
-  console.assert(statusWeight('In progress') === 0.6, 'In progress should be .6');
-  console.assert(statusWeight('Waiting feedback') === 0.4, 'Waiting feedback should be .4');
-  console.assert(statusWeight('Not started') === 0, 'Not started should be 0');
-  console.assert(Object.keys(defaultWeeks).length === 26, 'Should build 26 weeks');
-  console.assert(typeof fetchSheetJsonp === 'function', 'JSONP fallback should exist');
-  console.assert(fmtCurrency(1234) === '€1,234', 'Currency formatting');
-  console.assert(fmtNumber(1234567) === '1,234,567', 'Number formatting');
-  console.assert(currentProjectWeek() >= 1 && currentProjectWeek() <= 26, 'Current week in range');
-  fetchSheetPayload('').then(r => console.assert(r.ok === false, 'Empty endpoint should fail safely'));
-}
-
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded', async () => {
+function initTests(){console.assert(statusWeight('Done')===1,'Done should be 1');console.assert(statusWeight('In progress')===.6,'In progress should be .6');console.assert(statusWeight('Waiting feedback')===.4,'Waiting feedback should be .4');console.assert(statusWeight('Not started')===0,'Not started should be 0');console.assert(Object.keys(defaultWeeks).length===26,'Should build 26 weeks');fetchSheetPayload('').then(r=>console.assert(r.ok===false,'Empty endpoint should fail safely'));console.assert(typeof fetchSheetJsonp==='function','JSONP fallback should exist')}
+document.addEventListener('DOMContentLoaded',async()=>{
   applyClientTranslations();
   initTests();
   initPasswordGate();
+
   // 1. Build all dynamic tables first
-  renderGanttTable('ganttM1M2', ganttM1M2);
-  renderGanttTable('ganttM3M4', ganttM3M4);
-  renderGanttTable('ganttM5M6', ganttM5M6);
+  renderGanttTable('ganttM1M2',ganttM1M2,'M1','M2');
+  renderGanttTable('ganttM3M4',ganttM3M4,'M3','M4');
+  renderGanttTable('ganttM5M6',ganttM5M6,'M5','M6');
   renderRaciTable();
+
   // 2. Initialise controls and navigation
   initNav();
-  initKeyboardShortcuts();
   initWeeklyDataInput();
   initSheetSync();
   initProgressInputs();
+
   // 3. Restore local fallback only as temporary state
   restorePersistedControls();
+
   // 4. Load central Google Sheet data AFTER tables exist
-  const savedEndpoint = localStorage.getItem('zv_sheet_endpoint') || DEFAULT_SHEET_ENDPOINT;
-  if (savedEndpoint){
-    await loadFromGoogleSheet().catch(() => {});
+  const savedEndpoint=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT;
+  if(savedEndpoint){
+    await loadFromGoogleSheet().catch(()=>{});
   }
+
   // 5. Final render from central/fallback state
   renderRaciOverview();
   renderJourneyProgress();
