@@ -48,15 +48,16 @@
 <section id="gantt_m5m6" class="section"><div class="card"><div class="tag">Gantt · M5–M6</div><h1>Operational Scaling → Continuous Growth System</h1></div><div class="card"><div class="table-scroll"><table class="table"><tr><th>Layer</th><th>Taak</th><th>M5</th><th>M6</th><th>Status</th><th>Progress note</th></tr><tbody id="ganttM5M6"></tbody></table></div></div></section>
 <section id="sheet_sync" class="section"><div class="card"><div class="tag">Google Sheets Sync</div><h1>Connect Google Sheet</h1><p class="small">This dashboard can read live data from your Google Sheet via Apps Script. If the request is blocked, the dashboard will stay usable and show a clear error.</p></div><div class="card"><h2>Step 1 · Apps Script Web App URL</h2><input data-sheet-endpoint value="https://script.google.com/macros/s/AKfycbxzUdABkdUiyQLmbtY02yRZsef1NiLxYy5U_TiF1C2d-KJRUnsrnBC71DSk_M2Pvnr73w/exec" placeholder="https://script.google.com/macros/s/XXXXX/exec"><div class="action-row"><button class="btn" type="button" onclick="saveSheetEndpoint()">Save Sheet URL</button><button class="btn secondary" type="button" onclick="loadFromGoogleSheet()">Load from Sheet</button><button class="btn secondary" type="button" onclick="testSheetConnection()">Test connection</button><button class="btn secondary" type="button" onclick="openJsonpTestUrl()">Open JSONP test URL</button></div><div class="sync-status" data-sync-status>Not connected yet.</div></div><div class="grid cols2"><div class="card"><h2>Expected Sheet Tabs</h2><ul><li><b>Weekly_Data</b> updates Performance Dashboard + Measurement Matrix</li><li><b>RACI_Status</b> updates Approval & Development Flow</li></ul></div><div class="card"><h2>Fix for Failed to fetch</h2><p class="small">If normal fetch is blocked by Google/CORS, this dashboard falls back to JSONP. Your Apps Script must support <b>?callback=...</b>. Click <b>Open JSONP test URL</b>. If the page does not show something like <b>testCallback({ ... })</b>, the Apps Script has not been redeployed with the JSONP script.</p></div></div><div class="card"><h2>Weekly_Data columns</h2><div class="codebox">Week | Spend | Leads | Offer_Requests | Callbacks | Sales | Upsell_Revenue | Churn_Risk | Retention_Signal | What_Changed | Decision</div></div><div class="card"><h2>RACI_Status columns</h2><div class="codebox">Work_Item | Current_Owner | Due_Date | Status | Next_Action</div></div>
   <div class="card"><h2>Fallback · Paste JSON from Sheet</h2><p class="small">If Google blocks the live connection, paste JSON here and click Apply. This keeps the dashboard usable while we sort the endpoint.</p><textarea data-json-import placeholder='{"weekly":[{"Week":"W1","Spend":0,"Leads":0}],"raci":[{"Work_Item":"Tracking implementation (GTM + website scripts)","Current_Owner":"Nick"}]}'></textarea><div class="action-row"><button class="btn" type="button" onclick="applyPastedJson()">Apply pasted JSON</button></div></div>
-  <div class="card"><h2>Apps Script code with JSONP support</h2><div class="codebox">function doGet(e) {
+  <div class="card"><h2>Final Apps Script for Google Sheets sync</h2><div class="codebox">function doGet(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const data = {
     weekly: getSheetData(ss, 'Weekly_Data'),
-    raci: getSheetData(ss, 'RACI_Status')
+    raci: getSheetData(ss, 'RACI_Status'),
+    gantt: getSheetData(ss, 'Gantt_Status')
   };
 
   const json = JSON.stringify(data);
-  const callback = e.parameter.callback;
+  const callback = e && e.parameter && e.parameter.callback;
 
   if (callback) {
     return ContentService
@@ -69,18 +70,97 @@
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+function doPost(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const body = JSON.parse(e.postData.contents || '{}');
+  const type = body.type;
+  const payload = body.payload || {};
+
+  if (type === 'weekly') {
+    upsertRow(ss, 'Weekly_Data', 'Week', payload);
+  }
+
+  if (type === 'raci') {
+    upsertRow(ss, 'RACI_Status', 'Work_Item', payload);
+  }
+
+  if (type === 'gantt') {
+    upsertRow(ss, 'Gantt_Status', 'Task_ID', payload);
+  }
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ success: true, type: type }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function getSheetData(ss, sheetName) {
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) return [];
+
   const values = sheet.getDataRange().getValues();
+  if (values.length < 2) return [];
+
   const headers = values.shift();
+
   return values
     .filter(row => row.some(cell => cell !== ''))
     .map(row => {
       const obj = {};
-      headers.forEach((header, index) => obj[header] = row[index]);
+      headers.forEach((header, index) => {
+        obj[header] = row[index];
+      });
       return obj;
     });
+}
+
+function upsertRow(ss, sheetName, keyColumn, payload) {
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) throw new Error('Missing sheet: ' + sheetName);
+
+  const values = sheet.getDataRange().getValues();
+  const headers = values[0];
+  const keyIndex = headers.indexOf(keyColumn);
+
+  if (keyIndex === -1) throw new Error('Missing key column: ' + keyColumn);
+
+  const keyValue = payload[keyColumn];
+  if (!keyValue) throw new Error('Missing key value for: ' + keyColumn);
+
+  let rowIndex = -1;
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][keyIndex]) === String(keyValue)) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+
+  const row = headers.map(header => getPayloadValue(header, payload));
+
+  if (rowIndex > -1) {
+    sheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
+  } else {
+    sheet.appendRow(row);
+  }
+}
+
+function getPayloadValue(header, payload) {
+  if (payload[header] !== undefined) return payload[header];
+
+  const aliases = {
+    'Leads (MQL)': 'Leads',
+    'Sales (SQL)': 'Sales',
+    'What_Changed': 'What_Changed',
+    'Work Item': 'Work_Item',
+    'Current Owner': 'Current_Owner',
+    'Due Date': 'Due_Date',
+    'Next Action': 'Next_Action',
+    'Progress Note': 'Progress_Note'
+  };
+
+  const alias = aliases[header];
+  if (alias && payload[alias] !== undefined) return payload[alias];
+
+  return '';
 }</div></div></section>
 <section id="data_input" class="section"><div class="card"><div class="tag">Live weekly input</div><h1>Weekly data input</h1><p class="small">Add weekly media and conversion numbers here. The Performance Dashboard updates automatically.</p></div>
 <div class="card"><div class="tag">Media spend growth</div><h2>Spend trend</h2><p class="small">Small live view of weekly spend across W1–W26.</p><div class="spend-spark" data-spend-spark></div></div><div class="card"><h2>Select week</h2><select data-week-select></select></div><div class="grid cols4"><div class="card"><div class="tag">Media</div><label class="small">Spend</label><input data-week-field="spend" type="number" placeholder="0"></div><div class="card"><div class="tag">Acquisition</div><label class="small">Leads</label><input data-week-field="leads" type="number" placeholder="0"></div><div class="card"><div class="tag">Conversion</div><label class="small">Offer requests</label><input data-week-field="offer_requests" type="number" placeholder="0"></div><div class="card"><div class="tag">Sales</div><label class="small">Sales</label><input data-week-field="sales" type="number" placeholder="0"></div></div><div class="grid cols4"><div class="card"><div class="tag">Assisted sales</div><label class="small">Callbacks</label><input data-week-field="callbacks" type="number" placeholder="0"></div><div class="card"><div class="tag">Expansion</div><label class="small">Upsell revenue</label><input data-week-field="upsell_revenue" type="number" placeholder="0"></div><div class="card"><div class="tag">Retention</div><label class="small">Churn risk signal</label><input data-week-field="churn_risk" type="number" placeholder="0"></div><div class="card"><div class="tag">Lifecycle</div><label class="small">Retention signal</label><input data-week-field="retention_signal" placeholder="e.g. WiFi complaints down"></div></div><div class="grid cols2"><div class="card"><h2>What changed this week?</h2><textarea data-week-field="what_changed" placeholder="Short weekly summary"></textarea></div><div class="card"><h2>Scale / Iterate / Kill decision</h2><textarea data-week-field="decision" placeholder="What should happen next?"></textarea></div></div></section>
@@ -336,8 +416,58 @@ function setSyncStatus(message,type=''){const el=document.querySelector('[data-s
 function saveSheetEndpoint(){const input=document.querySelector('[data-sheet-endpoint]');if(input){localStorage.setItem('zv_sheet_endpoint',input.value.trim());setSyncStatus('Sheet URL saved locally. Click Load from Sheet to sync.','ok')}}window.saveSheetEndpoint=saveSheetEndpoint;
 function initSheetSync(){const input=document.querySelector('[data-sheet-endpoint]');if(input)input.value=localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT}
 function normalizeSheetKey(value){return String(value||'').trim().toLowerCase().replaceAll(' ','_')}
-function applyWeeklySheetRows(rows){const data=getGrowthData();rows.forEach(item=>{const week=item.Week||item.week;if(!week)return;data[week]=data[week]||{};data[week].spend=item.Spend||item.spend||0;data[week].leads=item.Leads||item.leads||0;data[week].offer_requests=item.Offer_Requests||item.offer_requests||item.Offers||0;data[week].callbacks=item.Callbacks||0;data[week].sales=item.Sales||0;data[week].upsell_revenue=item.Upsell_Revenue||item.Upsell||0;data[week].churn_risk=item.Churn_Risk||0;data[week].retention_signal=item.Retention_Signal||'';data[week].what_changed=item.What_Changed||'';data[week].decision=item.Decision||''});saveGrowthData(data)}
-function applyRaciSheetRows(rows){const dash=getRaciRows();rows.forEach(item=>{const workItem=item.Work_Item||item.work_item||item['Work item'];if(!workItem)return;const target=dash.find(row=>normalizeSheetKey(row.children[1]?.textContent)===normalizeSheetKey(workItem));if(!target)return;const owner=item.Current_Owner||item.Owner,status=item.Status,due=item.Due_Date||item.Due,next=item.Next_Action||item.Next;const ownerField=target.querySelector('[data-raci-owner]'),statusField=target.querySelector('[data-raci-status]'),dueField=target.querySelector('[data-raci-due]'),nextField=target.querySelector('td:last-child input');if(owner&&ownerField)ownerField.value=owner;if(status&&statusField)statusField.value=status;if(due&&dueField)dueField.value=String(due).slice(0,10);if(next&&nextField)nextField.value=next});renderRaciOverview()}
+function applyWeeklySheetRows(rows){
+  const data=getGrowthData();
+  rows.forEach(item=>{
+    const week=item.Week||item.week;
+    if(!week)return;
+    data[week]=data[week]||{};
+    data[week].spend=item.Spend||item.spend||0;
+    data[week].leads=item.Leads||item.leads||item['Leads (MQL)']||0;
+    data[week].offer_requests=item.Offer_Requests||item.offer_requests||item.Offers||0;
+    data[week].callbacks=item.Callbacks||0;
+    data[week].sales=item.Sales||item.sales||item['Sales (SQL)']||0;
+    data[week].upsell_revenue=item.Upsell_Revenue||item.Upsell||0;
+    data[week].churn_risk=item.Churn_Risk||0;
+    data[week].retention_signal=item.Retention_Signal||'';
+    data[week].what_changed=item.What_Changed||'';
+    data[week].decision=item.Decision||'';
+  });
+  saveGrowthData(data);
+}
+function applyRaciSheetRows(rows){
+  const dash=getRaciRows();
+  rows.forEach(item=>{
+    const workItem=item.Work_Item||item.work_item||item['Work item']||item['Work Item'];
+    if(!workItem)return;
+    const target=dash.find(row=>normalizeSheetKey(row.children[1]?.textContent)===normalizeSheetKey(workItem));
+    if(!target)return;
+    const owner=item.Current_Owner||item.Owner||item['Current Owner'];
+    const status=item.Status;
+    const due=item.Due_Date||item.Due||item['Due Date'];
+    const next=item.Next_Action||item.Next||item['Next Action'];
+    const ownerField=target.querySelector('[data-raci-owner]'),statusField=target.querySelector('[data-raci-status]'),dueField=target.querySelector('[data-raci-due]'),nextField=target.querySelector('td:last-child input');
+    if(owner&&ownerField)ownerField.value=owner;
+    if(status&&statusField){statusField.value=status;applyStatusColor(statusField)}
+    if(due&&dueField)dueField.value=String(due).slice(0,10);
+    if(next&&nextField)nextField.value=next;
+  });
+  renderRaciOverview();
+}
+function applyGanttSheetRows(rows){
+  rows.forEach(item=>{
+    const id=item.Task_ID||normalizeSheetKey(item.Task||'');
+    const target=Array.from(document.querySelectorAll('[data-gantt-row]')).find(row=>normalizeSheetKey(row.dataset.ganttTask||'')===normalizeSheetKey(id)||normalizeSheetKey(row.dataset.ganttTask||'')===id);
+    if(!target)return;
+    const status=item.Status;
+    const note=item.Progress_Note||item['Progress Note']||'';
+    const statusField=target.querySelector('select');
+    const noteField=target.querySelector('[data-gantt-note]');
+    if(status&&statusField){statusField.value=status;applyStatusColor(statusField)}
+    if(noteField)noteField.value=note;
+  });
+  savePersistedControls();
+}
 function fetchSheetJsonp(endpoint){
   return new Promise((resolve)=>{
     const callbackName = 'zvSheetCallback_' + Date.now();
@@ -388,6 +518,7 @@ async function fetchSheetPayload(endpoint){
 function applySheetPayload(payload){
   if(payload.weekly) applyWeeklySheetRows(payload.weekly);
   if(payload.raci) applyRaciSheetRows(payload.raci);
+  if(payload.gantt) applyGanttSheetRows(payload.gantt);
   loadWeekForm();
   renderPerformanceDashboard();
   renderJourneyProgress();
@@ -420,7 +551,7 @@ function applyPastedJson(){
   }
 }
 window.applyPastedJson=applyPastedJson;
-async function testSheetConnection(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;setSyncStatus('Testing connection...');const result=await fetchSheetPayload(endpoint);if(!result.ok){setSyncStatus('Connection test failed: '+result.error+' Click Open JSONP test URL. It must show testCallback({...}).','error');return}const payload=result.data||{};setSyncStatus(`Connection ok. weekly=${Array.isArray(payload.weekly)}, raci=${Array.isArray(payload.raci)}.`,'ok')}window.testSheetConnection=testSheetConnection;
+async function testSheetConnection(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;setSyncStatus('Testing connection...');const result=await fetchSheetPayload(endpoint);if(!result.ok){setSyncStatus('Connection test failed: '+result.error+' Click Open JSONP test URL. It must show testCallback({...}).','error');return}const payload=result.data||{};setSyncStatus(`Connection ok. weekly=${Array.isArray(payload.weekly)}, raci=${Array.isArray(payload.raci)}, gantt=${Array.isArray(payload.gantt)}.`,'ok')}window.testSheetConnection=testSheetConnection;
 function openJsonpTestUrl(){const endpoint=document.querySelector('[data-sheet-endpoint]')?.value.trim()||DEFAULT_SHEET_ENDPOINT;if(!endpoint){setSyncStatus('Paste your Apps Script URL first.','error');return}const sep=endpoint.includes('?')?'&':'?';window.open(endpoint+sep+'callback=testCallback&t='+Date.now(),'_blank')}window.openJsonpTestUrl=openJsonpTestUrl;
 function initNav(){document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab)?.classList.add('active');renderJourneyProgress();renderPerformanceDashboard();renderRaciOverview()}))}
 function persistKeyForControl(el,index){
