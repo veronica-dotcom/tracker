@@ -201,6 +201,24 @@ function applyClientTranslations(){
 function buildDefaultWeeks(){const weeks={};for(let i=1;i<=26;i++)weeks['W'+i]={spend:0,leads:0,offer_requests:0,callbacks:0,sales:0,upsell_revenue:0,churn_risk:0,retention_signal:'',what_changed:'',decision:''};return weeks}const defaultWeeks=buildDefaultWeeks();
 function getGrowthData(){try{return {...defaultWeeks,...(JSON.parse(localStorage.getItem('zv_growth_data'))||{})}}catch(e){return defaultWeeks}}
 function saveGrowthData(data){localStorage.setItem('zv_growth_data',JSON.stringify(data))}
+function getSheetEndpoint(){return document.querySelector('[data-sheet-endpoint]')?.value.trim()||localStorage.getItem('zv_sheet_endpoint')||DEFAULT_SHEET_ENDPOINT}
+async function postToSheet(type,payload){
+  const endpoint=getSheetEndpoint();
+  if(!endpoint) return {ok:false,error:'No Sheet endpoint configured'};
+  try{
+    await fetch(endpoint,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({type,payload})
+    });
+    return {ok:true};
+  }catch(error){
+    console.warn('Sheet save failed',error);
+    return {ok:false,error:error.message};
+  }
+}
+function debounce(fn,delay=700){let timer;return function(...args){clearTimeout(timer);timer=setTimeout(()=>fn.apply(this,args),delay)}}
 function numberValue(v){const n=Number(String(v||'').replace(',','.'));return Number.isFinite(n)?n:0}
 function selectedWeek(){return document.querySelector('[data-week-select]')?.value||'W1'}
 function statusWeight(value){const v=String(value||'').toLowerCase();if(v.includes('done')||v.includes('klaar'))return 1;if(v.includes('waiting')||v.includes('feedback'))return .4;if(v.includes('progress'))return .6;return 0}
@@ -211,8 +229,11 @@ function renderGanttTable(targetId,groups,a,b){
   const body=document.getElementById(targetId);
   if(!body)return;
   body.innerHTML=groups.map(([layer,tasks])=>tasks.map((task,i)=>{
-    const noteField='<td><input placeholder="Progress note / dependency"></td>';
-    return `<tr data-persist-row>${i===0?`<td rowspan="${tasks.length}"><b>${layer}</b></td>`:''}<td>${task}</td><td>■</td><td>${i%2?'■':''}</td><td>${statusSelect()}</td>${noteField}</tr>`;
+    const noteField='<td><input data-gantt-note placeholder="Progress note / dependency"></td>';
+    const phaseA=targetId==='ganttM1M2'?'M1':targetId==='ganttM3M4'?'M3':'M5';
+    const phaseB=targetId==='ganttM1M2'?'M2':targetId==='ganttM3M4'?'M4':'M6';
+    const phase=i%2?phaseB:phaseA;
+    return `<tr data-persist-row data-gantt-row data-gantt-phase="${phase}" data-gantt-layer="${layer}" data-gantt-task="${task}">${i===0?`<td rowspan="${tasks.length}"><b>${layer}</b></td>`:''}<td>${task}</td><td>■</td><td>${i%2?'■':''}</td><td>${statusSelect()}</td>${noteField}</tr>`;
   }).join('')).join('')
 }
 function inferPhase(row){if(row.dataset.phase)return row.dataset.phase;if(row.closest('#gantt_m3m4'))return row.children[2]?.textContent.trim()?'m3':'m4';if(row.closest('#gantt_m5m6'))return row.children[2]?.textContent.trim()?'m5':'m6';if(row.closest('#gantt'))return row.children[2]?.textContent.trim()?'m1':'m2';return'm1'}
@@ -231,7 +252,24 @@ function renderSpendSpark(rows){const spark=document.querySelector('[data-spend-
 function renderGrowthChart(){const chart=document.querySelector('[data-growth-chart]');if(!chart)return;const rows=Object.entries(getGrowthData()).sort(([a],[b])=>Number(a.replace('W',''))-Number(b.replace('W','')));renderSpendSpark(rows);const max=Math.max(1,...rows.flatMap(([_,r])=>[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)]));chart.innerHTML=rows.map(([week,r])=>{const vals=[numberValue(r.spend),numberValue(r.leads),numberValue(r.offer_requests),numberValue(r.sales),numberValue(r.upsell_revenue)],h=v=>Math.max(2,Math.round(v/max*220));return`<div class="chart-week" title="${week}"><div class="bar bar-spend" style="height:${h(vals[0])}px"></div><div class="bar bar-leads" style="height:${h(vals[1])}px"></div><div class="bar bar-offers" style="height:${h(vals[2])}px"></div><div class="bar bar-sales" style="height:${h(vals[3])}px"></div><div class="bar bar-upsell" style="height:${h(vals[4])}px"></div><div class="week-label">${week}</div></div>`}).join('');const total=calcWeeklySummary();const summary={chart_total_spend:'€'+total.spend,chart_total_leads:total.leads,chart_total_offers:total.offer_requests,chart_total_sales:total.sales,chart_total_upsell:'€'+total.upsell_revenue};Object.entries(summary).forEach(([k,v])=>document.querySelectorAll(`[data-chart-summary="${k}"]`).forEach(el=>el.textContent=v))}
 function initWeekSelect(){const sel=document.querySelector('[data-week-select]');if(!sel)return;sel.innerHTML=Array.from({length:26},(_,i)=>`<option value="W${i+1}">W${i+1}</option>`).join('')}
 function loadWeekForm(){const row=getGrowthData()[selectedWeek()]||{};document.querySelectorAll('[data-week-field]').forEach(input=>input.value=row[input.dataset.weekField]??'')}
-function saveWeekForm(){const data=getGrowthData(),week=selectedWeek();data[week]=data[week]||{};document.querySelectorAll('[data-week-field]').forEach(input=>data[week][input.dataset.weekField]=input.value);saveGrowthData(data);renderPerformanceDashboard()}
+const saveWeeklyToSheetDebounced=debounce(()=>{
+  const week=selectedWeek();
+  const row=getGrowthData()[week]||{};
+  postToSheet('weekly',{
+    Week:week,
+    Spend:row.spend||0,
+    Leads:row.leads||0,
+    Offer_Requests:row.offer_requests||0,
+    Callbacks:row.callbacks||0,
+    Sales:row.sales||0,
+    Upsell_Revenue:row.upsell_revenue||0,
+    Churn_Risk:row.churn_risk||0,
+    Retention_Signal:row.retention_signal||'',
+    What_Changed:row.what_changed||'',
+    Decision:row.decision||''
+  });
+},900);
+function saveWeekForm(){const data=getGrowthData(),week=selectedWeek();data[week]=data[week]||{};document.querySelectorAll('[data-week-field]').forEach(input=>data[week][input.dataset.weekField]=input.value);saveGrowthData(data);renderPerformanceDashboard();saveWeeklyToSheetDebounced()}
         
 function initWeeklyDataInput(){initWeekSelect();document.querySelector('[data-week-select]')?.addEventListener('change',()=>{loadWeekForm();renderPerformanceDashboard()});document.querySelectorAll('[data-week-field]').forEach(input=>input.addEventListener('input',saveWeekForm));loadWeekForm()}
 function daysUntil(dateString){if(!dateString)return null;const today=new Date();today.setHours(0,0,0,0);const due=new Date(dateString+'T00:00:00');if(Number.isNaN(due.getTime()))return null;return Math.ceil((due-today)/(1000*60*60*24))}
@@ -398,6 +436,27 @@ function savePersistedControls(){
     localStorage.setItem(persistKeyForControl(el,index),el.value);
   });
 }
+const saveGanttRowToSheetDebounced=debounce((row)=>{
+  if(!row || !row.dataset.ganttRow) return;
+  postToSheet('gantt',{
+    Task_ID:normalizeSheetKey(row.dataset.ganttTask||''),
+    Phase:row.dataset.ganttPhase||'',
+    Layer:row.dataset.ganttLayer||'',
+    Task:row.dataset.ganttTask||'',
+    Status:row.querySelector('select')?.value||'Not started',
+    Progress_Note:row.querySelector('[data-gantt-note]')?.value||''
+  });
+},900);
+const saveRaciRowToSheetDebounced=debounce((row)=>{
+  if(!row || !row.dataset.raciRow) return;
+  postToSheet('raci',{
+    Work_Item:row.children[1]?.textContent.trim()||'',
+    Current_Owner:row.querySelector('[data-raci-owner]')?.value||'',
+    Due_Date:row.querySelector('[data-raci-due]')?.value||'',
+    Status:row.querySelector('[data-raci-status]')?.value||'',
+    Next_Action:row.querySelector('td:last-child input')?.value||''
+  });
+},900);
 function restorePersistedControls(){
   document.querySelectorAll('#gantt input,#gantt select,#gantt_m3m4 input,#gantt_m3m4 select,#gantt_m5m6 input,#gantt_m5m6 select,#raci input,#raci select').forEach((el,index)=>{
     const saved=localStorage.getItem(persistKeyForControl(el,index));
@@ -405,7 +464,26 @@ function restorePersistedControls(){
     if(el.tagName==='SELECT') applyStatusColor(el);
   });
 }
-function initProgressInputs(){document.querySelectorAll('select').forEach(sel=>{applyStatusColor(sel);sel.addEventListener('change',()=>{applyStatusColor(sel);savePersistedControls();renderJourneyProgress();renderRaciOverview()})});document.querySelectorAll('#gantt input,#gantt_m3m4 input,#gantt_m5m6 input,#raci input').forEach(input=>input.addEventListener('input',savePersistedControls))}
+function initProgressInputs(){
+  document.querySelectorAll('select').forEach(sel=>{
+    applyStatusColor(sel);
+    sel.addEventListener('change',()=>{
+      applyStatusColor(sel);
+      savePersistedControls();
+      const row=sel.closest('tr');
+      if(row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
+      if(row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
+      renderJourneyProgress();
+      renderRaciOverview();
+    })
+  });
+  document.querySelectorAll('#gantt input,#gantt_m3m4 input,#gantt_m5m6 input,#raci input').forEach(input=>input.addEventListener('input',()=>{
+    savePersistedControls();
+    const row=input.closest('tr');
+    if(row?.dataset.ganttRow) saveGanttRowToSheetDebounced(row);
+    if(row?.dataset.raciRow) saveRaciRowToSheetDebounced(row);
+  }))
+}
 function initTests(){console.assert(statusWeight('Done')===1,'Done should be 1');console.assert(statusWeight('In progress')===.6,'In progress should be .6');console.assert(statusWeight('Waiting feedback')===.4,'Waiting feedback should be .4');console.assert(statusWeight('Not started')===0,'Not started should be 0');console.assert(Object.keys(defaultWeeks).length===26,'Should build 26 weeks');fetchSheetPayload('').then(r=>console.assert(r.ok===false,'Empty endpoint should fail safely'));console.assert(typeof fetchSheetJsonp==='function','JSONP fallback should exist')}
 document.addEventListener('DOMContentLoaded',()=>{
   applyClientTranslations();
